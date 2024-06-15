@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const serviceSchema = new mongoose.Schema({
-  title: { Type: String, trim: true },
-  serviceTypes: [{ Type: mongoose.Schema.ObjectId, ref: "serviceType" }],
+  title: { type: String, required: true, trim: true },
+  serviceTypes: [{ type: mongoose.Schema.ObjectId, ref: "serviceType" }],
   priceStructure: [
     {
       price: {
-        Type: Number,
+        type: Number,
         match: [
           "^[1-9]d*(.d+)?$",
           "Only natural numbers and decimals are valid values.",
@@ -17,4 +17,4 @@ const serviceSchema = new mongoose.Schema({
   ],
 });
 
-export default Service = mongoose.Model("Service", serviceSchema);
+export default mongoose.model("Service", serviceSchema);

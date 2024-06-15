@@ -1,10 +1,13 @@
 // External libraries
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
+import adminRoutes from "./routes/admin.js";
 
 // Internal imports
 import { errorHandler } from "./middlewares/errorHandler.js";
-// import isAdmin from "./middlewares/isAdmin.js";
+import { ErrorResponse } from "./util/errorRespone.js";
+import isAdmin from "./middlewares/isAdmin.js";
 
 // starting setup
 const app = express();
@@ -27,22 +30,20 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/admin", (req, res, next) => {
-  res.status(200).json({
-    success: true,
-    path: "ADMIN PATH",
-  });
-});
+app.use("/admin", isAdmin, adminRoutes);
 
 app.use("*", (req, res, next) => {
-  res.status(404).json({
-    success: false,
-    message: "Not a valid path.",
-  });
+  return next(new ErrorResponse("Invalid path", 404));
 });
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+mongoose
+  .connect(process.env.MONGO_CONN_STRING)
+  .then((data) => {
+    app.listen(port, () => {
+      console.log("Successfully connected to Mongodb Server!");
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((err) => next(err._message, 500));
