@@ -2,12 +2,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import adminRoutes from "./routes/admin.js";
 
 // Internal imports
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { ErrorResponse } from "./util/errorRespone.js";
-import isAdmin from "./middlewares/isAdmin.js";
+import { Admin } from "./models/admin.js";
+import adminRoutes from "./routes/admin.js";
+import authRoutes from "./routes/auth.js";
 
 // starting setup
 const app = express();
@@ -30,7 +31,8 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/admin", isAdmin, adminRoutes);
+app.use("/admin", adminRoutes);
+app.use("/auth", authRoutes);
 
 app.use("*", (req, res, next) => {
   return next(new ErrorResponse("Invalid path", 404));
@@ -38,12 +40,35 @@ app.use("*", (req, res, next) => {
 
 app.use(errorHandler);
 
-mongoose
-  .connect(process.env.MONGO_CONN_STRING)
-  .then((data) => {
+async function main() {
+  try {
+    await mongoose.connect(process.env.MONGO_CONN_STRING);
     app.listen(port, () => {
       console.log("Successfully connected to Mongodb Server!");
       console.log(`Server is running on http://localhost:${port}`);
     });
-  })
-  .catch((err) => next(err._message, 500));
+
+    // Check if admin is crated, if not create one
+    try {
+      const admin = await Admin.findOne({
+        email: process.env.ADMIN_EMAIL,
+      });
+
+      if (!admin) {
+        const newAdmin = new Admin({
+          username: process.env.ADMIN_USERNAME,
+          email: process.env.ADMIN_EMAIL,
+          password: process.env.PASSWORD,
+        });
+        await newAdmin.save();
+        console.log("admin account created.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+main().catch((err) => console.log(err));
