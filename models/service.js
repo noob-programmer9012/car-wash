@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const serviceSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
-  serviceTypes: [{ type: mongoose.Schema.ObjectId, ref: "serviceType" }],
+  serviceTypes: [{ type: mongoose.Schema.Types.ObjectId, ref: "serviceType" }],
   priceStructure: [
     {
       price: {

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 // Internal Imports
 import { ErrorResponse } from "../util/errorRespone.js";
 import { Admin } from "../models/admin.js";
+import User from "../models/user.js";
 
 // Auth-related logic
 export const postLogin = async (req, res, next) => {
@@ -31,4 +32,24 @@ export const postLogin = async (req, res, next) => {
   }
 
   //   if logged in user is customer
+};
+
+export const postSignUp = async (req, res, next) => {
+  try {
+    const user = new User({ ...req.body });
+    await user.save();
+    res.status(201).json({
+      success: true,
+      message: "user creation successfull.",
+      userId: user._id,
+    });
+  } catch (error) {
+    const keys = Object.keys(error.errors);
+    const messages = [];
+    for (let i = 0; i < keys.length; i++) {
+      messages.push(error.errors[keys[i]].properties.message);
+    }
+    console.log(messages);
+    next(new ErrorResponse(messages, 500));
+  }
 };
