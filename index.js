@@ -9,6 +9,7 @@ import { ErrorResponse } from "./util/errorRespone.js";
 import { Admin } from "./models/admin.js";
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
+import isAuth from "./middlewares/isAuth.js";
 
 // starting setup
 const app = express();
@@ -33,7 +34,14 @@ app.use((req, res, next) => {
 // routes
 app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
-
+app.use("/dashboard", isAuth, (req, res, next) => {
+  if (req.isUser) {
+    return res.status(200).json({ user: "customer" });
+  } else if (req.isAdmin) {
+    return res.status(200).json({ user: "admin" });
+  }
+  return res.json({ nothing: "no data" });
+});
 app.use("*", (req, res, next) => {
   return next(new ErrorResponse("Invalid path", 404));
 });
