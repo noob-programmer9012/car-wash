@@ -79,16 +79,17 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
-
   this.address.homeNo = titleCase(this.address.homeNo);
   this.address.landmark = titleCase(this.address.landmark);
   this.address.area = titleCase(this.address.area);
   this.city = titleCase(this.city);
   this.mobileNo = "+91-" + this.mobileNo;
   this.fullname = titleCase(this.fullname);
+
+  if (!this.isModified("password")) {
+    next();
+  }
+
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });

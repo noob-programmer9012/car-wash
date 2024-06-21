@@ -2,6 +2,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import path from "path";
 
 // Internal imports
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -18,6 +19,7 @@ const port = process.env.PORT || 8000;
 
 // middlewares
 app.use(express.json());
+app.use("/assets", express.static(path.join(path.resolve(), "assets")));
 app.use((req, res, next) => {
   // CORS doesn't let transfer data between two different server, so it causes CORS errors
   // For CORS error use this middleware, to limit client server to set headers

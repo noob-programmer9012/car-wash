@@ -62,7 +62,6 @@ export const postSignUp = async (req, res, next) => {
       userId: user._id,
     });
   } catch (error) {
-    const messages = errorMessages(error);
-    next(new ErrorResponse(messages, 500));
+    next(new ErrorResponse(error, 500));
   }
 };
