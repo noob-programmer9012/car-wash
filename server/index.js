@@ -3,8 +3,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
+import cors from "cors";
 import multer from "multer";
-import * as fs from "node:fs";
 
 // Internal imports
 import { errorHandler } from "./middlewares/errorHandler.js";
@@ -19,26 +19,8 @@ const app = express();
 dotenv.config({ path: "./config/.env" });
 const port = process.env.PORT || 8000;
 
-// middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use("/assets", express.static(path.join(path.resolve(), "assets")));
-app.use((req, res, next) => {
-  // CORS doesn't let transfer data between two different server, so it causes CORS errors
-  // For CORS error use this middleware, to limit client server to set headers
-  //   every response we send will set these headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // or you can use website such as the-erp.in instead of *
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, PUT, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
-
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log(req.file);
     if (file.mimetype === "image/svg+xml") {
       cb(null, path.join(path.resolve(), "assets", "svg"));
     } else if (
@@ -52,7 +34,7 @@ const storage = multer.diskStorage({
       file.mimetype === "video/webm" ||
       file.mimetype === "video/quicktime"
     ) {
-      cb(null, path.join(path.resolve(), "assets", "images"));
+      cb(null, path.join(path.resolve(), "assets", "videos"));
     }
   },
   filename: (req, file, cb) => {
@@ -62,22 +44,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use("/assets", express.static(path.join(path.resolve(), "assets")));
+
 // routes
-// app.post("/upload", upload.single("file"), (req, res, next) => {
-//   // const { buffer, originalname } = req.file;
-//   // const writeStream = fs.createWriteStream(originalname, { flags: "a" });
-//   // writeStream.write(buffer);
-//   // writeStream.end();
-//   // writeStream.on("finish", () => {
-//   //   res.status(200).send("File received successfully.");
-//   // });
-//   // // Event listener for any errors during the write operation
-//   // writeStream.on("error", (err) => {
-//   //   console.error(err);
-//   //   res.status(500).send("Internal Server Error");
-//   // });
-// });
-app.use("/admin", upload.single("file"), adminRoutes);
+app.use("/admin", upload.array("file", 2), adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/dashboard", isAuth, (req, res, next) => {
   if (req.isUser) {

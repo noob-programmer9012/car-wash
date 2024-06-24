@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import { ErrorResponse } from "../util/errorRespone.js";
 import { Admin } from "../models/admin.js";
 import User from "../models/user.js";
-import errorMessages from "../util/errorMessages.js";
 
 // Auth-related logic
 export const postLogin = async (req, res, next) => {
