@@ -28,7 +28,7 @@ export const postLogin = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRY }
     );
-    return res.status(200).json({ success: true, token });
+    return res.status(200).json({ success: true, token, isAdmin: true });
   } else {
     const isUser = await User.findOne({ email }).select("+password");
     if (!isUser) {
@@ -47,7 +47,7 @@ export const postLogin = async (req, res, next) => {
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRY }
     );
-    return res.status(200).json({ success: true, token });
+    return res.status(200).json({ success: true, token, isUser: true });
   }
 };
 
