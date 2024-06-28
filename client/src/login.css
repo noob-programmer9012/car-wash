@@ -1,0 +1,112 @@
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.login-wrapper {
+  width: 100dwh;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.card {
+  background-color: #494949;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  border-radius: 10px;
+  border: 1px #494949;
+  min-width: 25%;
+  min-height: 50%;
+  box-shadow: 0 0 500px #555555;
+}
+
+.loginform {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  width: 100%;
+}
+
+.loginform > h1 {
+  letter-spacing: 0.1em;
+  align-self: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input {
+  background-color: #979696;
+  border: none;
+  border-radius: 5px;
+  padding: 1em;
+  outline: none;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.label {
+  position: absolute;
+  top: 17px;
+  left: 20px;
+  transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+}
+
+.input:focus + .label {
+  top: -20px;
+  left: 10px;
+  font-size: 0.8rem;
+}
+
+.btn {
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 2em;
+  letter-spacing: 0.1rem;
+  transition: all ease-in 0.4s;
+}
+
+.error-block {
+  align-self: center;
+  background-color: #160b0b;
+  width: 100%;
+  position: relative;
+  transition: all ease-in 0.4s;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+}
+
+.material-symbols-outlined {
+  position: absolute;
+  top: 17px;
+  left: 15px;
+  color: #611e19;
+}
+
+.material-symbols-outlined.close {
+  left: 435px;
+  top: 12px;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 50%;
+}
+
+.material-symbols-outlined.close:hover {
+  background-color: #884925;
+  transition: all ease-in-out 0.4s;
+}
+
+.error {
+  padding: 0em 3em;
+  color: #db773a;
+  letter-spacing: 1px;
+}
