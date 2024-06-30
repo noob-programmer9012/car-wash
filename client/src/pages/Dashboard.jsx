@@ -26,13 +26,11 @@ function Dashboard() {
 
   return (
     <>
-      <div className="wrapper">
-        <TopUserNavBar />
-        <div className="main">
-          <Outlet />
-        </div>
-        <BottomUserNavbar className="bottom-nav" />
+      <TopUserNavBar />
+      <div className="main">
+        <Outlet />
       </div>
+      <BottomUserNavbar className="bottom-nav" />
     </>
   );
 }

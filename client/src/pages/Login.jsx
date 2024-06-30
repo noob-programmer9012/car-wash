@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-router-dom";
 import axios from "axios";
 
@@ -7,6 +7,16 @@ export default function Login() {
   const [password, setPassword] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const labels = document.getElementById("label");
+    labels.addEventListener("click", () => {
+      labels.style.top = "-20px";
+      labels.style.left = "10px";
+      labels.style.fontSize = "0.8rem";
+      labels.style.color = "#ffffffde";
+    });
+  }, []);
 
   function handleClose() {
     setShow((prev) => !prev);
@@ -17,7 +27,6 @@ export default function Login() {
     if (email === undefined || password === undefined) {
       setError("please enter email and password");
       setShow(true);
-      setTimeout(() => setShow((prev) => !prev), 4000);
     } else {
       try {
         const data = await axios.post("http://localhost:5000/auth/login", {
@@ -33,7 +42,6 @@ export default function Login() {
       } catch (error) {
         setError(error.response.data.message);
         setShow(true);
-        setTimeout(() => setShow((prev) => !prev), 4000);
       }
     }
   }
@@ -90,8 +98,10 @@ export default function Login() {
             <h1>LOGIN</h1>
             {show && (
               <div className="error-block">
+                <span className="material-symbols-outlined error-icon">
+                  error
+                </span>
                 <p className="error">{error}</p>
-                <span className="material-symbols-outlined">error</span>
                 <span
                   className="material-symbols-outlined close"
                   onClick={handleClose}
@@ -107,7 +117,7 @@ export default function Login() {
                 id="email"
                 onChange={handleChange}
               ></input>
-              <label htmlFor="email" className="label">
+              <label htmlFor="email" className="label" id="label">
                 Email *
               </label>
             </div>
@@ -118,7 +128,7 @@ export default function Login() {
                 id="password"
                 onChange={handleChange}
               ></input>
-              <label htmlFor="password" className="label">
+              <label htmlFor="password" className="label" id="label">
                 Password *
               </label>
             </div>

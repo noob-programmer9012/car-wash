@@ -40,13 +40,11 @@ export const postService = async (req, res, next) => {
 
   try {
     const service = new Service({ ...req.body });
-    if (req.files) {
-      for (let i = 0; i < req.files.length; i++) {
-        if (req.files[i].mimetype.split("/")[0] === "video") {
-          service.videoUrl = req.files[i].path;
-        } else if (req.files[i].mimetype.split("/")[0] === "image") {
-          service.imageUrl = req.files[i].path;
-        }
+    for (let i = 0; i < req.files.length; i++) {
+      if (req.files[i].mimetype.split("/")[0] === "video") {
+        service.videoUrl = req.files[i].path;
+      } else if (req.files[i].mimetype.split("/")[0] === "image") {
+        service.imageUrl = req.files[i].path;
       }
     }
     service.serviceName = titleCase(service.serviceName);
