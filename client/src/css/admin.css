@@ -34,33 +34,39 @@
 }
 
 .material-symbols-outlined {
-  transition: all ease-in-out 0.2s;
+  color: #fff !important;
+  font-size: 26px !important;
+  transition: all ease-in-out 0.5s !important;
 }
 
 .sub-link:hover > .material-symbols-outlined {
-  font-size: 48px;
-  color: #f5a905;
+  font-size: 48px !important;
+  color: #f5a905 !important;
 }
 
 .sub-link:hover > .material-symbols-outlined ~ a {
-  font-size: 32px;
-  color: #f5a905;
+  font-size: 32px !important;
+  color: #f5a905 !important;
 }
 
 .sub-link > a {
   text-decoration: none;
   color: #fff;
   font-size: 24px;
-  transition: all ease-in-out 0.2s;
+  transition: all ease-in-out 0.5s;
 }
 
 .link.active,
 .material-symbols-outlined.active {
-  color: #f5a905;
+  color: #f5a905 !important;
+  font-size: 32px !important;
 }
 
 .admin-main {
   overflow-y: auto;
   background-color: #181c1f;
-  flex: 4;
+  flex: 5;
+  padding: 2rem;
+  min-height: 80%;
+  max-width: 100%;
 }

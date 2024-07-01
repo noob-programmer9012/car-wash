@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-// import App from "./App.jsx";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Services, { serviceLoader } from "./pages/Services";
 import Login from "./pages/Login";
 import "./css/index.css";
 import "./css/login.css";
@@ -25,18 +25,24 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <h1>Dashboard</h1>,
       },
       {
         path: "/admin/categories",
+        element: <h1>Categories</h1>,
       },
       {
         path: "/admin/services",
+        element: <Services />,
+        loader: serviceLoader,
       },
       {
         path: "/admin/customers",
+        element: <h1>Customers</h1>,
       },
       {
         path: "/admin/orders",
+        element: <h1>Orders</h1>,
       },
     ],
   },
