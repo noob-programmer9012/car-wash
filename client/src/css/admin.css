@@ -1,0 +1,67 @@
+.admin-wrapper {
+  min-height: 100% !important;
+  width: 100%;
+  display: flex;
+}
+
+.sidebar {
+  overflow-y: auto;
+  background-color: #212529;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 5em 0;
+}
+
+.navlinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  padding: 0 2em;
+}
+
+.sub-link {
+  cursor: pointer;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.sub-link > span {
+  color: #fff;
+  font-size: 30px;
+}
+
+.material-symbols-outlined {
+  transition: all ease-in-out 0.2s;
+}
+
+.sub-link:hover > .material-symbols-outlined {
+  font-size: 48px;
+  color: #f5a905;
+}
+
+.sub-link:hover > .material-symbols-outlined ~ a {
+  font-size: 32px;
+  color: #f5a905;
+}
+
+.sub-link > a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 24px;
+  transition: all ease-in-out 0.2s;
+}
+
+.link.active,
+.material-symbols-outlined.active {
+  font-size: 32px;
+  color: #f5a905;
+}
+
+.admin-main {
+  overflow-y: auto;
+  background-color: #181c1f;
+  flex: 4;
+}

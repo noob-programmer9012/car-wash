@@ -57,6 +57,7 @@
   top: 17px;
   left: 20px;
   transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
+  cursor: text;
 }
 
 .input:focus + .label {
@@ -80,10 +81,25 @@
   background-color: #160b0b;
   width: 100%;
   transition: all ease-in 0.4s;
-  margin-top: -1rem;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
+  transition: all ease-out 0.2;
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.error-block.show {
+  opacity: 1;
+  visibility: visible;
+  width: 100%;
+  padding: 2em 0;
+}
+.error.show {
+  visibility: visible;
+  opacity: 1;
 }
 
 .material-symbols-outlined {
@@ -112,6 +128,21 @@
   color: #db773a;
   letter-spacing: 1px;
   flex: auto;
+  transition: all ease 1s;
+  opacity: 0;
+  visibility: hidden;
+  /* animation: 10s ease-in-out 1 alternate fadeIn; */
+}
+
+@keyframes fadeIn {
+  40% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 @media only screen and (max-width: 600px) {

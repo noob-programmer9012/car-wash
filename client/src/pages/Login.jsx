@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Login() {
@@ -7,16 +7,24 @@ export default function Login() {
   const [password, setPassword] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const errorBlock = document.querySelector(".error-block");
+    const error = document.querySelector(".error");
+    if (show) {
+      errorBlock.classList.add("show");
+      error.classList.add("show");
+    } else {
+      errorBlock.classList.remove("show");
+      error.classList.remove("show");
+    }
+
     const labels = document.getElementById("label");
     labels.addEventListener("click", () => {
-      labels.style.top = "-20px";
-      labels.style.left = "10px";
-      labels.style.fontSize = "0.8rem";
-      labels.style.color = "#ffffffde";
+      labels.parentNode.childNodes[0].focus();
     });
-  }, []);
+  }, [show]);
 
   function handleClose() {
     setShow((prev) => !prev);
@@ -37,8 +45,13 @@ export default function Login() {
         localStorage.removeItem("isAdmin");
         localStorage.removeItem("isUser");
         localStorage.setItem("token", data.data.token);
-        data.data.isAdmin && localStorage.setItem("isAdmin", true);
-        data.data.isUser && localStorage.setItem("isUser", true);
+        if (data.data.isAdmin) {
+          localStorage.setItem("isAdmin", true);
+          return navigate("/admin");
+        } else if (data.data.isUser) {
+          localStorage.setItem("isUser", true);
+          return navigate("/");
+        }
       } catch (error) {
         setError(error.response.data.message);
         setShow(true);
@@ -96,7 +109,7 @@ export default function Login() {
         <div className="card">
           <Form noValidate className="loginform" onSubmit={handleSubmit}>
             <h1>LOGIN</h1>
-            {show && (
+            {
               <div className="error-block">
                 <span className="material-symbols-outlined error-icon">
                   error
@@ -109,7 +122,7 @@ export default function Login() {
                   close
                 </span>
               </div>
-            )}
+            }
             <div className="field">
               <input
                 type="text"

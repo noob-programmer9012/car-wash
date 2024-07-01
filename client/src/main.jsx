@@ -6,8 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
-import "./index.css";
-import "./login.css";
+import "./css/index.css";
+import "./css/login.css";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +25,18 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+      },
+      {
+        path: "/admin/categories",
+      },
+      {
+        path: "/admin/services",
+      },
+      {
+        path: "/admin/customers",
+      },
+      {
+        path: "/admin/orders",
       },
     ],
   },
