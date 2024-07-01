@@ -4,7 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import Services, { serviceLoader } from "./pages/Services";
+import Services from "./pages/Services";
+import { serviceLoader } from "./loaders/service";
 import Login from "./pages/Login";
 import "./css/index.css";
 import "./css/login.css";
@@ -54,7 +55,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* <App /> */}
     <RouterProvider router={router} />
   </React.StrictMode>
 );
