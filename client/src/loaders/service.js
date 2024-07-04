@@ -1,8 +1,14 @@
 import axios from "axios";
 
+import { store } from "../store/auth";
+
 export async function serviceLoader() {
   const url = "http://localhost:5000/admin/getServices";
-  const token = "Bearer " + localStorage.getItem("token");
+
+  const data = store.getState();
+  const token = "Bearer " + data.token;
+  console.log("token: " + token);
+
   const services = await axios.get(url, {
     headers: {
       Authorization: token,
@@ -10,6 +16,7 @@ export async function serviceLoader() {
   });
 
   if (!services.data.success) {
+    console.log(services);
     return;
   }
 
@@ -17,4 +24,8 @@ export async function serviceLoader() {
     totalServices: services.data.totalServices,
     data: services.data.data,
   };
+  // if (data._persist.rehydrated) {
+
+  // }
+  // return store.getState();
 }

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { authActions } from "../store/auth";
 
 export default function Login() {
   const [email, setEmail] = useState(undefined);
@@ -8,10 +11,12 @@ export default function Login() {
   const [error, setError] = useState(undefined);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const errorBlock = document.querySelector(".error-block");
     const error = document.querySelector(".error");
+
     if (show) {
       errorBlock.classList.add("show");
       error.classList.add("show");
@@ -41,15 +46,21 @@ export default function Login() {
           email: email,
           password: password,
         });
-        localStorage.removeItem("token");
-        localStorage.removeItem("isAdmin");
-        localStorage.removeItem("isUser");
-        localStorage.setItem("token", data.data.token);
+
+        console.log(data.data);
+
+        const token = data.data.token;
+        const user = data.data.isAdmin ? "admin" : "user";
+        dispatch(
+          authActions.setUser({
+            token,
+            user,
+          })
+        );
+
         if (data.data.isAdmin) {
-          localStorage.setItem("isAdmin", true);
           return navigate("/admin");
         } else if (data.data.isUser) {
-          localStorage.setItem("isUser", true);
           return navigate("/");
         }
       } catch (error) {

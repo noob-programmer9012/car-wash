@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Services from "./pages/Services";
-import { serviceLoader } from "./loaders/service";
+// import { serviceLoader } from "./loaders/service";
 import Login from "./pages/Login";
+import { store, persistor } from "./store/auth";
 import "./css/index.css";
 import "./css/login.css";
 
@@ -35,7 +38,7 @@ const router = createBrowserRouter([
       {
         path: "/admin/services",
         element: <Services />,
-        loader: serviceLoader,
+        // loader: serviceLoader,
       },
       {
         path: "/admin/customers",
@@ -55,6 +58,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <PersistGate loading={<></>} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );

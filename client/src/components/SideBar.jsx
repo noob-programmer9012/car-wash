@@ -28,7 +28,6 @@ export default function SideBar() {
         <div className="navlinks">
           <div className="sub-link">
             <GridViewIcon className="material-symbols-outlined" />
-            {/* <span className="material-symbols-outlined">category</span> */}
             <NavLink
               to="."
               className={({ isActive, isPending }) =>
@@ -40,7 +39,6 @@ export default function SideBar() {
             </NavLink>
           </div>
           <div className="sub-link">
-            {/* <span className="material-symbols-outlined">linked_services</span> */}
             <CategoryIcon className="material-symbols-outlined" />
             <NavLink
               to="/admin/categories"
@@ -52,7 +50,6 @@ export default function SideBar() {
             </NavLink>
           </div>
           <div className="sub-link">
-            {/* <span className="material-symbols-outlined">car_crash</span> */}
             <WebhookIcon className="material-symbols-outlined" />
             <NavLink
               to="/admin/services"
@@ -64,7 +61,6 @@ export default function SideBar() {
             </NavLink>
           </div>
           <div className="sub-link">
-            {/* <span className="material-symbols-outlined">contact_phone</span> */}
             <ManageAccountsIcon className="material-symbols-outlined" />
             <NavLink
               to="/admin/customers"
@@ -76,7 +72,6 @@ export default function SideBar() {
             </NavLink>
           </div>
           <div className="sub-link">
-            {/* <span className="material-symbols-outlined">receipt_long</span> */}
             <ReceiptLongIcon className="material-symbols-outlined" />
             <NavLink
               to="/admin/orders"
