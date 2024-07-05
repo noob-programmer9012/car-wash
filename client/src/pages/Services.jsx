@@ -9,6 +9,7 @@ export default function Services() {
 
   // const services = useLoaderData();
   const [services, setServices] = useState(undefined);
+
   useEffect(() => {
     const data = store.getState();
     const token = "Bearer " + data.token;
@@ -39,13 +40,27 @@ export default function Services() {
   return (
     <>
       <h1>Services</h1>
-      {/* {services ? (
+      {services ? (
         JSON.parse(services).map((service) => {
-          return <p key={service._id}>{service.serviceName}</p>;
+          return <p key={service._id}>{service.videoUrl}</p>;
         })
       ) : (
         <h1>loading...</h1>
-      )} */}
+      )}
+      <img
+        src={"http://localhost:5000/assets/svg/car.svg"}
+        width={150}
+        height={150}
+      ></img>
+      <video
+        src={
+          "http://localhost:5000/assets/videos/Screencast from 2024-05-24 13-58-48.webm"
+        }
+        width={1500}
+        height={1500}
+        autoPlay
+        muted
+      ></video>
     </>
   );
 }
