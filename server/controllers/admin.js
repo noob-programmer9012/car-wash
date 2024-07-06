@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import Category from "../models/category.js";
 import Service from "../models/service.js";
 import titleCase from "../util/titleCase.js";
@@ -39,12 +41,38 @@ export const postService = async (req, res, next) => {
   }
 
   try {
+    console.log(req.files);
     const service = new Service({ ...req.body });
     for (let i = 0; i < req.files.length; i++) {
       if (req.files[i].mimetype.split("/")[0] === "video") {
-        service.videoUrl = req.files[i].path;
+        // service.videoUrl = req.files[i].path;
+        service.videoUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "videos",
+          req.files[i].originalname
+        );
       } else if (req.files[i].mimetype.split("/")[0] === "image") {
-        service.imageUrl = req.files[i].path;
+        // service.imageUrl = req.files[i].path;
+        service.imageUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "images",
+          req.files[i].originalname
+        );
+      } else if (
+        req.files[i].mimetype.split("/")[0] === "image" &&
+        req.files[i].mimetype.split("/")[1] === "svg+xml"
+      ) {
+        service.imageUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "svg",
+          req.files[i].originalname
+        );
       }
     }
     service.serviceName = titleCase(service.serviceName);

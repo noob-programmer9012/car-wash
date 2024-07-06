@@ -7,11 +7,12 @@ import { PersistGate } from "redux-persist/integration/react";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Services from "./pages/Services";
-// import { serviceLoader } from "./loaders/service";
+import { serviceLoader } from "./loaders/service";
 import Login from "./pages/Login";
 import { store, persistor } from "./store/auth";
 import "./css/index.css";
 import "./css/login.css";
+import AppLandingPage from "./pages/AppLandingPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <AppLandingPage />,
+      },
+      {
+        path: "/services/:id",
+        element: <h1>detail page</h1>,
       },
     ],
   },
@@ -38,7 +44,7 @@ const router = createBrowserRouter([
       {
         path: "/admin/services",
         element: <Services />,
-        // loader: serviceLoader,
+        loader: serviceLoader,
       },
       {
         path: "/admin/customers",

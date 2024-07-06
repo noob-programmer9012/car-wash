@@ -22,7 +22,7 @@ export default function Services() {
       });
 
       if (!data.data.success) {
-        console.log(data);
+        console.log("Error fetching data.");
         return;
       }
       setServices(JSON.stringify(data.data.data));
@@ -32,7 +32,6 @@ export default function Services() {
       };
     }
     fetchData();
-    console.log(services);
   }, [services]);
 
   //   const videoUrl = services.data[0].imageUrl;
@@ -56,8 +55,8 @@ export default function Services() {
         src={
           "http://localhost:5000/assets/videos/Screencast from 2024-05-24 13-58-48.webm"
         }
-        width={1500}
-        height={1500}
+        width={100}
+        height={100}
         autoPlay
         muted
       ></video>
