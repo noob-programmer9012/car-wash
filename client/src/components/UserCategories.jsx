@@ -19,17 +19,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function UserCategories({ token }) {
-  const [services, setServices] = useState();
+  const [categories, setcategories] = useState();
   const navigate = useNavigate();
 
-  function loadService(e) {
+  function loadcategories(e) {
     const id = e.target.getAttribute("kkey");
-    navigate(`/services/${id}`);
+    navigate(`/categories/${id}`);
   }
 
   useEffect(() => {
-    async function fetchServies() {
-      const url = "http://localhost:5000/getServices";
+    async function fetchCategories() {
+      const url = "http://localhost:5000/getCategories";
 
       try {
         const data = await axios.get(url, {
@@ -37,25 +37,25 @@ function UserCategories({ token }) {
             Authorization: "Bearer: " + token,
           },
         });
-        setServices(JSON.stringify(data.data.data));
+        setcategories(JSON.stringify(data.data.data));
       } catch (error) {
         console.log(error);
       }
     }
 
-    fetchServies();
+    fetchCategories();
   }, [token]);
 
   return (
     <>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {services &&
-          JSON.parse(services).map((service) => {
+        {categories &&
+          JSON.parse(categories).map((categories) => {
             return (
-              <Fragment key={service._id}>
+              <Fragment key={categories._id}>
                 <Grid item xs={6}>
-                  <Item kkey={service._id} onClick={loadService}>
-                    <Typography>{service.serviceName}</Typography>
+                  <Item kkey={categories._id} onClick={loadcategories}>
+                    <Typography>{categories.title}</Typography>
                     <img
                       src={"http://localhost:5000/assets/svg/car.svg"}
                       width={"50px"}

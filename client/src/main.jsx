@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         element: <AppLandingPage />,
       },
       {
-        path: "/services/:id",
+        path: "/categories/:id",
         element: <h1>detail page</h1>,
       },
     ],
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <h1>Dashboard</h1>,
       },
       {
-        path: "/admin/categories",
+        path: "/admin/categories/:id",
         element: <h1>Categories</h1>,
       },
       {
