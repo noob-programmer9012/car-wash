@@ -15,6 +15,7 @@ const serviceSchema = new mongoose.Schema({
     price: {
       type: Number,
       match: ["^[0-9]d*(.d+)?$", "Please enter valid price."],
+      required: [true, "Please enter price"],
     },
     facilities: [String],
     discount: {
@@ -31,7 +32,6 @@ const serviceSchema = new mongoose.Schema({
     },
   },
   imageUrl: String,
-  videoUrl: String,
 });
 
 export default mongoose.model("Service", serviceSchema);

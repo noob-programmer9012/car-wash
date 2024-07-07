@@ -6,7 +6,7 @@ import titleCase from "../util/titleCase.js";
 import { ErrorResponse } from "../util/errorRespone.js";
 
 export const postCategory = async (req, res, next) => {
-  const { title, imageUrl } = req.body;
+  const { title } = req.body;
 
   const exists = await Category.findOne({ title: titleCase(title) });
   if (exists) {
@@ -14,11 +14,40 @@ export const postCategory = async (req, res, next) => {
   }
 
   try {
-    const category = new Category({
-      title: titleCase(title),
-      imageUrl,
-    });
-
+    const category = new Category({ ...req.body });
+    for (let i = 0; i < req.files.length; i++) {
+      if (req.files[i].mimetype.split("/")[0] === "video") {
+        // service.videoUrl = req.files[i].path;
+        category.videoUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "videos",
+          req.files[i].originalname
+        );
+      } else if (req.files[i].mimetype.split("/")[0] === "image") {
+        // service.imageUrl = req.files[i].path;
+        category.imageUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "images",
+          req.files[i].originalname
+        );
+      } else if (
+        req.files[i].mimetype.split("/")[0] === "image" &&
+        req.files[i].mimetype.split("/")[1] === "svg+xml"
+      ) {
+        category.imageUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "svg",
+          req.files[i].originalname
+        );
+      }
+    }
+    category.title = titleCase(category.title);
     await category.save();
     return res.status(200).json({
       success: true,
@@ -32,6 +61,7 @@ export const postCategory = async (req, res, next) => {
 
 export const postService = async (req, res, next) => {
   const { serviceName } = req.body;
+  console.log(req.body);
 
   const exists = await Service.findOne({
     serviceName: titleCase(serviceName),
@@ -41,40 +71,23 @@ export const postService = async (req, res, next) => {
   }
 
   try {
-    console.log(req.files);
     const service = new Service({ ...req.body });
-    for (let i = 0; i < req.files.length; i++) {
-      if (req.files[i].mimetype.split("/")[0] === "video") {
-        // service.videoUrl = req.files[i].path;
-        service.videoUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "videos",
-          req.files[i].originalname
-        );
-      } else if (req.files[i].mimetype.split("/")[0] === "image") {
-        // service.imageUrl = req.files[i].path;
-        service.imageUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "images",
-          req.files[i].originalname
-        );
-      } else if (
-        req.files[i].mimetype.split("/")[0] === "image" &&
-        req.files[i].mimetype.split("/")[1] === "svg+xml"
+    if (req.file) {
+      if (
+        req.file.mimetype === "image/jpeg" ||
+        req.file.mimetype === "image/jpg" ||
+        req.file.mimetype === "image/png"
       ) {
         service.imageUrl = path.join(
           "/",
           ".",
           "assets",
-          "svg",
-          req.files[i].originalname
+          "images",
+          req.file.originalname
         );
       }
     }
+
     service.serviceName = titleCase(service.serviceName);
     // const newFacilities = [];
     // service.plan.facilities.forEach((facility) => {

@@ -39,8 +39,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/category", upload.single("file"), adminController.postCategory);
-router.post("/service", upload.array("file", 2), adminController.postService);
+router.post("/category", upload.array("file", 2), adminController.postCategory);
+router.post("/service", upload.single("file"), adminController.postService);
 router.get("/getCategories", userController.getCategories);
 router.get("/getServices", userController.getServices);
 
