@@ -1,20 +1,28 @@
 import { useLoaderData } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 
 export default function Services() {
+  const [services, setServices] = useState();
   const data = useLoaderData();
-  const services = JSON.parse(data.data);
+
+  useEffect(() => {
+    if (data.data !== '"No services added yet."') setServices(data.data);
+  }, [data]);
 
   return (
     <>
       <h1>Services</h1>
-      {services.map((service) => {
-        return (
-          <Fragment key={service._id}>
-            <h1>{service.serviceName}</h1>
-          </Fragment>
-        );
-      })}
+      {services ? (
+        JSON.parse(services).map((service) => {
+          return (
+            <Fragment key={service._id}>
+              <h1>{service.serviceName}</h1>
+            </Fragment>
+          );
+        })
+      ) : (
+        <h1>No services added yet...!</h1>
+      )}
       <img
         src={"http://localhost:5000/assets/svg/car.svg"}
         width={150}

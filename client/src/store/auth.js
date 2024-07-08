@@ -11,7 +11,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const persistConf = {
+export const persistConf = {
   key: "root",
   version: 1,
   storage,
@@ -40,5 +40,4 @@ export const store = configureStore({
     }),
 }); // you can also use { auth: { reducer: authSlice.reducer }, other: { reducer: otherSlice.reducer } } for multiple slices
 export const persistor = persistStore(store);
-
 export const authActions = authSlice.actions;

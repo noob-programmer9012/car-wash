@@ -8,11 +8,14 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Services from "./pages/Services";
 import { serviceLoader } from "./loaders/service";
+import { categoryLoader } from "./loaders/category";
+import { categoryAction } from "./action/categoryAction.";
 import Login from "./pages/Login";
 import { store, persistor } from "./store/auth";
+import AppLandingPage from "./pages/AppLandingPage";
+import AdminCategories from "./pages/AdminCategories";
 import "./css/index.css";
 import "./css/login.css";
-import AppLandingPage from "./pages/AppLandingPage";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +41,10 @@ const router = createBrowserRouter([
         element: <h1>Dashboard</h1>,
       },
       {
-        path: "/admin/categories/:id",
-        element: <h1>Categories</h1>,
+        path: "/admin/categories",
+        element: <AdminCategories />,
+        loader: categoryLoader,
+        action: categoryAction,
       },
       {
         path: "/admin/services",

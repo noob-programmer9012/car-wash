@@ -118,7 +118,7 @@ export default function Login() {
     <>
       <div className="login-wrapper">
         <div className="card">
-          <Form noValidate className="loginform" onSubmit={handleSubmit}>
+          <Form noValidate className="form login" onSubmit={handleSubmit}>
             <h1>LOGIN</h1>
             {
               <div className="error-block">
