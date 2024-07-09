@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { authActions } from "../store/auth";
+// import InputField from "../components/InputField";
 
 export default function Login() {
   const [email, setEmail] = useState(undefined);
@@ -134,6 +135,9 @@ export default function Login() {
                 </span>
               </div>
             }
+            {/* <InputField type="text" required inputName="Email" />
+            <InputField type="password" required inputName="Password" /> */}
+
             <div className="field">
               <input
                 type="text"

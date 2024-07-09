@@ -67,6 +67,12 @@
   font-size: 0.8rem;
 }
 
+.label.nontext {
+  top: -20px;
+  left: 10px;
+  font-size: 0.8rem;
+}
+
 .btn {
   padding: 1rem;
   border: none;

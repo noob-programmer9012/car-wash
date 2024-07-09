@@ -20,7 +20,5 @@ export async function categoryAction({ request }) {
     console.log(error);
   }
 
-  console.log(formData);
-
   return null;
 }

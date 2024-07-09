@@ -18,7 +18,7 @@ function CategoryForm() {
         replace
       >
         <h1>Add Category</h1>
-        <InputField inputName="title" />
+        <InputField inputName="title" type="text" required />
         <div className="field">
           <input type="file" className="input svg" id="svg" name="file" />
         </div>
