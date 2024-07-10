@@ -61,17 +61,6 @@ export default function SideBar() {
             </NavLink>
           </div>
           <div className="sub-link">
-            <WebhookIcon className="material-symbols-outlined" />
-            <NavLink
-              to="/admin/add-service"
-              className={({ isActive, isPending }) =>
-                isPending ? "link pending" : isActive ? "link active" : ""
-              }
-            >
-              Add Service
-            </NavLink>
-          </div>
-          <div className="sub-link">
             <ManageAccountsIcon className="material-symbols-outlined" />
             <NavLink
               to="/admin/customers"

@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Services from "./pages/Services";
+import ServicesComponent from "./components/Services";
 import AddService from "./pages/AddService";
 import { serviceLoader } from "./loaders/service";
 import { categoryLoader } from "./loaders/category";
@@ -18,11 +19,13 @@ import AppLandingPage from "./pages/AppLandingPage";
 import AdminCategories from "./pages/AdminCategories";
 import "./css/index.css";
 import "./css/login.css";
+import { dashboard } from "./loaders/dashbord";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Dashboard />,
+    loader: dashboard,
     children: [
       {
         index: true,
@@ -40,7 +43,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>Dashboard</h1>,
+        element: <Services />,
+        loader: serviceLoader,
       },
       {
         path: "/admin/categories",
@@ -51,14 +55,21 @@ const router = createBrowserRouter([
       {
         path: "/admin/services",
         element: <Services />,
-        loader: serviceLoader,
+        children: [
+          {
+            index: true,
+            element: <ServicesComponent />,
+            loader: serviceLoader,
+          },
+          {
+            path: "/admin/services/add-service",
+            element: <AddService />,
+            loader: categoryLoader,
+            action: serviceAction,
+          },
+        ],
       },
-      {
-        path: "/admin/add-service",
-        element: <AddService />,
-        loader: categoryLoader,
-        action: serviceAction,
-      },
+
       {
         path: "/admin/customers",
         element: <h1>Customers</h1>,
