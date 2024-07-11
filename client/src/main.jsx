@@ -20,6 +20,7 @@ import AdminCategories from "./pages/AdminCategories";
 import "./css/index.css";
 import "./css/login.css";
 import { dashboard } from "./loaders/dashbord";
+import UserServices from "./pages/UserServices";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/categories/:id",
-        element: <h1>detail page</h1>,
+        element: <UserServices />,
+        loader: serviceLoader,
       },
     ],
   },
