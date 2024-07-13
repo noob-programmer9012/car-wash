@@ -4,6 +4,7 @@
   display: grid;
   grid-template-rows: repeat(auto-fill);
   row-gap: 1rem;
+  margin-top: 1rem;
 }
 
 .service > .service-data {
@@ -12,12 +13,32 @@
   justify-content: center;
   align-items: center;
   gap: 4rem;
+  border: none;
+  /* background: conic-gradient(
+      from -45deg at bottom,
+      #78787a 90deg,
+      transparent 0
+    )
+    50%/15px 100%; */
+  background: conic-gradient(
+        from 135deg at top,
+        #0000,
+        #78787a 1deg 89deg,
+        #0000 90deg
+      )
+      top/10px 51% repeat-x,
+    conic-gradient(
+        from -45deg at bottom,
+        #0000,
+        #78787a 1deg 89deg,
+        #0000 90deg /* you can set use transparent instead of #0000 */
+      )
+      bottom/10px 51% repeat-x;
 }
 
 .service-data > .left-data {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -61,7 +82,7 @@
   width: 100%;
   border-radius: 30px;
   background-color: #f09c00;
-  z-index: 999;
+  z-index: 2;
 }
 
 @media only screen and (max-width: 600px) {

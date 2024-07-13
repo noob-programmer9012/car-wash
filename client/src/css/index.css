@@ -28,28 +28,17 @@ body,
   width: 100%;
   min-height: 100% !important;
   height: 100%;
-  overflow: hidden;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.main {
-  padding: 1em;
-  height: 82%;
-  overflow: auto;
 }
 
 .top-nav {
   background-color: #ffbb00;
-  min-height: 5%;
+  height: 50px;
   display: flex;
   align-items: center;
   padding: 0 3em;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .top-nav > ul {
@@ -60,11 +49,15 @@ body,
 }
 
 .bottom-nav {
-  min-height: 10%;
+  min-height: 50px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background-color: #ffbb00;
   display: flex;
   align-items: center;
   padding: 0 3em;
+  z-index: 10;
 }
 
 .bottom-nav > ul {
@@ -72,6 +65,10 @@ body,
   color: black;
   gap: 2em;
   padding: 0;
+}
+
+.main {
+  margin-bottom: 80px;
 }
 
 @media (prefers-color-scheme: light) {

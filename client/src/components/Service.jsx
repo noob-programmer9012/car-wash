@@ -50,7 +50,6 @@ const Service = () => {
                   <p className="title">With Underbody</p>
                 </div>
               </div>
-              <hr></hr>
             </React.Fragment>
           );
         })}
