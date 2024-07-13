@@ -96,12 +96,12 @@
   }
 
   .service > .service-data {
-    padding: 1em 2.5em;
+    padding: 1em 2em;
     gap: 2rem;
   }
 
   .left-data {
-    flex-grow: 2;
+    flex-grow: 3;
   }
 
   .right-data {

@@ -44,7 +44,7 @@ function UserCategories({ token }) {
     }
 
     fetchCategories();
-  }, [token]);
+  }, [token, categories]);
 
   return (
     <>
@@ -57,8 +57,8 @@ function UserCategories({ token }) {
                   <Item kkey={categories._id} onClick={loadcategories}>
                     <Typography>{categories.title}</Typography>
                     <img
-                      src={"http://localhost:5000/assets/svg/car.svg"}
-                      width={"50px"}
+                      src={"http://localhost:5000" + categories.imageUrl}
+                      width={"100px"}
                     ></img>
                   </Item>
                 </Grid>

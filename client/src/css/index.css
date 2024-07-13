@@ -35,7 +35,7 @@ body,
   height: 50px;
   display: flex;
   align-items: center;
-  padding: 0 3em;
+  padding: 0 3rem;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -69,6 +69,11 @@ body,
 
 .main {
   margin-bottom: 80px;
+  max-width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 @media (prefers-color-scheme: light) {
@@ -79,7 +84,7 @@ body,
 
   .top-nav,
   .bottom-nav {
-    background-color: #213547;
+    background-color: #6a6c6d;
   }
 
   button {

@@ -17,8 +17,9 @@ export const getCategories = async (req, res, next) => {
 };
 
 export const getServices = async (req, res, next) => {
+  const categoryId = req.params.id;
   try {
-    const services = await Service.find();
+    const services = await Service.find({ category: categoryId });
     const totalServices = await Service.countDocuments();
     return res.status(200).json({
       success: true,

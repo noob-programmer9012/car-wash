@@ -25,15 +25,6 @@ export const postCategory = async (req, res, next) => {
           "videos",
           req.files[i].originalname
         );
-      } else if (req.files[i].mimetype.split("/")[0] === "image") {
-        // service.imageUrl = req.files[i].path;
-        category.imageUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "images",
-          req.files[i].originalname
-        );
       } else if (
         req.files[i].mimetype.split("/")[0] === "image" &&
         req.files[i].mimetype.split("/")[1] === "svg+xml"
@@ -43,6 +34,15 @@ export const postCategory = async (req, res, next) => {
           ".",
           "assets",
           "svg",
+          req.files[i].originalname
+        );
+      } else if (req.files[i].mimetype.split("/")[0] === "image") {
+        // service.imageUrl = req.files[i].path;
+        category.imageUrl = path.join(
+          "/",
+          ".",
+          "assets",
+          "images",
           req.files[i].originalname
         );
       }

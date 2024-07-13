@@ -42,6 +42,6 @@ const upload = multer({ storage });
 router.post("/category", upload.array("file", 2), adminController.postCategory);
 router.post("/service", upload.single("file"), adminController.postService);
 router.get("/getCategories", userController.getCategories);
-router.get("/getServices", userController.getServices);
+router.get("/getServices/:id", userController.getServices);
 
 export default router;

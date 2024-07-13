@@ -2,8 +2,9 @@ import axios from "axios";
 
 import getToken from "../utils/getToken";
 
-export async function serviceLoader() {
-  const url = "http://localhost:5000/admin/getServices";
+export async function serviceLoader({ params }) {
+  const id = params.id;
+  const url = `http://localhost:5000/admin/getServices/${id}`;
 
   const token = await getToken();
 
