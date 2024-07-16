@@ -23,7 +23,7 @@ function UserCategories({ token }) {
   const navigate = useNavigate();
 
   function loadcategories(e) {
-    const id = e.target.getAttribute("kkey");
+    const id = e.target.getAttribute("kkey") || e.target.id;
     navigate(`/categories/${id}`);
   }
 
@@ -55,10 +55,14 @@ function UserCategories({ token }) {
               <Fragment key={categories._id}>
                 <Grid item xs={6}>
                   <Item kkey={categories._id} onClick={loadcategories}>
-                    <Typography>{categories.title}</Typography>
+                    <Typography kkey={categories._id} onClick={loadcategories}>
+                      {categories.title}
+                    </Typography>
                     <img
                       src={"http://localhost:5000" + categories.imageUrl}
                       width={"100px"}
+                      id={categories._id}
+                      onClick={loadcategories}
                     ></img>
                   </Item>
                 </Grid>

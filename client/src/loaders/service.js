@@ -4,7 +4,7 @@ import getToken from "../utils/getToken";
 
 export async function serviceLoader({ params }) {
   const id = params.id;
-  const url = `http://localhost:5000/admin/getServices/${id}`;
+  const url = `http://localhost:5000/getServices/${id}`;
 
   const token = await getToken();
 
