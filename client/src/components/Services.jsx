@@ -1,117 +1,79 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { styled } from "@mui/system";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const ServicesComponent = () => {
-  const [services, setServices] = useState();
   const data = useLoaderData();
+  // console.log(JSON.parse(data));
 
-  useEffect(() => {
-    if (data.data !== '"No services added yet."') setServices(data.data);
-  }, [data]);
-
-  const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    {
-      field: "serviceName",
-      headerName: "Service name",
-      width: 150,
-      editable: false,
+  const StyledTableCell = styled(TableCell)(() => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: "#212529",
+      color: "#fff",
     },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 150,
-      editable: false,
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
     },
-    {
-      field: "facilities",
-      headerName: "Facilities",
-      width: 150,
-      editable: false,
+  }));
+
+  const StyledTableRow = styled(TableRow)(() => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: "#fff",
     },
-  ];
+    "&:nth-of-type(even)": {
+      backgroundColor: "#fff",
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
 
-  let rows = [];
+  const rows = [];
 
-  {
-    services ? (
-      JSON.parse(services).map((service) => {
-        rows.push({
-          id: service._id,
-          serviceName: service.serviceName,
-          price: service.plan.price,
-          facilities: service.plan.facilities,
-        });
-      })
-    ) : (
-      <h1>No services added yet...!</h1>
-    );
-  }
-
-  // const rows = [
-  //   { id: 1, serviceName: "Hybrid", price: 499, facilities: ["wax", "polish"] },
-  // ];
+  JSON.parse(data).map((service) => {
+    rows.push({
+      id: service._id,
+      serviceName: service.serviceName,
+      price: service.plan.price,
+      facilities: service.plan.facilities,
+    });
+  });
 
   return (
     <>
       <Link to="/admin/services/add-service">Add</Link>
 
-      <DataGrid
-        sx={{
-          "& .MuiDataGrid-columnHeaders": {
-            fontWeight: 400,
-            fontSize: "18px",
-            color: "#000",
-            backgroundColor: "rgba(5, 2, 66, 0.08)) !important",
-            alignItems: "space-between !important",
-          },
-          "&.MuiDataGrid-root": {
-            border: "none",
-            borderRadius: "20px",
-            background: "transparent",
-            color: "#fff",
-            fontSize: "16px",
-          },
-        }}
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-      />
-
-      {/* {services ? (
-        JSON.parse(services).map((service) => {
-          return (
-            <Fragment key={service._id}>
-              <h1>{service.serviceName}</h1>
-            </Fragment>
-          );
-        })
-      ) : (
-        <h1>No services added yet...!</h1>
-      )}
-      <img
-        src={"http://localhost:5000/assets/svg/car.svg"}
-        width={150}
-        height={150}
-      ></img>
-      <video
-        src={
-          "http://localhost:5000/assets/videos/Screencast from 2024-05-24 13-58-48.webm"
-        }
-        width={100}
-        height={100}
-        autoPlay
-        muted
-      ></video> */}
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell align="right">Service Name</StyledTableCell>
+            <StyledTableCell align="right">Price</StyledTableCell>
+            <StyledTableCell align="right">Facilities</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row, index) => (
+            <StyledTableRow key={row.id}>
+              <StyledTableCell component="th" scope="row">
+                {index + 1}
+              </StyledTableCell>
+              <StyledTableCell align="right">{row.serviceName}</StyledTableCell>
+              <StyledTableCell align="right">{row.price}</StyledTableCell>
+              <StyledTableCell align="right">{row.facilities}</StyledTableCell>
+              {/* <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
     </>
   );
 };

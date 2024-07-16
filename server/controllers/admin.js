@@ -1,9 +1,11 @@
-import path from "node:path";
+// import path from "node:path";
+import mongoose from "mongoose";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
 import titleCase from "../util/titleCase.js";
 import { ErrorResponse } from "../util/errorRespone.js";
+import addFiles from "../util/addFiles.js";
 
 export const postCategory = async (req, res, next) => {
   const { title } = req.body;
@@ -15,38 +17,7 @@ export const postCategory = async (req, res, next) => {
 
   try {
     const category = new Category({ ...req.body });
-    for (let i = 0; i < req.files.length; i++) {
-      if (req.files[i].mimetype.split("/")[0] === "video") {
-        // service.videoUrl = req.files[i].path;
-        category.videoUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "videos",
-          req.files[i].originalname
-        );
-      } else if (
-        req.files[i].mimetype.split("/")[0] === "image" &&
-        req.files[i].mimetype.split("/")[1] === "svg+xml"
-      ) {
-        category.imageUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "svg",
-          req.files[i].originalname
-        );
-      } else if (req.files[i].mimetype.split("/")[0] === "image") {
-        // service.imageUrl = req.files[i].path;
-        category.imageUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "images",
-          req.files[i].originalname
-        );
-      }
-    }
+    addFiles(req, res, next, category);
     category.title = titleCase(category.title);
     await category.save();
     return res.status(200).json({
@@ -57,6 +28,24 @@ export const postCategory = async (req, res, next) => {
   } catch (error) {
     return next(new ErrorResponse(error, 400));
   }
+};
+
+export const putCategory = async (req, res, next) => {
+  const category_id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(category_id))
+    return next(new ErrorResponse("Not a valid path", 404));
+
+  const category = await Category.findById(category_id);
+  if (!category) return next(new ErrorResponse("Not a valid path", 404));
+
+  const imageUrl = category.imageUrl;
+  const videoUrl = category.videoUrl;
+  console.log(imageUrl, videoUrl);
+
+  return res.status(200).json({
+    success: true,
+    message: "Put Category Route",
+  });
 };
 
 export const postService = async (req, res, next) => {
@@ -72,21 +61,7 @@ export const postService = async (req, res, next) => {
 
   try {
     const service = new Service({ ...req.body });
-    if (req.file) {
-      if (
-        req.file.mimetype === "image/jpeg" ||
-        req.file.mimetype === "image/jpg" ||
-        req.file.mimetype === "image/png"
-      ) {
-        service.imageUrl = path.join(
-          "/",
-          ".",
-          "assets",
-          "images",
-          req.file.originalname
-        );
-      }
-    }
+    addFiles(req, res, next, service);
 
     service.serviceName = titleCase(service.serviceName);
     // const newFacilities = [];
@@ -105,5 +80,19 @@ export const postService = async (req, res, next) => {
     });
   } catch (error) {
     return next(new ErrorResponse(error, 400));
+  }
+};
+
+export const adminGetServices = async (req, res, next) => {
+  try {
+    const services = await Service.find();
+    const totalServices = await Service.countDocuments();
+    return res.status(200).json({
+      success: true,
+      totalServices,
+      data: totalServices > 0 ? services : "No services added yet.",
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
   }
 };

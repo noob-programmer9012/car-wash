@@ -10,6 +10,7 @@ import Services from "./pages/Services";
 import ServicesComponent from "./components/Services";
 import AddService from "./pages/AddService";
 import { serviceLoader } from "./loaders/service";
+import { adminServices } from "./loaders/adminServices";
 import { categoryLoader } from "./loaders/category";
 import { categoryAction } from "./action/categoryAction.";
 import { serviceAction } from "./action/serviceAction";
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <ServicesComponent />,
-            loader: serviceLoader,
+            loader: adminServices,
           },
           {
             path: "/admin/services/add-service",
