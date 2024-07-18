@@ -10,6 +10,7 @@ import Services from "./pages/Services";
 import ServicesComponent from "./components/Services";
 import AddService from "./pages/AddService";
 import { serviceLoader } from "./loaders/service";
+
 import { adminServices } from "./loaders/adminServices";
 import { categoryLoader } from "./loaders/category";
 import { categoryAction } from "./action/categoryAction.";
@@ -22,6 +23,7 @@ import "./css/index.css";
 import "./css/login.css";
 import { dashboard } from "./loaders/dashbord";
 import UserServices from "./pages/UserServices";
+import { userCategory } from "./loaders/userCategory";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <AppLandingPage />,
+        loader: userCategory,
       },
       {
         path: "/categories/:id",
