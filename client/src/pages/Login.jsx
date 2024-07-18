@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
@@ -13,6 +13,7 @@ export default function Login() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const data = useLoaderData();
 
   useEffect(() => {
     const errorBlock = document.querySelector(".error-block");
@@ -135,6 +136,7 @@ export default function Login() {
                 </span>
               </div>
             }
+            {data && <h1>Successfully Logged Out!</h1>}
             {/* <InputField type="text" required inputName="Email" />
             <InputField type="password" required inputName="Password" /> */}
 

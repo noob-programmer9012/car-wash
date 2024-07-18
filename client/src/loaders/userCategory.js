@@ -1,7 +1,8 @@
 import axios from "axios";
 import getToken from "../utils/getToken";
 import { persistor } from "../store/auth";
-import { redirect } from "react-router-dom";
+
+import { redirectToLogin } from "../utils/redirect";
 
 export async function userCategory() {
   await persistor.flush();
@@ -25,9 +26,6 @@ export async function userCategory() {
       data: data.data.data,
     };
   } catch (error) {
-    if (error.response.data.message === "jwt expired") {
-      return redirect("/login");
-    }
-    return new Response({ statusCode: 500, message: error });
+    return redirectToLogin(error);
   }
 }
