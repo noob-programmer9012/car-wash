@@ -136,7 +136,14 @@ export default function Login() {
                 </span>
               </div>
             }
-            {data && <h1>Successfully Logged Out!</h1>}
+            {data && (
+              <div className="logout-block">
+                <span className="material-symbols-outlined check-icon">
+                  check
+                </span>
+                <p className="logout">You have been successfully logged out!</p>
+              </div>
+            )}
             {/* <InputField type="text" required inputName="Email" />
             <InputField type="password" required inputName="Password" /> */}
 

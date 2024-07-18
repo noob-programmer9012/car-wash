@@ -99,6 +99,20 @@
   height: 0;
 }
 
+.logout-block {
+  align-self: center;
+  background-color: #20c920;
+  width: 100%;
+  transition: all ease-in 0.4s;
+  margin-bottom: 1rem;
+  display: flex;
+  padding: 1rem 0;
+  gap: 1rem;
+  align-items: center;
+  transition: all ease-out 0.2;
+  opacity: 1;
+}
+
 .error-block.show {
   opacity: 1;
   visibility: visible;
@@ -114,7 +128,8 @@
   color: #611e19;
 }
 
-.material-symbols-outlined.error-icon {
+.material-symbols-outlined.error-icon,
+.material-symbols-outlined.check-icon {
   margin-top: 0.1rem;
   margin-left: 2rem;
 }
