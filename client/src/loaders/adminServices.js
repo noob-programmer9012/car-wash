@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import getToken from "../utils/getToken";
+import { redirectToLogin } from "../utils/redirect";
 
 export async function adminServices() {
   const url = `http://localhost:5000/admin/getServices`;
@@ -20,6 +21,6 @@ export async function adminServices() {
 
     return JSON.stringify(data.data.data);
   } catch (error) {
-    return new Response({ statusCode: 500, message: error });
+    return redirectToLogin(error);
   }
 }

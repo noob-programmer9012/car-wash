@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import getToken from "../utils/getToken";
+import { redirectToLogin } from "../utils/redirect";
 
 export async function categoryLoader() {
   const token = await getToken();
@@ -23,6 +24,6 @@ export async function categoryLoader() {
       data: JSON.stringify(data.data.data),
     };
   } catch (error) {
-    return new Response({ statusCode: 500, message: error });
+    return redirectToLogin(error);
   }
 }
