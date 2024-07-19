@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 // Icons
 import CategoryIcon from "@mui/icons-material/Category";
@@ -7,10 +8,21 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import WebhookIcon from "@mui/icons-material/Webhook";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import LogoutIcon from "@mui/icons-material/Logout";
+
+import { authActions, persistor } from "../store/auth";
 
 export default function SideBar() {
   const history = useLocation();
   const location = history.pathname;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  async function handleLogOut() {
+    dispatch(authActions.setUser({ user: undefined, token: undefined }));
+    await persistor.flush();
+    return navigate("/login");
+  }
 
   useEffect(() => {
     const active = document.querySelector(".link.active");
@@ -82,6 +94,9 @@ export default function SideBar() {
               Orders
             </NavLink>
           </div>
+        </div>
+        <div className="user-settings" onClick={handleLogOut}>
+          <LogoutIcon />
         </div>
       </div>
     </>

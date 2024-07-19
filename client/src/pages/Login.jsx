@@ -49,7 +49,7 @@ export default function Login() {
           password: password,
         });
 
-        console.log(data.data);
+        // console.log(data.data);
 
         const token = data.data.token;
         const user = data.data.isAdmin ? "admin" : "user";

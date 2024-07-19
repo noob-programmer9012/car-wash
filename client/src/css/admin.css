@@ -10,7 +10,8 @@
   background-color: #212529;
   flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 5em 0;
 }
 
@@ -20,6 +21,13 @@
   gap: 1em;
   width: 100%;
   padding: 0 2em;
+}
+
+.user-settings {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  cursor: pointer;
 }
 
 .sub-link {

@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Services />,
-        loader: serviceLoader,
+        // loader: serviceLoader,
       },
       {
         path: "/admin/categories",
