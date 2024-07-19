@@ -48,6 +48,7 @@ body,
   gap: 1em;
   padding: 0;
   align-items: center;
+  color: #4e4d4d;
 }
 
 .top-nav > .user {
@@ -55,6 +56,7 @@ body,
   gap: 1em;
   align-items: center;
   cursor: pointer;
+  color: #4e4d4d;
 }
 
 .bottom-nav {
@@ -67,13 +69,33 @@ body,
   align-items: center;
   padding: 0 3em;
   z-index: 10;
+  justify-content: center;
 }
 
-.bottom-nav > ul {
+.bottom-nav > .navigation {
   display: flex;
-  color: black;
-  gap: 2em;
-  padding: 0;
+  gap: 2.5rem;
+}
+
+.nav > a {
+  color: #4e4d4d;
+  text-decoration: none;
+}
+
+.nav > a.active {
+  color: #fff;
+}
+
+.navlink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.navlink > .bottom-icons {
+  font-size: 2.5rem;
 }
 
 .main {
@@ -105,6 +127,14 @@ body,
   .top-nav,
   .bottom-nav {
     padding: 0 1rem;
+  }
+
+  .bottom-nav {
+    padding: 0;
+  }
+
+  .bottom-nav > .navigation {
+    align-self: center;
   }
 
   .user > .name {
