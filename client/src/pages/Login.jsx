@@ -3,7 +3,7 @@ import { Form, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
-import { authActions } from "../store/auth";
+import { authActions, persistor } from "../store/auth";
 // import InputField from "../components/InputField";
 
 export default function Login() {
@@ -49,16 +49,19 @@ export default function Login() {
           password: password,
         });
 
-        // console.log(data.data);
+        console.log(data.data);
 
         const token = data.data.token;
         const user = data.data.isAdmin ? "admin" : "user";
+
         dispatch(
           authActions.setUser({
             token,
             user,
           })
         );
+
+        await persistor.flush();
 
         if (data.data.isAdmin) {
           return navigate("/admin");

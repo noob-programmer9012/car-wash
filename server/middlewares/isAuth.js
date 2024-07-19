@@ -19,8 +19,10 @@ export default function isAdmin(req, res, next) {
     req.user = verified.data.userId;
     if (verified.data.isUser) {
       req.isUser = true;
+      req.email = verified.data.email;
     } else if (verified.data.isAdmin) {
       req.isAdmin = true;
+      req.email = verified.data.email;
     }
     return next();
   }

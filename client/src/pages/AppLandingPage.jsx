@@ -4,7 +4,6 @@ import "../css/landingpage.css";
 function AppLandingPage() {
   return (
     <>
-      <div className="user-data"></div>
       <div className="categories">
         <UserCategories />
       </div>

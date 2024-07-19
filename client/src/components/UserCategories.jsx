@@ -33,7 +33,11 @@ function UserCategories() {
             return (
               <Fragment key={categories._id}>
                 <Grid item xs={6}>
-                  <Item kkey={categories._id} onClick={loadcategories}>
+                  <Item
+                    kkey={categories._id}
+                    onClick={loadcategories}
+                    sx={{ display: "flex", background: "#fff", gap: "0.5rem" }}
+                  >
                     <Typography kkey={categories._id} onClick={loadcategories}>
                       {categories.title}
                     </Typography>
@@ -42,6 +46,7 @@ function UserCategories() {
                       width={"100px"}
                       id={categories._id}
                       onClick={loadcategories}
+                      className="svg"
                     ></img>
                   </Item>
                 </Grid>
