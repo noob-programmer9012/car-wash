@@ -16,11 +16,12 @@ export default function isAdmin(req, res, next) {
   const verified = jwt.verify(token, process.env.JWT_SECRET);
 
   if (verified) {
-    req.user = verified.data.userId;
     if (verified.data.isUser) {
+      req.user = verified.data.userId;
       req.isUser = true;
       req.email = verified.data.email;
     } else if (verified.data.isAdmin) {
+      req.user = verified.data.userId;
       req.isAdmin = true;
       req.email = verified.data.email;
     }

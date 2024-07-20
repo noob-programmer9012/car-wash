@@ -15,7 +15,7 @@ export const getCategories = async (req, res, next) => {
       data: totalCategories > 0 ? categories : "No categories added yet!",
     });
   } catch (error) {
-    next(new ErrorResponse(error, 500));
+    return next(new ErrorResponse(error, 500));
   }
 };
 

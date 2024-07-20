@@ -6,14 +6,19 @@ import path from "path";
 import cors from "cors";
 
 // Internal imports
-import { errorHandler } from "./middlewares/errorHandler.js";
-import { ErrorResponse } from "./util/errorRespone.js";
 import { Admin } from "./models/admin.js";
+
+// Route imports
 import adminRoutes from "./routes/admin.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import reviewRoutes from "./routes/reviews.js";
+
+// middleware routes
 import isAuth from "./middlewares/isAuth.js";
 import isAdmin from "./middlewares/isAuth.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import { ErrorResponse } from "./util/errorRespone.js";
 
 // starting setup
 const app = express();
@@ -30,6 +35,7 @@ app.use("/assets", express.static(path.join(path.resolve(), "assets")));
 app.use("/admin", isAuth, isAdmin, adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/", isAuth, userRoutes);
+app.use("/reviews", isAuth, reviewRoutes);
 app.use("*", (req, res, next) => {
   return next(new ErrorResponse("Invalid path", 404));
 });
