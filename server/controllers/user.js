@@ -41,6 +41,21 @@ export const getServices = async (req, res, next) => {
   }
 };
 
+export const getAllServices = async (req, res, next) => {
+  try {
+    const services = await Service.find();
+
+    const totalServices = await Service.countDocuments();
+    return res.status(200).json({
+      success: true,
+      totalServices,
+      data: totalServices > 0 ? services : "No services added yet.",
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
 export const getUser = async (req, res, next) => {
   const email = req.email;
 
