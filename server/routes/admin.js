@@ -48,5 +48,6 @@ router.put(
 );
 router.get("/getCategories", userController.getCategories);
 router.get("/getServices", adminController.adminGetServices);
+router.get("/getUsers", adminController.getUsers);
 
 export default router;

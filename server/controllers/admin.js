@@ -6,6 +6,7 @@ import Service from "../models/service.js";
 import titleCase from "../util/titleCase.js";
 import { ErrorResponse } from "../util/errorRespone.js";
 import addFiles from "../util/addFiles.js";
+import User from "../models/user.js";
 
 export const postCategory = async (req, res, next) => {
   const { title } = req.body;
@@ -94,5 +95,18 @@ export const adminGetServices = async (req, res, next) => {
     });
   } catch (error) {
     return next(new ErrorResponse(error, 500));
+  }
+};
+
+export const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    if (!users)
+      return res
+        .status(200)
+        .json({ success: true, message: "There are no active users!" });
+    return res.status(200).json({ success: true, users });
+  } catch (error) {
+    next(new ErrorResponse(error, 500));
   }
 };
