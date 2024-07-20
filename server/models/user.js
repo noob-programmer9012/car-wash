@@ -76,6 +76,7 @@ const userSchema = new mongoose.Schema({
       },
     ],
   },
+  reviews: [mongoose.Schema.Types.ObjectId],
 });
 
 userSchema.pre("save", async function (next) {
