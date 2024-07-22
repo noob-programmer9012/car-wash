@@ -41,6 +41,23 @@ export const getServices = async (req, res, next) => {
   }
 };
 
+export const getServiceById = async (req, res, next) => {
+  const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return next(new ErrorResponse("Not a valid path", 404));
+
+  try {
+    const data = await Service.findById(id);
+    if (!data)
+      return res
+        .status(404)
+        .json({ success: false, message: "No service available for this id." });
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
 export const getAllServices = async (req, res, next) => {
   try {
     const services = await Service.find();

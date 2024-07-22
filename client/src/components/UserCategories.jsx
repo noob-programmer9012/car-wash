@@ -2,6 +2,8 @@ import { Grid, Paper, styled, Typography } from "@mui/material";
 import { Fragment } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
+import titleCase from "../utils/titleCase";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#ccc",
   ...theme.typography.body2,
@@ -36,10 +38,15 @@ function UserCategories() {
                   <Item
                     kkey={categories._id}
                     onClick={loadcategories}
-                    sx={{ display: "flex", background: "#fff", gap: "0.5rem" }}
+                    className="gridItem"
+                    sx={{ display: "flex", gap: "0.5rem" }}
                   >
-                    <Typography kkey={categories._id} onClick={loadcategories}>
-                      {categories.title}
+                    <Typography
+                      variant="h6"
+                      kkey={categories._id}
+                      onClick={loadcategories}
+                    >
+                      {titleCase(categories.title)}
                     </Typography>
                     <img
                       src={"http://localhost:5000" + categories.imageUrl}

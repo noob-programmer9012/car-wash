@@ -3,9 +3,25 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --input-background: #979696;
+  --text: #ffffff;
+  --nav-text: #4e4d4d;
+  --nav-background: #ffbb00;
+  --primary: #242424;
+  /* --secondary: #78787a; */
+  --secondary: #504e4e;
+  --success: #34991a;
+  --error: #160b0b;
+  --error-text: #db773a;
+  --error-icon-background: #db773a;
+  --error-hover: #884925;
+
+  --border-primary: #ffffff;
+  --border-secondary: #665c5c;
+
   color-scheme: light dark;
   color: #ffffffde;
-  background-color: #242424;
+  background-color: var(--primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,8 +34,8 @@
   padding: 0;
 }
 
-h1 {
-  color: #fff;
+h6 {
+  color: var(--text);
 }
 
 html,
@@ -31,7 +47,7 @@ body,
 }
 
 .top-nav {
-  background-color: #ffbb00;
+  background-color: var(--nav-background);
   height: 50px;
   display: flex;
   align-items: center;
@@ -48,7 +64,7 @@ body,
   gap: 1em;
   padding: 0;
   align-items: center;
-  color: #4e4d4d;
+  color: var(--nav-text);
 }
 
 .top-nav > .user {
@@ -56,7 +72,7 @@ body,
   gap: 1em;
   align-items: center;
   cursor: pointer;
-  color: #4e4d4d;
+  color: var(--nav-text);
 }
 
 .bottom-nav {
@@ -64,7 +80,7 @@ body,
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #ffbb00;
+  background-color: var(--nav-background);
   display: flex;
   align-items: center;
   padding: 0 3em;
@@ -78,12 +94,12 @@ body,
 }
 
 .nav > a {
-  color: #4e4d4d;
+  color: var(--nav-text);
   text-decoration: none;
 }
 
 .nav > a.active {
-  color: #fff;
+  color: var(--text);
 }
 
 .navlink {
@@ -99,15 +115,15 @@ body,
 }
 
 .main {
-  margin-bottom: 80px;
+  margin-bottom: 100px;
   max-width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -121,7 +137,7 @@ body,
   button {
     background-color: #f9f9f9;
   }
-}
+} */
 
 @media only screen and (max-width: 600px) {
   .main {

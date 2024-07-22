@@ -1,12 +1,19 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 import "../css/service.css";
+import titleCase from "../utils/titleCase";
 
 const Service = () => {
   const data = useLoaderData();
+  const navigate = useNavigate();
   const services = JSON.parse(data.data);
+
+  const handleClick = (e) => {
+    const id = e.target.id;
+    return navigate(`/service/${id}`);
+  };
 
   return (
     <>
@@ -14,7 +21,11 @@ const Service = () => {
         {services.map((service) => {
           return (
             <React.Fragment key={service._id}>
-              <div className="service-data">
+              <div
+                className="service-data"
+                onClick={handleClick}
+                id={service._id}
+              >
                 <div className="left-data">
                   <h2>{service.serviceName}</h2>
                   <ul>
@@ -22,7 +33,7 @@ const Service = () => {
                       if (index <= 2) {
                         return (
                           <React.Fragment key={fac}>
-                            <li>{fac}</li>
+                            <li>{titleCase(fac)}</li>
                           </React.Fragment>
                         );
                       }

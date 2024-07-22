@@ -5,6 +5,7 @@ import { PropTypes } from "prop-types";
 import { useDispatch } from "react-redux";
 import { authActions, persistor } from "../store/auth";
 import { useNavigate } from "react-router-dom";
+import titleCase from "../utils/titleCase";
 
 export default function TopUserNavBar({ user }) {
   const dispatch = useDispatch();
@@ -19,11 +20,11 @@ export default function TopUserNavBar({ user }) {
     <div className="top-nav">
       <div className="address">
         <CottageIcon />
-        <Typography variant="p">{user.address.homeNo}</Typography>
+        <Typography variant="p">{titleCase(user.address.homeNo)}</Typography>
       </div>
       <div className="user" onClick={handleLogOut}>
         <Typography variant="p" className="name">
-          {user.fullname}
+          {titleCase(user.fullname)}
         </Typography>
         <LogoutIcon />
       </div>

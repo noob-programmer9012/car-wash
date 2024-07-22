@@ -8,20 +8,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  background-color: var(--primary);
 }
 
 .card {
-  background-color: #494949;
+  background-color: var(--secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2em;
   border-radius: 10px;
-  border: 1px #494949;
   min-width: 25%;
   min-height: 50%;
-  box-shadow: 0 0 500px #555555;
+  box-shadow: 0 0 500px var(--secondary);
 }
 
 .form {
@@ -44,7 +43,7 @@
 }
 
 .input {
-  background-color: #979696;
+  background-color: var(--input-background);
   border: none;
   border-radius: 5px;
   padding: 1em;
@@ -81,18 +80,23 @@
 
 .btn {
   padding: 1rem;
-  border: none;
+  background-color: transparent;
+  border: 2px solid var(--border-primary);
   border-radius: 5px;
   cursor: pointer;
   font-size: 2em;
-  letter-spacing: 0.1rem;
+  letter-spacing: 1px;
   transition: all ease-in 0.4s;
   width: 100%;
 }
 
+.btn:hover {
+  box-shadow: 5px 5px var(--border-primary);
+}
+
 .error-block {
   align-self: center;
-  background-color: #160b0b;
+  background-color: var(--error);
   width: 100%;
   transition: all ease-in 0.4s;
   margin-bottom: 1rem;
@@ -107,7 +111,8 @@
 
 .logout-block {
   align-self: center;
-  background-color: #20c920;
+  /* background-color: #20c920; */
+  background-color: var(--success);
   width: 100%;
   transition: all ease-in 0.4s;
   margin-bottom: 1rem;
@@ -130,8 +135,9 @@
   opacity: 1;
 }
 
-.material-symbols-outlined {
-  color: #611e19;
+.material-symbols-outlined.error-icon,
+.material-symbols-outlined.close {
+  color: var(--error-text) !important;
 }
 
 .material-symbols-outlined.error-icon,
@@ -148,13 +154,13 @@
 }
 
 .material-symbols-outlined.close:hover {
-  background-color: #884925;
+  background-color: var(--error-hover);
   transition: all ease-in-out 0.4s;
 }
 
 .error {
   padding: 0em 1em;
-  color: #db773a;
+  color: var(--error-text);
   letter-spacing: 1px;
   flex: auto;
   transition: all ease 1s;

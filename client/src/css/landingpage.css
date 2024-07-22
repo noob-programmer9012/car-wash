@@ -5,6 +5,10 @@
   max-width: 100vw;
 }
 
+.gridItem {
+  background-color: var(--secondary) !important;
+}
+
 .recommended-services {
   align-self: center;
   display: flex;

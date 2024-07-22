@@ -55,7 +55,7 @@
 
 .sub-link > a {
   text-decoration: none;
-  color: #fff;
+  color: var(--text);
   font-size: 1.2rem;
   transition: all ease-in-out 0.5s;
 }

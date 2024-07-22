@@ -14,6 +14,7 @@ import { categoryLoader } from "./loaders/category";
 import { getUsers } from "./loaders/getUsers";
 import { dashboard } from "./loaders/dashbord";
 import { userCategory } from "./loaders/userCategory";
+import { serviceById } from "./loaders/serviceById";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -34,6 +35,7 @@ import Customers from "./pages/Customers";
 // css
 import "./css/index.css";
 import "./css/login.css";
+import ServiceById from "./pages/ServiceById";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,11 @@ const router = createBrowserRouter([
         path: "/categories/:id",
         element: <UserServices />,
         loader: serviceLoader,
+      },
+      {
+        path: "/service/:id",
+        element: <ServiceById />,
+        loader: serviceById,
       },
     ],
   },
