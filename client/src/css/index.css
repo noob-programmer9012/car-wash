@@ -10,7 +10,9 @@
   --primary: #242424;
   /* --secondary: #78787a; */
   --secondary: #504e4e;
-  --success: #34991a;
+  --success: #0c130d;
+  --success-text: #c6e1c7;
+  --success-icon: #5ba75e;
   --error: #160b0b;
   --error-text: #db773a;
   --error-icon-background: #db773a;

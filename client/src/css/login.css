@@ -124,6 +124,14 @@
   opacity: 1;
 }
 
+.logout {
+  color: var(--success-text);
+}
+
+.material-symbols-outlined.check-icon {
+  color: var(--success-icon) !important;
+}
+
 .error-block.show {
   opacity: 1;
   visibility: visible;
