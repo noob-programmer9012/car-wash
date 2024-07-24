@@ -1,5 +1,7 @@
 // import path from "node:path";
 import mongoose from "mongoose";
+import { unlink } from "fs/promises";
+import path from "path";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
@@ -31,6 +33,24 @@ export const postCategory = async (req, res, next) => {
   }
 };
 
+export const getCategoryById = async (req, res, next) => {
+  const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return next(new ErrorResponse("Not a valid path", 404));
+
+  try {
+    const data = await Category.findById(id);
+    if (!data)
+      return res.status(404).json({
+        success: false,
+        message: "No category available for this id.",
+      });
+    return res.status(200).json({ success: true, data });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
 export const putCategory = async (req, res, next) => {
   const category_id = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(category_id))
@@ -41,12 +61,34 @@ export const putCategory = async (req, res, next) => {
 
   const imageUrl = category.imageUrl;
   const videoUrl = category.videoUrl;
-  console.log(imageUrl, videoUrl);
 
-  return res.status(200).json({
-    success: true,
-    message: "Put Category Route",
-  });
+  if (req.files) {
+    for (let i = 0; i < req.files.length; i++) {
+      if (req.files[i].mimetype === "image/svg+xml" && imageUrl) {
+        const url = path.join(path.resolve(), imageUrl);
+        try {
+          await unlink(url);
+        } catch (error) {
+          await unlink(req.files.path);
+        }
+      } else if (req.files[i].mimetype === "video/webm" && videoUrl) {
+        const url = path.join(path.resolve(), videoUrl);
+        try {
+          await unlink(url);
+        } catch (error) {
+          await unlink(req.files.path);
+        }
+      }
+    }
+  }
+  addFiles(req, res, next, category);
+  category.title = req.body.title;
+  try {
+    await category.save();
+    return res.status(201).json({ success: true, category });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
 };
 
 export const postService = async (req, res, next) => {
@@ -93,6 +135,23 @@ export const adminGetServices = async (req, res, next) => {
       totalServices,
       data: totalServices > 0 ? services : "No services added yet.",
     });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
+export const getServiceById = async (req, res, next) => {
+  const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return next(new ErrorResponse("Not a valid path", 404));
+
+  try {
+    const data = await Service.findById(id);
+    if (!data)
+      return res
+        .status(404)
+        .json({ success: false, message: "No service available for this id." });
+    return res.status(200).json({ success: true, data });
   } catch (error) {
     return next(new ErrorResponse(error, 500));
   }

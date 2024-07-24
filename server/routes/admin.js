@@ -1,21 +1,16 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
-import { existsSync } from "node:fs";
 
 import * as adminController from "../controllers/admin.js";
 import * as userController from "../controllers/user.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (
-      file.mimetype.split("/")[0] === "image" &&
-      existsSync(`./assets/images/${file.originalname}`)
-    ) {
-      console.log(req.files);
-    }
+    console.log(file);
     if (file.mimetype === "image/svg+xml") {
       cb(null, path.join(path.resolve(), ".", "assets", "svg"));
     } else if (
@@ -39,15 +34,33 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/category", upload.array("file", 2), adminController.postCategory);
-router.post("/service", upload.single("file"), adminController.postService);
+// POST routes
+router.post(
+  "/category",
+  isAdmin,
+  upload.array("file", 2),
+  adminController.postCategory
+);
+router.post(
+  "/service",
+  isAdmin,
+  upload.single("file"),
+  adminController.postService
+);
+
+// PUT routes
 router.put(
   "/category/:id",
+  isAdmin,
   upload.array("file", 2),
   adminController.putCategory
 );
+
+// GET routes
 router.get("/getCategories", userController.getCategories);
+router.get("/getCategory/:id", adminController.getCategoryById);
 router.get("/getServices", adminController.adminGetServices);
+router.get("/getService/:id", adminController.getServiceById);
 router.get("/getUsers", adminController.getUsers);
 
 export default router;
