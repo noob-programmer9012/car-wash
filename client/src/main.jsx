@@ -31,11 +31,11 @@ import AppLandingPage from "./pages/AppLandingPage";
 import AdminCategories from "./pages/AdminCategories";
 import UserServices from "./pages/UserServices";
 import Customers from "./pages/Customers";
+import ServiceById from "./pages/ServiceById";
 
 // css
 import "./css/index.css";
 import "./css/login.css";
-import ServiceById from "./pages/ServiceById";
 
 const router = createBrowserRouter([
   {

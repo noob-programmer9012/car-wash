@@ -1,45 +1,42 @@
-import { Fragment, useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import CategoryForm from "../components/CategoryForm";
-import { Button } from "@mui/material";
+
+import AdminCategoriesData from "../components/AdminCategoriesData";
+import { useEffect, useState } from "react";
 
 function AdminCategories() {
-  const [categories, setCategories] = useState();
   const data = useLoaderData();
+  const [editData, setEditData] = useState("");
+
+  useEffect(() => {
+    console.log(editData);
+  }, [editData]);
 
   const showForm = () => {
     const form = document.querySelector(".card.category");
     form.style.visibility = "visible";
     form.style.opacity = 1;
+    form.style.width = "400px";
   };
-
-  useEffect(() => {
-    if (data.data !== '"No categories added yet!"') setCategories(data.data);
-  }, [data, categories]);
 
   return (
     <>
       <div className="category">
-        <div className="category-data">
-          <Button onClick={showForm} variant="contained">
-            Add
-          </Button>
-          {categories ? (
-            JSON.parse(categories).map((category) => {
-              return (
-                <Fragment key={category._id}>
-                  <div className="data">
-                    <h1>{category.title}</h1>
-                  </div>
-                </Fragment>
-              );
-            })
-          ) : (
-            <h1>No Categories added yet....!</h1>
-          )}
+        <div className="admin-category-data">
+          <input
+            type="button"
+            className="btn"
+            value={"Add Category"}
+            onClick={showForm}
+          />
+          <AdminCategoriesData
+            data={data}
+            action={showForm}
+            setData={setEditData}
+          />
         </div>
         <div className="card category">
-          <CategoryForm />
+          <CategoryForm data={editData} />
         </div>
       </div>
     </>
