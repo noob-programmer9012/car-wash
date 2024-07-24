@@ -11,9 +11,11 @@ export default function Login() {
   const [password, setPassword] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [show, setShow] = useState(false);
+  const [logout, setLogout] = useState(false);
+  const [counter, setCounter] = useState(6);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const data = useLoaderData();
+  let data = useLoaderData();
 
   useEffect(() => {
     const errorBlock = document.querySelector(".error-block");
@@ -31,7 +33,19 @@ export default function Login() {
     labels.addEventListener("click", () => {
       labels.parentNode.childNodes[0].focus();
     });
-  }, [show]);
+
+    if (data) setLogout(true);
+
+    const timer =
+      counter > 0 &&
+      setInterval(() => {
+        setCounter((counter) => counter - 1);
+      }, 1000);
+
+    if (counter === 0) setLogout((prev) => !prev);
+
+    return () => clearInterval(timer);
+  }, [show, data, counter, logout]);
 
   function handleClose() {
     setShow((prev) => !prev);
@@ -139,12 +153,13 @@ export default function Login() {
                 </span>
               </div>
             }
-            {data && (
+            {logout && (
               <div className="logout-block">
                 <span className="material-symbols-outlined check-icon">
                   check
                 </span>
                 <p className="logout">You have been successfully logged out!</p>
+                <p className="counter">{counter}</p>
               </div>
             )}
             {/* <InputField type="text" required inputName="Email" />

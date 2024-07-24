@@ -18,7 +18,7 @@
   justify-content: center;
   padding: 2em;
   border-radius: 10px;
-  width: auto;
+  min-width: 25%;
   max-width: 100%;
   min-height: 50%;
   box-shadow: 0 0 500px var(--secondary);
@@ -119,8 +119,9 @@
   transition: all ease-in 0.4s;
   margin-bottom: 1rem;
   display: flex;
+  justify-content: flex-start;
   padding: 1rem 0;
-  gap: 1rem;
+  gap: 2rem;
   align-items: center;
   transition: all ease-out 0.2;
   opacity: 1;
@@ -129,9 +130,19 @@
 .logout {
   color: var(--success-text);
 }
+.counter {
+  border: 4px solid var(--success-icon);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
 
 .material-symbols-outlined.check-icon {
   color: var(--success-icon) !important;
+  margin-left: 1rem;
 }
 
 .error-block.show {
@@ -150,8 +161,7 @@
   color: var(--error-text) !important;
 }
 
-.material-symbols-outlined.error-icon,
-.material-symbols-outlined.check-icon {
+.material-symbols-outlined.error-icon {
   margin-top: 0.1rem;
   margin-left: 2rem;
 }
