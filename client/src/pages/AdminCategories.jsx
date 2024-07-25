@@ -8,9 +8,7 @@ function AdminCategories() {
   const data = useLoaderData();
   const [editData, setEditData] = useState("");
 
-  useEffect(() => {
-    console.log(editData);
-  }, [editData]);
+  useEffect(() => {}, [editData]);
 
   const showForm = () => {
     const form = document.querySelector(".card.category");

@@ -47,7 +47,6 @@ const AdminCategoriesData = ({ data, action, setData }) => {
       video: category.videoUrl ? category.videoUrl : "Not Available",
     });
   });
-  console.log(rows);
 
   return (
     <>

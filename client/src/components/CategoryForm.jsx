@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import InputField from "./InputField";
 import { useEffect, useState } from "react";
+import { redirectToLogin } from "../utils/redirect";
 
 function CategoryForm({ data }) {
   const submit = useSubmit();
@@ -23,15 +24,17 @@ function CategoryForm({ data }) {
     const url = `http://localhost:5000/admin/getCategory/${id}`;
 
     async function loadService() {
-      console.log("loaded");
       if (data) {
-        const service = await axios.get(url, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setCategory(JSON.stringify(service.data.data));
-        console.log(service.data.data);
+        try {
+          const service = await axios.get(url, {
+            headers: {
+              Authorization: token,
+            },
+          });
+          setCategory(JSON.stringify(service.data.data));
+        } catch (error) {
+          return redirectToLogin(error);
+        }
       }
     }
     loadService();
