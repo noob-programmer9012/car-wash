@@ -23,7 +23,7 @@ const AddService = () => {
           <Link to="..">Back</Link>
           <h1>Add Service</h1>
 
-          <InputField inputName="Title" required type="text" />
+          <InputField inputName="Title" required type="text" value={""} />
           <div className="field">
             <select name="categories" id="categories" className="input">
               {categories ? (
@@ -47,6 +47,7 @@ const AddService = () => {
             type="text"
             validator="number"
             required
+            value={""}
           />
           <div className="field">
             <textarea
@@ -56,7 +57,12 @@ const AddService = () => {
               placeholder="Enter facilities by comma seperated values. e.g. Wax, Polish, Car Freshner"
             ></textarea>
           </div>
-          <InputField inputName="Discount" type="text" validator="number" />
+          <InputField
+            inputName="Discount"
+            type="text"
+            validator="number"
+            value={""}
+          />
           <div className="field">
             <select name="validity" id="validity" className="input">
               <option value="year">Yearly</option>

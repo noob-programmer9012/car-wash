@@ -42,7 +42,11 @@ export default function Login() {
         setCounter((counter) => counter - 1);
       }, 1000);
 
-    if (counter === 0) setLogout((prev) => !prev);
+    if (counter === 0) {
+      setLogout((prev) => !prev);
+      // setCounter(6);
+      setLogout(false);
+    }
 
     return () => clearInterval(timer);
   }, [show, data, counter, logout]);

@@ -15,6 +15,7 @@ import { getUsers } from "./loaders/getUsers";
 import { dashboard } from "./loaders/dashbord";
 import { userCategory } from "./loaders/userCategory";
 import { serviceById } from "./loaders/serviceById";
+import { getCategoryById } from "./loaders/getCategoryById";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -36,6 +37,8 @@ import ServiceById from "./pages/ServiceById";
 // css
 import "./css/index.css";
 import "./css/login.css";
+import CategoryForm from "./components/CategoryForm";
+import AdminCategoriesData from "./components/AdminCategoriesData";
 
 const router = createBrowserRouter([
   {
@@ -72,8 +75,23 @@ const router = createBrowserRouter([
       {
         path: "/admin/categories",
         element: <AdminCategories />,
-        loader: categoryLoader,
-        action: categoryAction,
+        children: [
+          {
+            index: true,
+            element: <AdminCategoriesData />,
+            loader: categoryLoader,
+          },
+          {
+            path: "/admin/categories/add-category",
+            element: <CategoryForm />,
+            action: categoryAction,
+          },
+          {
+            path: "/admin/categories/edit-category/:id",
+            element: <CategoryForm />,
+            loader: getCategoryById,
+          },
+        ],
       },
       {
         path: "/admin/services",

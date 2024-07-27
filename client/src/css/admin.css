@@ -127,7 +127,7 @@
 }
 
 .delete {
-  background-color: var(--error-text);
+  background-color: var(--error-icon-background);
   color: var(--text) !important;
 }
 

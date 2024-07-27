@@ -1,81 +1,69 @@
-import axios from "axios";
-import { Form, useSubmit } from "react-router-dom";
-import { PropTypes } from "prop-types";
-import { useSelector } from "react-redux";
+import { Form, Link, useLoaderData } from "react-router-dom";
 
 import InputField from "./InputField";
 import { useEffect, useState } from "react";
-import { redirectToLogin } from "../utils/redirect";
 
-function CategoryForm({ data }) {
-  const submit = useSubmit();
-  const [category, setCategory] = useState();
-  const token = "Bearer: " + useSelector((state) => state.token);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    submit(e.target.form);
-    e.target.form.reset();
-  };
+function CategoryForm() {
+  const data = useLoaderData();
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
-    // make api call
-    const id = data;
-    const url = `http://localhost:5000/admin/getCategory/${id}`;
+    data && setTitle(data.title);
+  }, [data]);
 
-    async function loadService() {
-      if (data) {
-        try {
-          const service = await axios.get(url, {
-            headers: {
-              Authorization: token,
-            },
-          });
-          setCategory(JSON.stringify(service.data.data));
-        } catch (error) {
-          return redirectToLogin(error);
-        }
-      }
-    }
-    loadService();
-  }, [data, token, category]);
+  // const submit = useSubmit();
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   submit(e.target.form);
+  //   e.target.form.reset();
+  // };
 
   return (
     <>
-      <Form
-        noValidate
-        className="form category"
-        method="POST"
-        encType="multipart/form-data"
-        replace
-      >
-        <h1>Add Category</h1>
-        <InputField inputName="Category Name" type="text" required />
-        <div className="field">
-          <input
-            type="file"
-            className="input image/svg"
-            id="svg"
-            name="file"
+      <div className="card">
+        <Form
+          noValidate
+          className="form category"
+          method="POST"
+          encType="multipart/form-data"
+          replace
+        >
+          <Link to="..">Back</Link>
+
+          {data ? <h1>Edit Category</h1> : <h1>Add Category</h1>}
+          <InputField
+            inputName="Category Name"
+            type="text"
             required
+            value={title}
           />
-        </div>
-        <div className="field">
-          <input
-            type="file"
-            className="input video"
-            id="video"
-            name="file"
-          ></input>
-        </div>
-        <button type="submit" className="btn" onClick={handleSubmit}>
-          Add Category
-        </button>
-      </Form>
+          <div className="field">
+            <input
+              type="file"
+              className="input image/svg"
+              id="svg"
+              name="file"
+              required
+              accept={"image/svg+xml"}
+            />
+          </div>
+          <div className="field">
+            <input
+              type="file"
+              className="input video"
+              id="video"
+              name="file"
+              accept={"video/webm"}
+            ></input>
+          </div>
+          <button type="submit" className="btn">
+            {data ? "Edit Category" : "Add Category"}
+          </button>
+        </Form>
+      </div>
     </>
   );
 }
-
-CategoryForm.propTypes = { data: PropTypes.string.isRequired };
 
 export default CategoryForm;
