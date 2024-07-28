@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const AddService = () => {
   const [categories, setCategories] = useState();
   const [service, setService] = useState("");
+
   const data = useLoaderData();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const AddService = () => {
           className="form category"
         >
           <Link to="..">Back</Link>
-          <h1>Add Service</h1>
+          {service ? <h1>Edit Service</h1> : <h1>Add Service</h1>}
 
           <InputField
             inputName="Title"
@@ -55,7 +56,9 @@ const AddService = () => {
             type="text"
             validator="number"
             required
-            value={service ? JSON.parse(service).plan.price.toString() : ""}
+            value={
+              service ? JSON.parse(service).plan.price.toString() : service
+            }
           />
           <div className="field">
             <textarea
@@ -63,7 +66,9 @@ const AddService = () => {
               className="input"
               name="facilities"
               placeholder="Enter facilities by comma seperated values. e.g. Wax, Polish, Car Freshner"
-              defaultValue={service && JSON.parse(service).plan.facilities}
+              defaultValue={
+                service ? JSON.parse(service).plan.facilities : service
+              }
             ></textarea>
             <label
               htmlFor="Facilities"
@@ -77,7 +82,9 @@ const AddService = () => {
             inputName="Discount"
             type="text"
             validator="number"
-            value={service ? JSON.parse(service).plan.discount.toString() : ""}
+            value={
+              service ? JSON.parse(service).plan.discount.toString() : service
+            }
           />
           <div className="field">
             <select name="validity" id="validity" className="input">
@@ -96,7 +103,7 @@ const AddService = () => {
             </label>
           </div>
           <button type="submit" className="btn">
-            Add Service
+            {service ? "Edit Service" : "Add Service"}
           </button>
         </Form>
       </div>

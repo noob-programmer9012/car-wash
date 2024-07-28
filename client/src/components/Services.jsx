@@ -13,6 +13,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
+import titleCase from "../utils/titleCase";
+
 const ServicesComponent = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
@@ -57,55 +59,61 @@ const ServicesComponent = () => {
       id: service._id,
       serviceName: service.serviceName,
       price: service.plan.price,
-      facilities: service.plan.facilities,
+      facilities: titleCase(service.plan.facilities.toString()),
     });
   });
 
   return (
     <>
-      <Link to="/admin/services/add-service">
-        <input type="button" className="btn" value={"Add Service"} />
-      </Link>
+      <div className="services">
+        <Link to="/admin/services/add-service">
+          <input type="button" className="btn" value={"Add Service"} />
+        </Link>
 
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell align="right">Service Name</StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-            <StyledTableCell align="right">Facilities</StyledTableCell>
-            <StyledTableCell align="right">Actions</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell component="th" scope="row">
-                {index + 1}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.serviceName}</StyledTableCell>
-              <StyledTableCell align="right">{row.price}</StyledTableCell>
-              <StyledTableCell align="right">{row.facilities}</StyledTableCell>
-              <StyledTableCell align="right">
-                <div className="actions">
-                  <div
-                    className="edit"
-                    onClick={() => navigate(`edit-service/${row.id}`)}
-                  >
-                    <EditIcon />
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell align="right">Service Name</StyledTableCell>
+              <StyledTableCell align="right">Price</StyledTableCell>
+              <StyledTableCell align="right">Facilities</StyledTableCell>
+              <StyledTableCell align="right">Actions</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <StyledTableRow key={row.id}>
+                <StyledTableCell component="th" scope="row">
+                  {index + 1}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.serviceName}
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.price}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {row.facilities}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  <div className="actions">
+                    <div
+                      className="edit"
+                      onClick={() => navigate(`edit-service/${row.id}`)}
+                    >
+                      <EditIcon />
+                    </div>
+                    <div
+                      className="delete"
+                      onClick={() => handleDelete(row.serviceName, row.id)}
+                    >
+                      <DeleteForeverIcon />
+                    </div>
                   </div>
-                  <div
-                    className="delete"
-                    onClick={() => handleDelete(row.serviceName, row.id)}
-                  >
-                    <DeleteForeverIcon />
-                  </div>
-                </div>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };
