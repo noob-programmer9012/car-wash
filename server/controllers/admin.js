@@ -66,17 +66,27 @@ export const putCategory = async (req, res, next) => {
     for (let i = 0; i < req.files.length; i++) {
       if (req.files[i].mimetype === "image/svg+xml" && imageUrl) {
         const url = path.join(path.resolve(), imageUrl);
+        if (!url) continue;
         try {
           await unlink(url);
         } catch (error) {
-          await unlink(req.files.path);
+          if (error.errno === -2) continue;
+          await unlink(req.files[i].path);
+          return res
+            .status(500)
+            .json({ success: false, message: "Could not delete old file" });
         }
       } else if (req.files[i].mimetype === "video/webm" && videoUrl) {
         const url = path.join(path.resolve(), videoUrl);
+        if (!url) continue;
         try {
           await unlink(url);
         } catch (error) {
-          await unlink(req.files.path);
+          if (error.errno === -2) continue;
+          await unlink(req.files[i].path);
+          return res
+            .status(500)
+            .json({ success: false, message: "Could not delete old file" });
         }
       }
     }
