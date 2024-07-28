@@ -13,10 +13,12 @@ function InputField({ inputName, type, required, validator, value, accept }) {
     inputs.forEach((input) => {
       if (input.value) {
         const label = input.nextElementSibling;
-        label.style.top = "-20px";
-        label.style.left = "10px";
-        label.style.fontSize = "0.8rem";
-        label.style.color = "#ffffffde";
+        if (label) {
+          label.style.top = "-20px";
+          label.style.left = "10px";
+          label.style.fontSize = "0.8rem";
+          label.style.color = "#ffffffde";
+        }
       }
     });
   }, [val]);

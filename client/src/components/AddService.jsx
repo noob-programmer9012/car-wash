@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 
 const AddService = () => {
   const [categories, setCategories] = useState();
+  const [service, setService] = useState("");
   const data = useLoaderData();
 
   useEffect(() => {
-    if (data.data !== '"No categories added yet!"') setCategories(data.data);
+    if (data.data !== "No categories added yet!") setCategories(data.data);
+    if (data.categories) setCategories(data.categories);
+    if (data.service) setService(data.service);
   }, [data]);
 
   return (
@@ -23,7 +26,12 @@ const AddService = () => {
           <Link to="..">Back</Link>
           <h1>Add Service</h1>
 
-          <InputField inputName="Title" required type="text" value={""} />
+          <InputField
+            inputName="Title"
+            required
+            type="text"
+            value={service ? JSON.parse(service).serviceName : service}
+          />
           <div className="field">
             <select name="categories" id="categories" className="input">
               {categories ? (
@@ -47,7 +55,7 @@ const AddService = () => {
             type="text"
             validator="number"
             required
-            value={""}
+            value={service ? JSON.parse(service).plan.price.toString() : ""}
           />
           <div className="field">
             <textarea
@@ -55,13 +63,21 @@ const AddService = () => {
               className="input"
               name="facilities"
               placeholder="Enter facilities by comma seperated values. e.g. Wax, Polish, Car Freshner"
+              defaultValue={service && JSON.parse(service).plan.facilities}
             ></textarea>
+            <label
+              htmlFor="Facilities"
+              className="label nontext"
+              id="facilities"
+            >
+              Facilities *
+            </label>
           </div>
           <InputField
             inputName="Discount"
             type="text"
             validator="number"
-            value={""}
+            value={service ? JSON.parse(service).plan.discount.toString() : ""}
           />
           <div className="field">
             <select name="validity" id="validity" className="input">

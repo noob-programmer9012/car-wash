@@ -16,17 +16,19 @@ import { dashboard } from "./loaders/dashbord";
 import { userCategory } from "./loaders/userCategory";
 import { serviceById } from "./loaders/serviceById";
 import { getCategoryById } from "./loaders/getCategoryById";
+import { editServiceFormLoader } from "./loaders/editServiceFormLoader";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
 import { serviceAction } from "./action/serviceAction";
+import { editCategoryAction } from "./action/editCategoryAction";
 
 // pages
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Services from "./pages/Services";
 import ServicesComponent from "./components/Services";
-import AddService from "./pages/AddService";
+import AddService from "./components/AddService";
 import Login from "./pages/Login";
 import AppLandingPage from "./pages/AppLandingPage";
 import AdminCategories from "./pages/AdminCategories";
@@ -90,6 +92,7 @@ const router = createBrowserRouter([
             path: "/admin/categories/edit-category/:id",
             element: <CategoryForm />,
             loader: getCategoryById,
+            action: editCategoryAction,
           },
         ],
       },
@@ -107,6 +110,11 @@ const router = createBrowserRouter([
             element: <AddService />,
             loader: categoryLoader,
             action: serviceAction,
+          },
+          {
+            path: "/admin/services/edit-service/:id",
+            element: <AddService />,
+            loader: editServiceFormLoader,
           },
         ],
       },

@@ -7,16 +7,26 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
 
 // icons
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link, useNavigate, useLoaderData } from "react-router-dom";
+
 import titleCase from "../utils/titleCase";
 
 const AdminCategoriesData = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
+
+  const handleDelete = async (title, id) => {
+    let d = window.confirm(`Do you really want to delete ${title}?`);
+    if (d) {
+      alert("deleted " + id);
+    } else {
+      alert("not");
+    }
+  };
 
   const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -85,17 +95,14 @@ const AdminCategoriesData = () => {
                   <div className="actions">
                     <div
                       className="edit"
-                      id={row.id}
-                      onClick={(e) => navigate(`edit-category/${e.target.id}`)}
+                      onClick={() => navigate(`edit-service/${row.id}`)}
                     >
-                      <EditIcon
-                        id={row.id}
-                        onClick={(e) =>
-                          navigate(`edit-category/${e.target.id}`)
-                        }
-                      />
+                      <EditIcon />
                     </div>
-                    <div className="delete">
+                    <div
+                      className="delete"
+                      onClick={() => handleDelete(row.title, row.id)}
+                    >
                       <DeleteForeverIcon />
                     </div>
                   </div>

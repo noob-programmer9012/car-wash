@@ -15,7 +15,10 @@ export const getCategoryById = async ({ params }) => {
         Authorization: token,
       },
     });
-    return category.data.data;
+    return {
+      data: category.data.data,
+      message: history.state.message ? history.state.message : "",
+    };
   } catch (error) {
     return redirectToLogin(error);
   }

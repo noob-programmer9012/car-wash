@@ -8,16 +8,8 @@ function CategoryForm() {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    data && setTitle(data.title);
+    data && setTitle(data["data"].title);
   }, [data]);
-
-  // const submit = useSubmit();
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   submit(e.target.form);
-  //   e.target.form.reset();
-  // };
 
   return (
     <>
@@ -32,6 +24,7 @@ function CategoryForm() {
           <Link to="..">Back</Link>
 
           {data ? <h1>Edit Category</h1> : <h1>Add Category</h1>}
+          {data.message && <p>{data.message}</p>}
           <InputField
             inputName="Category Name"
             type="text"

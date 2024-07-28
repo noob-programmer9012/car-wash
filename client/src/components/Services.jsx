@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useNavigate, useLoaderData } from "react-router-dom";
 import { styled } from "@mui/system";
 import {
   Table,
@@ -9,9 +9,23 @@ import {
   TableRow,
 } from "@mui/material";
 
+// icons
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 const ServicesComponent = () => {
   const data = useLoaderData();
+  const navigate = useNavigate();
   // console.log(JSON.parse(data));
+
+  const handleDelete = async (title, id) => {
+    let d = window.confirm(`Do you really want to delete ${title}?`);
+    if (d) {
+      alert("deleted " + id);
+    } else {
+      alert("not");
+    }
+  };
 
   const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -49,7 +63,9 @@ const ServicesComponent = () => {
 
   return (
     <>
-      <Link to="/admin/services/add-service">Add</Link>
+      <Link to="/admin/services/add-service">
+        <input type="button" className="btn" value={"Add Service"} />
+      </Link>
 
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
@@ -58,6 +74,7 @@ const ServicesComponent = () => {
             <StyledTableCell align="right">Service Name</StyledTableCell>
             <StyledTableCell align="right">Price</StyledTableCell>
             <StyledTableCell align="right">Facilities</StyledTableCell>
+            <StyledTableCell align="right">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -69,7 +86,22 @@ const ServicesComponent = () => {
               <StyledTableCell align="right">{row.serviceName}</StyledTableCell>
               <StyledTableCell align="right">{row.price}</StyledTableCell>
               <StyledTableCell align="right">{row.facilities}</StyledTableCell>
-              {/* <StyledTableCell align="right">{row.protein}</StyledTableCell> */}
+              <StyledTableCell align="right">
+                <div className="actions">
+                  <div
+                    className="edit"
+                    onClick={() => navigate(`edit-service/${row.id}`)}
+                  >
+                    <EditIcon />
+                  </div>
+                  <div
+                    className="delete"
+                    onClick={() => handleDelete(row.serviceName, row.id)}
+                  >
+                    <DeleteForeverIcon />
+                  </div>
+                </div>
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
