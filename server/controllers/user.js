@@ -87,3 +87,48 @@ export const getUser = async (req, res, next) => {
     return next(new ErrorResponse(error, 500));
   }
 };
+
+export const postAddToCart = async (req, res, next) => {
+  const serviceId = req.params.serviceId;
+  const userId = req.user;
+
+  if (
+    !mongoose.Types.ObjectId.isValid(serviceId) ||
+    !mongoose.Types.ObjectId.isValid(userId)
+  )
+    return next(new ErrorResponse("Not valid serviceId or UserId", 401));
+
+  try {
+    const user = await User.findById(userId);
+    if (!user)
+      return next(new ErrorResponse("No user available with this id", 404));
+
+    try {
+      const service = await Service.findById(serviceId);
+      if (!service)
+        return next(
+          new ErrorResponse("No service available with this id", 404)
+        );
+
+      const available = user.cart.items.filter((item) => {
+        return (
+          item.serviceId == new mongoose.Types.ObjectId(serviceId).toString()
+        );
+      });
+
+      if (available.length > 0)
+        return next(new ErrorResponse("Already in the cart", 401));
+
+      user.cart.items.push({ serviceId });
+      await user.save();
+      return res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorResponse(error, 500));
+    }
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};

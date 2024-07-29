@@ -62,8 +62,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
     minlength: 10,
-    maxlength: 10,
-    match: [/^(\s*|\d+)$/, "please enter a valid number"],
+    maxlength: 14,
+    match: [/^[0-9-+]*$/, "please enter a valid number"],
   },
   cart: {
     items: [
@@ -84,8 +84,8 @@ userSchema.pre("save", async function (next) {
   this.address.landmark = titleCase(this.address.landmark);
   this.address.area = titleCase(this.address.area);
   this.city = titleCase(this.city);
-  this.mobileNo = "+91-" + this.mobileNo;
   this.fullname = titleCase(this.fullname);
+  if (this.mobileNo.isModified) this.mobileNo = "+91-" + this.mobileNo;
 
   if (!this.isModified("password")) {
     next();
