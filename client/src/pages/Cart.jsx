@@ -1,0 +1,43 @@
+import { useLoaderData } from "react-router-dom";
+import { Typography } from "@mui/material";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+
+import "../css/cart.css";
+import { useEffect, useState } from "react";
+
+const Cart = () => {
+  const data = useLoaderData();
+  const [total, setTotal] = useState(null);
+
+  useEffect(() => {
+    let sum = 0;
+    data.map((item) => {
+      sum += Number(item.serviceId.plan.price);
+    });
+    setTotal(sum);
+  }, [data]);
+
+  return (
+    <div className="cart-component">
+      {data.map((item) => {
+        return (
+          <div className="cart-item" key={item.serviceId._id}>
+            <img
+              src={"http://localhost:5000" + item.serviceId.imageUrl}
+              width={"100px"}
+              height={"100px"}
+            ></img>
+            <div className="cart-item-detail">
+              <Typography variant="h6">{item.serviceId.serviceName}</Typography>
+              <Typography variant="p">{item.serviceId.plan.price}</Typography>
+            </div>
+            <RemoveCircleIcon className="remove" />
+          </div>
+        );
+      })}
+      <p>Sub Total: {total}</p>
+    </div>
+  );
+};
+
+export default Cart;

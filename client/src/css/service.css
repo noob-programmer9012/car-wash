@@ -85,6 +85,14 @@
   z-index: 2;
 }
 
+.add {
+  cursor: pointer;
+  position: absolute;
+  z-index: 2;
+  bottom: -5px;
+  left: 55px;
+}
+
 @media only screen and (max-width: 600px) {
   .service {
     overflow-x: hidden;

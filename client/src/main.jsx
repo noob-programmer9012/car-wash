@@ -17,6 +17,7 @@ import { userCategory } from "./loaders/userCategory";
 import { serviceById } from "./loaders/serviceById";
 import { getCategoryById } from "./loaders/getCategoryById";
 import { editServiceFormLoader } from "./loaders/editServiceFormLoader";
+import { cart } from "./loaders/cart";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -35,12 +36,13 @@ import AdminCategories from "./pages/AdminCategories";
 import UserServices from "./pages/UserServices";
 import Customers from "./pages/Customers";
 import ServiceById from "./pages/ServiceById";
+import Cart from "./pages/Cart";
+import CategoryForm from "./components/CategoryForm";
+import AdminCategoriesData from "./components/AdminCategoriesData";
 
 // css
 import "./css/index.css";
 import "./css/login.css";
-import CategoryForm from "./components/CategoryForm";
-import AdminCategoriesData from "./components/AdminCategoriesData";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,11 @@ const router = createBrowserRouter([
         path: "/service/:id",
         element: <ServiceById />,
         loader: serviceById,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+        loader: cart,
       },
     ],
   },

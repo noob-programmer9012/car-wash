@@ -88,6 +88,24 @@ export const getUser = async (req, res, next) => {
   }
 };
 
+export const getCart = async (req, res, next) => {
+  const userId = req.user;
+  if (!req.isUser || !mongoose.Types.ObjectId.isValid(userId))
+    return next(new ErrorResponse("Not a valid user", 401));
+
+  try {
+    const user = await User.findById(userId).populate("cart.items.serviceId");
+    if (!user) return next(new ErrorResponse("No user found", 404));
+    // console.log(user.cart.items);
+    return res.status(200).json({
+      success: true,
+      cart: user.cart.items,
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
 export const postAddToCart = async (req, res, next) => {
   const serviceId = req.params.serviceId;
   const userId = req.user;

@@ -5,8 +5,10 @@
 
   --input-background: #979696;
   --text: #ffffff;
-  --nav-text: #4e4d4d;
-  --nav-background: #ffbb00;
+  /* --nav-text: #979797; */
+  --nav-text: #f5f4e8;
+  /* --nav-background: #ffbb00; */
+  --nav-background: #2c2d34;
   --primary: #242424;
   /* --secondary: #78787a; */
   --secondary: #504e4e;
@@ -18,7 +20,7 @@
   --error-icon-background: #db773a;
   --error-hover: #884925;
 
-  --optional-success-color: #CD2CC;
+  /* --optional-success-color: #cd2ccc; */
   --optional-success-text: #2d2f31;
 
   --border-primary: #ffffff;
@@ -62,6 +64,7 @@ body,
   top: 0;
   z-index: 10;
   justify-content: space-between;
+  box-shadow: 0px 2px 20px var(--border-secondary);
 }
 
 .top-nav > .address {
@@ -72,7 +75,12 @@ body,
   color: var(--nav-text);
 }
 
-.top-nav > .user {
+.top-nav > .actions {
+  display: flex;
+  align-items: center;
+}
+
+.top-nav > .actions > .user {
   display: flex;
   gap: 1em;
   align-items: center;
@@ -91,6 +99,7 @@ body,
   padding: 0 3em;
   z-index: 10;
   justify-content: center;
+  box-shadow: 0px -5px 20px var(--secondary);
 }
 
 .bottom-nav > .navigation {

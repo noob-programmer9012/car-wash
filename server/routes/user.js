@@ -9,6 +9,7 @@ router.get("/getCategories", userController.getCategories);
 router.get("/getServices/:id", userController.getServices);
 router.get("/getAllServices", userController.getAllServices);
 router.get("/service/:id", userController.getServiceById);
+router.get("/getCart", userController.getCart);
 
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);

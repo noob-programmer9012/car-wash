@@ -70,7 +70,7 @@ const userSchema = new mongoose.Schema({
       {
         serviceId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "service",
+          ref: "Service",
           required: true,
         },
       },
