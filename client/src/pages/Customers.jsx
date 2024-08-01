@@ -1,8 +1,8 @@
-import { useLoaderData } from "react-router-dom";
+// import { useLoaderData } from "react-router-dom";
 
 const Customers = () => {
-  const data = useLoaderData();
-  console.log(data);
+  // const data = useLoaderData();
+
   return (
     <div className="customers">
       <h1>Customers</h1>

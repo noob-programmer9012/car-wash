@@ -7,7 +7,7 @@ import "../css/serviceById.css";
 
 const ServiceById = () => {
   const service = useLoaderData();
-  console.log(service);
+  // console.log(service);
 
   return (
     <div className="serviceById">
