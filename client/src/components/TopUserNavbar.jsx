@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import { useDispatch } from "react-redux";
 import { authActions, persistor } from "../store/auth";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 import CottageIcon from "@mui/icons-material/Cottage";
@@ -14,13 +14,15 @@ import { useEffect, useState } from "react";
 export default function TopUserNavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let revalidator = useRevalidator();
   const data = useLoaderData();
 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (data.cart.items.length > 0) setVisible(false);
-  }, [visible, data]);
+    revalidator.revalidate();
+  }, [visible, data, revalidator]);
 
   async function handleLogOut() {
     dispatch(authActions.setUser({ user: undefined, token: undefined }));
