@@ -150,3 +150,37 @@ export const postAddToCart = async (req, res, next) => {
     return next(new ErrorResponse(error, 500));
   }
 };
+
+export const deleteCartItem = async (req, res, next) => {
+  const serviceId = req.params.serviceId;
+  const userId = req.user;
+
+  if (
+    !mongoose.Types.ObjectId.isValid(serviceId) ||
+    !mongoose.Types.ObjectId.isValid(userId)
+  )
+    return res.status(401).json({
+      success: false,
+      message: "Not a valid id",
+    });
+
+  try {
+    const user = await User.findById(userId);
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "No user found with this id." });
+    const cartItems = user.cart.items;
+    const updatedCart = cartItems.filter((item) => {
+      return item.serviceId.toString() !== serviceId;
+    });
+    user.cart.items = updatedCart;
+    await user.save();
+    return res.status(201).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};

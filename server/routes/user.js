@@ -14,4 +14,7 @@ router.get("/getCart", userController.getCart);
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);
 
+// delete routes
+router.delete("/deletCartItem/:serviceId", userController.deleteCartItem);
+
 export default router;
