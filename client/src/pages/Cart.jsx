@@ -1,5 +1,7 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import "../css/cart.css";
@@ -7,7 +9,24 @@ import { useEffect, useState } from "react";
 
 const Cart = () => {
   const data = useLoaderData();
+  const token = useSelector((state) => state.token);
+  const navigate = useNavigate();
   const [total, setTotal] = useState(null);
+
+  async function handleRemove(id) {
+    const url = `http://localhost:5000/deletCartItem/${id}`;
+
+    try {
+      const data = await axios.delete(url, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (data.status === 201) return navigate("/cart");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     let sum = 0;
@@ -31,7 +50,12 @@ const Cart = () => {
               <Typography variant="h6">{item.serviceId.serviceName}</Typography>
               <Typography variant="p">{item.serviceId.plan.price}</Typography>
             </div>
-            <RemoveCircleIcon className="remove" />
+            <RemoveCircleIcon
+              className="remove"
+              onClick={() => {
+                handleRemove(item.serviceId._id);
+              }}
+            />
           </div>
         );
       })}
