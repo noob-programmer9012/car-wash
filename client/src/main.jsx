@@ -23,6 +23,7 @@ import { cart } from "./loaders/cart";
 import { categoryAction } from "./action/categoryAction.";
 import { serviceAction } from "./action/serviceAction";
 import { editCategoryAction } from "./action/editCategoryAction";
+import { signUp } from "./action/signUp";
 
 // pages
 import Dashboard from "./pages/Dashboard";
@@ -43,6 +44,7 @@ import AdminCategoriesData from "./components/AdminCategoriesData";
 // css
 import "./css/index.css";
 import "./css/login.css";
+import Signup from "./pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -141,6 +143,11 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
     loader: login,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+    action: signUp,
   },
 ]);
 

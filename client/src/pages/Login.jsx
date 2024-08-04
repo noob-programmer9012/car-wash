@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, Link, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import { authActions, persistor } from "../store/auth";
+import { Typography } from "@mui/material";
 // import InputField from "../components/InputField";
 
 export default function Login() {
@@ -194,6 +195,10 @@ export default function Login() {
             <button type="submit" className="btn">
               Login
             </button>
+            <div className="signup">
+              <Typography variant="p">Dont have an account? </Typography>
+              <Link to="/signup">Sign Up</Link>
+            </div>
           </Form>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import titleCase from "../utils/titleCase";
 
 function InputField({ inputName, type, required, validator, value, accept }) {
   const [val, setVal] = useState(value ? value : "");
@@ -81,7 +82,7 @@ function InputField({ inputName, type, required, validator, value, accept }) {
           accept={accept}
         ></input>
         <label htmlFor={inputName} className="label" id="label">
-          {required ? `${inputName} *` : inputName}
+          {required ? `${titleCase(inputName)} *` : titleCase(inputName)}
         </label>
       </div>
     </>

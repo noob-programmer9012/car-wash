@@ -33,13 +33,13 @@ export const postLogin = async (req, res, next) => {
     const isUser = await User.findOne({ email }).select("+password");
     if (!isUser) {
       return next(
-        new ErrorResponse("This email address is not associated with any user!")
+        new ErrorResponse("Please enter correct email and password!", 404)
       );
     }
     const match = await isUser.comparePassword(password);
     if (!match) {
       return next(
-        new ErrorResponse("Please enter correct email and password", 401)
+        new ErrorResponse("Please enter correct email and password!", 401)
       );
     }
     const token = jwt.sign(

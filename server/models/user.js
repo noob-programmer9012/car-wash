@@ -85,13 +85,19 @@ userSchema.pre("save", async function (next) {
   this.address.area = titleCase(this.address.area);
   this.city = titleCase(this.city);
   this.fullname = titleCase(this.fullname);
-  if (this.mobileNo.isModified) this.mobileNo = "+91-" + this.mobileNo;
+
+  if (!this.isModified("mobileNo")) {
+    next();
+  } else {
+    this.mobileNo = "+91-" + this.mobileNo;
+  }
 
   if (!this.isModified("password")) {
     next();
+  } else {
+    this.password = await bcrypt.hash(this.password, 12);
   }
 
-  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 

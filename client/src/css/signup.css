@@ -1,0 +1,81 @@
+.signup-component {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary);
+}
+
+.signup-component > .signup-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  width: 30%;
+  overflow-y: auto;
+}
+
+/* .signup-items > .signup-form {
+ 
+} */
+
+.signup-form > .part-one,
+.part-two {
+  display: none;
+}
+
+.part-two > .address {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.address > .extra,
+.city {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.signup-form > .show {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.change-parts {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.change-parts > button {
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.change-parts > div {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  transition: all 0.2s ease-in;
+}
+
+@media only screen and (max-width: 600px) {
+  .address > .extra,
+  .city {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .signup-component > .signup-items {
+    width: 90%;
+  }
+}
