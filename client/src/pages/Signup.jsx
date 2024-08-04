@@ -1,4 +1,4 @@
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useRevalidator } from "react-router-dom";
 import InputField from "../components/InputField";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -8,7 +8,44 @@ import { useEffect, useState } from "react";
 
 const Signup = () => {
   const actionData = useActionData();
-  console.log(actionData);
+  const validator = useRevalidator();
+
+  const [error, setError] = useState(null);
+  const [show, setShow] = useState(false);
+
+  function handleClose() {
+    setShow((prev) => !prev);
+  }
+
+  useEffect(() => {
+    validator.revalidate();
+    if (actionData && actionData.startsWith("ValidationError")) {
+      setError("Validation Error");
+      setShow((prev) => !prev);
+    } else if (actionData && actionData.indexOf("duplicate") !== -1) {
+      setError("Please choose another email address");
+      setShow(true);
+    } else {
+      setError(actionData);
+      setShow(true);
+    }
+    if (!actionData) setShow(false);
+  }, [actionData, validator]);
+
+  useEffect(() => {
+    if (show) {
+      const erBlock = document.querySelector(".error-block");
+      const error = document.querySelector(".error");
+      erBlock && erBlock.classList.add("show");
+      error && error.classList.add("show");
+    } else {
+      const erBlock = document.querySelector(".error-block");
+      const error = document.querySelector(".error");
+      erBlock && erBlock.classList.remove("show");
+      error && error.classList.remove("show");
+    }
+  }, [show]);
+
   const [part, setPart] = useState(1);
 
   useEffect(() => {
@@ -58,6 +95,18 @@ const Signup = () => {
   return (
     <div className="signup-component">
       <div className="signup-items">
+        {show && (
+          <div className="error-block">
+            <span className="material-symbols-outlined error-icon">error</span>
+            <p className="error">{error}</p>
+            <span
+              className="material-symbols-outlined close"
+              onClick={handleClose}
+            >
+              close
+            </span>
+          </div>
+        )}
         <Form noValidate className="form signup-form" method="POST">
           <div className="part-one show">
             <h1>Sign Up</h1>
@@ -73,6 +122,7 @@ const Signup = () => {
               inputName="fullname"
               type="string"
               value={""}
+              validator="character"
             />
           </div>
           <div className="part-two">
@@ -104,12 +154,14 @@ const Signup = () => {
                   inputName="pincode"
                   type="string"
                   value={""}
+                  validator="number"
                 />
                 <InputField
                   required
                   inputName="city"
                   type="string"
                   value={""}
+                  validator="character"
                 />
               </div>
               <InputField
@@ -117,6 +169,7 @@ const Signup = () => {
                 required
                 type="string"
                 value={""}
+                validator="number"
               />
             </div>
             <input type="submit" className="btn" value={"Submit"} />

@@ -44,7 +44,10 @@ function InputField({ inputName, type, required, validator, value, accept }) {
 
     if (validator === "number") {
       const onlyNum = e.target.value.replace(/[^0-9.]/g, "");
-      e.target.value = onlyNum;
+      setVal(onlyNum);
+    } else if (validator === "character") {
+      const onlyChar = e.target.value.replace(/[^a-zA-Z ]/g, "");
+      setVal(onlyChar);
     }
   };
 

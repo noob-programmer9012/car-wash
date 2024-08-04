@@ -163,7 +163,11 @@ export default function Login() {
                 <span className="material-symbols-outlined check-icon">
                   check
                 </span>
-                <p className="logout">You have been successfully logged out!</p>
+                <p className="logout">
+                  {data === "JWT EXPIRED"
+                    ? "You have been successfully logged out!"
+                    : data}
+                </p>
                 <p className="counter">{counter}</p>
               </div>
             )}

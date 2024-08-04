@@ -10,5 +10,5 @@ export const redirectToLogin = (error) => {
     store.dispatch(authActions.setUser({ user: undefined, token: undefined }));
     return redirect("/login");
   }
-  return new Response({ statusCode: 500, message: error });
+  return error.response.data.message;
 };
