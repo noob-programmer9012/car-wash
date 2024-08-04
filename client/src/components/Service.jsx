@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useSelector } from "react-redux";
 
 import titleCase from "../utils/titleCase";
@@ -50,6 +51,7 @@ const Service = () => {
                 onClick={(e) => {
                   if (e.target.className !== "add")
                     navigate(`/service/${service._id}`);
+                  else return;
                 }}
                 id={service._id}
               >
@@ -86,13 +88,11 @@ const Service = () => {
                     height={200}
                   ></img>
                   <p className="title">With Underbody</p>
-                  <p
+                  <AddShoppingCartIcon
                     className="add"
                     id={service._id}
                     onClick={(e) => addToCart(e)}
-                  >
-                    Add To Cart
-                  </p>
+                  />
                 </div>
               </div>
             </React.Fragment>

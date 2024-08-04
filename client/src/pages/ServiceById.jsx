@@ -1,13 +1,42 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
 import titleCase from "../utils/titleCase";
 import "../css/serviceById.css";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { redirectToLogin } from "../utils/redirect";
 
 const ServiceById = () => {
   const service = useLoaderData();
-  // console.log(service);
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.token);
+
+  async function addToCart(e) {
+    const url = `http://localhost:5000/addToCart/${e.target.id}`;
+
+    try {
+      const data = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      if (data.data.success && data.status === 201) return navigate("/cart");
+    } catch (error) {
+      // if (
+      //   error.response.data.message === "jwt malformed" ||
+      //   error.response.data.message === "jwt expired"
+      // )
+      //   navigate("/login");
+      redirectToLogin(error);
+    }
+  }
 
   return (
     <div className="serviceById">
@@ -57,7 +86,9 @@ const ServiceById = () => {
             })}
           </div>
         </div>
-        <button className="btn">ADD TO CART</button>
+        <button className="btn" id={service._id} onClick={(e) => addToCart(e)}>
+          ADD TO CART
+        </button>
       </div>
     </div>
   );
