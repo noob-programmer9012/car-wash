@@ -1,7 +1,9 @@
-import { Form, useActionData, useRevalidator } from "react-router-dom";
+import { Form, Link, useActionData, useRevalidator } from "react-router-dom";
 import InputField from "../components/InputField";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import "../css/signup.css";
 import { useEffect, useState } from "react";
@@ -12,6 +14,17 @@ const Signup = () => {
 
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [type, setType] = useState("password");
+
+  function toggleVisible() {
+    setVisible((prev) => !prev);
+  }
+
+  useEffect(() => {
+    if (visible) setType("string");
+    else setType("password");
+  }, [visible]);
 
   function handleClose() {
     setShow((prev) => !prev);
@@ -78,6 +91,17 @@ const Signup = () => {
     const partOne = document.querySelector(".part-one");
     const partTwo = document.querySelector(".part-two");
 
+    const password = document.querySelector(".input.password").value;
+    const confirmPassword = document.querySelector(
+      ".input.confirm.password"
+    ).value;
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      setShow(true);
+      return;
+    }
+
     setPart(2);
     partOne.classList.remove("show");
     partTwo.classList.add("show");
@@ -117,6 +141,21 @@ const Signup = () => {
               type="password"
               value={""}
             />
+            <div className="confirmPassword">
+              <InputField
+                required
+                inputName="confirm password"
+                type={type}
+                value={""}
+              />
+              <div className="icon" onClick={toggleVisible}>
+                {visible ? (
+                  <VisibilityIcon className={"showPassword"} />
+                ) : (
+                  <VisibilityOffIcon className={"showPassword"} />
+                )}
+              </div>
+            </div>
             <InputField
               required
               inputName="fullname"
@@ -175,6 +214,9 @@ const Signup = () => {
             <input type="submit" className="btn" value={"Submit"} />
           </div>
         </Form>
+        <p>
+          Already have an account?&nbsp;&nbsp;<Link to="/login">Login</Link>
+        </p>
         <div className="change-parts">
           <button
             type="button"

@@ -68,6 +68,21 @@
   transition: all 0.2s ease-in;
 }
 
+.confirmPassword {
+  position: relative;
+}
+
+.input.confirm.password {
+  padding-right: 3rem !important;
+}
+
+.showPassword {
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 18px;
+}
+
 @media only screen and (max-width: 600px) {
   .address > .extra,
   .city {
