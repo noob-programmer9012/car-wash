@@ -24,7 +24,7 @@ function CategoryForm() {
           <Link to="..">Back</Link>
 
           {data ? <h1>Edit Category</h1> : <h1>Add Category</h1>}
-          {data.message && <p>{data.message}</p>}
+          {data && <p>{data.message}</p>}
           <InputField
             inputName="Category Name"
             type="text"

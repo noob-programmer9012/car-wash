@@ -15,6 +15,7 @@ export const getCategoryById = async ({ params }) => {
         Authorization: token,
       },
     });
+    console.log(category);
     return {
       data: category.data.data,
       message: history.state.message ? history.state.message : "",

@@ -18,7 +18,6 @@ const Signup = () => {
   }
 
   useEffect(() => {
-    validator.revalidate();
     if (actionData && actionData.startsWith("ValidationError")) {
       setError("Validation Error");
       setShow((prev) => !prev);
@@ -30,7 +29,7 @@ const Signup = () => {
       setShow(true);
     }
     if (!actionData) setShow(false);
-  }, [actionData, validator]);
+  }, [actionData]);
 
   useEffect(() => {
     if (show) {
@@ -43,8 +42,9 @@ const Signup = () => {
       const error = document.querySelector(".error");
       erBlock && erBlock.classList.remove("show");
       error && error.classList.remove("show");
+      validator.revalidate();
     }
-  }, [show]);
+  }, [show, validator]);
 
   const [part, setPart] = useState(1);
 

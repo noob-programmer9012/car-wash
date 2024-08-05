@@ -95,7 +95,7 @@ const AdminCategoriesData = () => {
                   <div className="actions">
                     <div
                       className="edit"
-                      onClick={() => navigate(`edit-service/${row.id}`)}
+                      onClick={() => navigate(`edit-category/${row.id}`)}
                     >
                       <EditIcon />
                     </div>
