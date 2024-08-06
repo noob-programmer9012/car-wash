@@ -1,10 +1,12 @@
 // External Libraries
 import jwt from "jsonwebtoken";
+import { generateKey } from "node:crypto";
 
 // Internal Imports
 import { ErrorResponse } from "../util/errorRespone.js";
 import { Admin } from "../models/admin.js";
 import User from "../models/user.js";
+import sendEmail from "../util/sendEmail.js";
 
 // Auth-related logic
 export const postLogin = async (req, res, next) => {
@@ -62,5 +64,73 @@ export const postSignUp = async (req, res, next) => {
     });
   } catch (error) {
     next(new ErrorResponse(error, 500));
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  const email = req.body.email;
+  if (!email)
+    return res
+      .status(401)
+      .json({ success: false, message: "Please enter your email address" });
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        message: "This email is not associated with any user.",
+      });
+
+    generateKey("aes", { length: 256 }, async (err, key) => {
+      if (err)
+        return res
+          .status(500)
+          .json({ success: false, message: "Could not generate reset path." });
+
+      if (key) {
+        user.passwordResetToken = key.export().toString("hex");
+        user.passwordResetTokenExpiry = Date.now() + 60000 * 10;
+        await user.save();
+        // send mail to user with reset link
+        await sendEmail({
+          to: user.email,
+          subject: "Password reset form link",
+          html: `http://localhost:5000/resetPassword/${user.passwordResetToken}`,
+        });
+        return res.status(201).json({
+          success: true,
+          message: "User reset token created successfully.",
+        });
+      }
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
+export const postResetPassoword = async (req, res, next) => {
+  const passwordResetToken = req.params.resetToken;
+
+  try {
+    const user = await User.findOne({ passwordResetToken });
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        message: "Wrong reset token or token expired",
+      });
+    console.log(user.passwordResetTokenExpiry > Date.now());
+    if (!(user.passwordResetTokenExpiry > Date.now())) {
+      user.passwordResetToken = undefined;
+      user.passwordResetTokenExpiry = undefined;
+      await user.save();
+      return res.status(401).json({
+        success: false,
+        message: "Reset token expired",
+      });
+    }
+    return res.json(user);
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
   }
 };

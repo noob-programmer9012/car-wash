@@ -76,6 +76,8 @@ const userSchema = new mongoose.Schema({
       },
     ],
   },
+  passwordResetToken: String,
+  passwordResetTokenExpiry: Date, // Date.now() + 60000 * 10;
   // reviews: [mongoose.Schema.Types.ObjectId],
 });
 
