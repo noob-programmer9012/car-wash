@@ -45,11 +45,14 @@ const Signup = () => {
   }, [actionData]);
 
   useEffect(() => {
+    // const body = document.getElementsByTagName("body");
     if (show) {
       const erBlock = document.querySelector(".error-block");
       const error = document.querySelector(".error");
+      const err = document.querySelector(".error-block");
       erBlock && erBlock.classList.add("show");
       error && error.classList.add("show");
+      err.scrollIntoView({ behavior: "smooth" });
     } else {
       const erBlock = document.querySelector(".error-block");
       const error = document.querySelector(".error");
@@ -73,7 +76,7 @@ const Signup = () => {
       divs[1].style.width = "10px";
       divs[0].style.height = "15px";
       divs[0].style.width = "15px";
-      divs[1].style.backgroundColor = "black";
+      divs[1].style.backgroundColor = "#979696";
       divs[0].style.backgroundColor = "#fff";
     } else {
       prev.disabled = false;
@@ -82,7 +85,7 @@ const Signup = () => {
       divs[0].style.width = "10px";
       divs[1].style.height = "15px";
       divs[1].style.width = "15px";
-      divs[0].style.backgroundColor = "black";
+      divs[0].style.backgroundColor = "#979696";
       divs[1].style.backgroundColor = "#fff";
     }
   }, [part]);
