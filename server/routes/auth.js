@@ -9,6 +9,7 @@ router.post("/signup", authController.postSignUp);
 
 // password reset
 router.post("/resetPassword", authController.resetPassword);
-router.post("/resetPassword/:resetToken", authController.postResetPassoword);
+router.get("/resetPassword/:resetToken", authController.getResetPassoword);
+router.post("/resetPasswordComplete", authController.postResetPassoword);
 
 export default router;

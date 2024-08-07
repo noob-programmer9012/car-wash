@@ -14,6 +14,7 @@ export default function Login() {
   const [show, setShow] = useState(false);
   const [logout, setLogout] = useState(false);
   const [counter, setCounter] = useState(6);
+  const [msg, setMsg] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let data = useLoaderData();
@@ -54,6 +55,20 @@ export default function Login() {
 
   function handleClose() {
     setShow((prev) => !prev);
+  }
+
+  async function forgotPassword() {
+    if (email === undefined || email === "") {
+      setError("Please enter your email id to recover password!");
+      setShow(true);
+    } else {
+      // connect to resetPassword post route
+      const url = `http://localhost:5000/auth/resetPassword`;
+      const data = await axios.post(url, { email });
+      if (data.data.message === "User reset token created successfully.") {
+        setMsg("Please check your email for password restore link");
+      }
+    }
   }
 
   async function handleSubmit(e) {
@@ -158,18 +173,31 @@ export default function Login() {
                 </span>
               </div>
             }
-            {logout && (
+            {logout ? (
               <div className="logout-block">
-                <span className="material-symbols-outlined check-icon">
-                  check
-                </span>
-                <p className="logout">
-                  {data === "JWT EXPIRED"
-                    ? "You have been successfully logged out!"
-                    : data}
-                </p>
-                <p className="counter">{counter}</p>
+                <div className="content">
+                  <span className="material-symbols-outlined check-icon">
+                    check
+                  </span>
+                  <p className="logout">
+                    {data === "JWT EXPIRED"
+                      ? "You have been successfully logged out!"
+                      : data || msg}
+                  </p>
+                  <p className="counter">{counter}</p>
+                </div>
               </div>
+            ) : (
+              msg && (
+                <div className="logout-block">
+                  <div className="content">
+                    <span className="material-symbols-outlined check-icon">
+                      check
+                    </span>
+                    <p className="logout">{msg}</p>
+                  </div>
+                </div>
+              )
             )}
             {/* <InputField type="text" required inputName="Email" />
             <InputField type="password" required inputName="Password" /> */}
@@ -200,8 +228,16 @@ export default function Login() {
               Login
             </button>
             <div className="signup">
-              <Typography variant="p">Dont have an account? </Typography>
-              <Link to="/signup">Sign Up</Link>
+              <div className="forgot-password">
+                <Typography variant="p">Forgot Password? </Typography>
+                <p className="forgotPassword" onClick={forgotPassword}>
+                  Click here!
+                </p>
+              </div>
+              <div className="signup-link">
+                <Typography variant="p">Dont have an account? </Typography>
+                <Link to="/signup">Sign Up</Link>
+              </div>
             </div>
           </Form>
         </div>

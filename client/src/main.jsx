@@ -18,6 +18,7 @@ import { serviceById } from "./loaders/serviceById";
 import { getCategoryById } from "./loaders/getCategoryById";
 import { editServiceFormLoader } from "./loaders/editServiceFormLoader";
 import { cart } from "./loaders/cart";
+import { resetPasswordLoader } from "./loaders/resetPasswordLoader";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -40,11 +41,13 @@ import ServiceById from "./pages/ServiceById";
 import Cart from "./pages/Cart";
 import CategoryForm from "./components/CategoryForm";
 import AdminCategoriesData from "./components/AdminCategoriesData";
+import Signup from "./pages/Signup";
+import ResetPassword from "./pages/ResetPassword";
 
 // css
 import "./css/index.css";
 import "./css/login.css";
-import Signup from "./pages/Signup";
+import { resetPassword } from "./action/resetPassword";
 
 const router = createBrowserRouter([
   {
@@ -148,6 +151,12 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <Signup />,
     action: signUp,
+  },
+  {
+    path: "/resetPassword/:resetToken",
+    element: <ResetPassword />,
+    loader: resetPasswordLoader,
+    action: resetPassword,
   },
 ]);
 

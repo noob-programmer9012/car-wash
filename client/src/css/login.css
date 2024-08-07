@@ -38,10 +38,21 @@
 }
 
 .signup {
-  align-self: flex-end;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
+}
+
+.signup > .forgot-password {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.forgot-password > .forgotPassword {
+  text-decoration: underline;
+  color: #ffadff;
+  cursor: pointer;
 }
 
 .field {
@@ -126,12 +137,19 @@
   transition: all ease-in 0.4s;
   margin-bottom: 1rem;
   display: flex;
-  justify-content: flex-start;
-  padding: 1rem 0;
-  gap: 2rem;
+  justify-content: center;
   align-items: center;
+  padding: 1rem 0;
   transition: all ease-out 0.2;
   opacity: 1;
+}
+
+.logout-block > .content {
+  padding: 0 0.5rem;
+  width: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .logout {
@@ -149,7 +167,6 @@
 
 .material-symbols-outlined.check-icon {
   color: var(--success-icon) !important;
-  margin-left: 1rem;
 }
 
 .error-block.show {
@@ -211,5 +228,19 @@
   .card {
     width: 100%;
     height: 100%;
+  }
+
+  .material-symbols-outlined.check-icon {
+    margin-right: 0.5rem;
+  }
+
+  .content {
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .signup {
+    flex-direction: column;
+    gap: 1rem;
   }
 }

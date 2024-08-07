@@ -84,9 +84,11 @@ function InputField({ inputName, type, required, validator, value, accept }) {
           value={val}
           accept={accept}
         ></input>
-        <label htmlFor={inputName} className="label" id="label">
-          {required ? `${titleCase(inputName)} *` : titleCase(inputName)}
-        </label>
+        {!type !== "hidden" && (
+          <label htmlFor={inputName} className="label" id="label">
+            {required ? `${titleCase(inputName)} *` : titleCase(inputName)}
+          </label>
+        )}
       </div>
     </>
   );

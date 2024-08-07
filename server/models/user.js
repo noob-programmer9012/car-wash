@@ -88,15 +88,11 @@ userSchema.pre("save", async function (next) {
   this.city = titleCase(this.city);
   this.fullname = titleCase(this.fullname);
 
-  if (!this.isModified("mobileNo")) {
-    next();
-  } else {
+  if (this.isModified("mobileNo")) {
     this.mobileNo = "+91-" + this.mobileNo;
   }
 
-  if (!this.isModified("password")) {
-    next();
-  } else {
+  if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
   }
 

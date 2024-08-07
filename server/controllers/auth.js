@@ -96,7 +96,7 @@ export const resetPassword = async (req, res, next) => {
         await sendEmail({
           to: user.email,
           subject: "Password reset form link",
-          html: `http://localhost:5000/resetPassword/${user.passwordResetToken}`,
+          html: `http://localhost:5173/resetPassword/${user.passwordResetToken}`,
         });
         return res.status(201).json({
           success: true,
@@ -109,7 +109,7 @@ export const resetPassword = async (req, res, next) => {
   }
 };
 
-export const postResetPassoword = async (req, res, next) => {
+export const getResetPassoword = async (req, res, next) => {
   const passwordResetToken = req.params.resetToken;
 
   try {
@@ -119,7 +119,7 @@ export const postResetPassoword = async (req, res, next) => {
         success: false,
         message: "Wrong reset token or token expired",
       });
-    console.log(user.passwordResetTokenExpiry > Date.now());
+
     if (!(user.passwordResetTokenExpiry > Date.now())) {
       user.passwordResetToken = undefined;
       user.passwordResetTokenExpiry = undefined;
@@ -129,7 +129,47 @@ export const postResetPassoword = async (req, res, next) => {
         message: "Reset token expired",
       });
     }
-    return res.json(user);
+
+    return res.status(200).json({
+      success: true,
+      message: "Valid reset token",
+      token: user.passwordResetToken,
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
+export const postResetPassoword = async (req, res, next) => {
+  const passwordResetToken = req.body.token;
+  const newPassword = req.body.newPassword;
+
+  try {
+    const user = await User.findOne({ passwordResetToken });
+    if (!user)
+      return res.status(404).json({
+        success: false,
+        message: "Wrong reset token or token expired",
+      });
+
+    if (!(user.passwordResetTokenExpiry > Date.now())) {
+      user.passwordResetToken = undefined;
+      user.passwordResetTokenExpiry = undefined;
+      await user.save();
+      return res.status(401).json({
+        success: false,
+        message: "Reset token expired",
+      });
+    }
+
+    user.password = newPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpiry = undefined;
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Password Changed Successfully.",
+    });
   } catch (error) {
     return next(new ErrorResponse(error, 500));
   }

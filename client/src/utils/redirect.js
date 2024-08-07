@@ -9,6 +9,13 @@ export const redirectToLogin = (error) => {
     history.pushState({ message: "JWT EXPIRED" }, "", "/login");
     store.dispatch(authActions.setUser({ user: undefined, token: undefined }));
     return redirect("/login");
+  } else if (
+    error.response.data.message === "Wrong reset token or token expired" ||
+    error.response.data.message === "Reset token expired"
+  ) {
+    history.pushState({ message: "Reset Token Expired!" }, "", "/login");
+    store.dispatch(authActions.setUser({ user: undefined, token: undefined }));
+    return redirect("/login");
   }
   return error.response.data.message;
 };
