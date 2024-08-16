@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 import { unlink } from "fs/promises";
 import path from "path";
+import { existsSync } from "fs";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
@@ -103,7 +104,6 @@ export const putCategory = async (req, res, next) => {
 
 export const postService = async (req, res, next) => {
   const { serviceName } = req.body;
-  console.log(req.body);
 
   const exists = await Service.findOne({
     serviceName: titleCase(serviceName),
@@ -117,6 +117,10 @@ export const postService = async (req, res, next) => {
     addFiles(req, res, next, service);
 
     service.serviceName = titleCase(service.serviceName);
+    const newFacilities = service.plan.facilities.map(f => {
+      return titleCase(f);
+    });
+    service.plan.facilities = newFacilities;
     // const newFacilities = [];
     // service.plan.facilities.forEach((facility) => {
     //   newFacilities.push(titleCase(facility));
@@ -124,7 +128,6 @@ export const postService = async (req, res, next) => {
     // service.plan.facilities = newFacilities;
 
     const result = await service.save();
-    console.log(result);
 
     return res.status(200).json({
       success: true,
@@ -133,6 +136,67 @@ export const postService = async (req, res, next) => {
     });
   } catch (error) {
     return next(new ErrorResponse(error, 400));
+  }
+};
+
+export const putService = async (req, res, next) => {
+  const id = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return next(new ErrorResponse("Not a valid service id", 500));
+
+  try {
+    const service = await Service.findById(id);
+    if (!service)
+      return next(new ErrorResponse("No service found with this id", 404));
+
+    const imageUrl = service.imageUrl;
+    console.log(imageUrl);
+    
+    service.serviceName = req.body.serviceName;
+    service.category = req.body.category;
+    service.plan.price = req.body.plan.price;
+    service.plan.facilities = req.body.plan.facilities;
+    service.plan.discount = req.body.plan.discount;
+    service.validity = req.body.validity;
+
+    if (req.file) {
+      if (
+        req.file.mimetype === "image/jpeg" ||
+        req.file.mimetype === "image/jpg"
+      ) {
+        const url = path.join(path.resolve(), imageUrl);
+        if (url && existsSync(url)) {
+          try {
+            await unlink(url);
+            addFiles(req, res, next, service);
+          } catch (error) {
+            await unlink(req.file.path);
+            return next(
+              new ErrorResponse(
+                "Could not delete old file, please try again",
+                500
+              )
+            );
+          }
+        } else {
+          addFiles(req, res, next, service);
+        }
+      } else {
+        return next(new ErrorResponse("Not a valid file type", 401));
+      }
+    };
+
+    await service.save();
+
+    
+    return res.status(201).json({
+      success: true,
+      service,
+    });
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(error, 500));
   }
 };
 

@@ -56,6 +56,13 @@ router.put(
   adminController.putCategory
 );
 
+router.put(
+  "/service/:id",
+  isAdmin,
+  upload.single("file"),
+  adminController.putService
+);
+
 // GET routes
 router.get("/getCategories", userController.getCategories);
 router.get("/getCategory/:id", adminController.getCategoryById);

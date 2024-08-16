@@ -25,6 +25,7 @@ import { categoryAction } from "./action/categoryAction.";
 import { serviceAction } from "./action/serviceAction";
 import { editCategoryAction } from "./action/editCategoryAction";
 import { signUp } from "./action/signUp";
+import { editService } from "./action/editService"
 
 // pages
 import Dashboard from "./pages/Dashboard";
@@ -127,6 +128,7 @@ const router = createBrowserRouter([
             path: "/admin/services/edit-service/:id",
             element: <AddService />,
             loader: editServiceFormLoader,
+            action: editService,
           },
         ],
       },

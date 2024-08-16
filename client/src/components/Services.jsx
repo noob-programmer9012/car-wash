@@ -59,7 +59,7 @@ const ServicesComponent = () => {
       id: service._id,
       serviceName: service.serviceName,
       price: service.plan.price,
-      facilities: titleCase(service.plan.facilities.toString()),
+      facilities: service.plan.facilities.toString(),
     });
   });
 
