@@ -6,13 +6,14 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import "../css/cart.css";
 import { useEffect, useState } from "react";
+import CheckoutButton from "../components/CheckoutButton";
 
 const Cart = () => {
   const data = useLoaderData();
   const token = useSelector((state) => state.token);
   const navigate = useNavigate();
   const [total, setTotal] = useState(null);
-
+  
   async function handleRemove(id) {
     const url = `http://localhost:5000/deletCartItem/${id}`;
 
@@ -60,6 +61,7 @@ const Cart = () => {
         );
       })}
       <p>Sub Total: {total}</p>
+      <CheckoutButton amount={total} />
     </div>
   );
 };

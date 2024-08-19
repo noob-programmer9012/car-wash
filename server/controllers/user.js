@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Razorpay from "razorpay";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
@@ -184,3 +185,31 @@ export const deleteCartItem = async (req, res, next) => {
     return next(new ErrorResponse(error, 500));
   }
 };
+
+export const postCheckout = async (req, res, next) => {
+
+  const razorpay = new Razorpay({
+    key_id: "rzp_test_kBDtfQdGy3qNno",
+    key_secret: "OogErPxPtZyGgBnNwGy6XW7q"
+  });
+
+  try {
+    const options = {
+      amount: req.body.total * 100, // amount in paisa
+      currency: "INR",
+      receipt: "receipt#1",
+      payment_capture: 1
+    };
+
+    const order = await razorpay.orders.create(options);
+    console.log(order);
+    return res.status(201).json({
+      success: true,
+      order
+    })
+
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(error, 500));
+  }
+}
