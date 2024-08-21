@@ -34,21 +34,28 @@ function CheckoutButton({ amount }) {
       currency: "INR",
       name: "Car Wash",
       description: "Test Transaction",
-      order_id: order.id,
+      order_id: order.order.id,
       handler: function (response) {
         alert("Payment successful. Payment ID: " + response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
       },
       prefill: {
         name: "Parth Patel",
         email: "parth.sclub@gmail.com",
         contact: "7359959012"
       },
+      config: {
+        display: {
+          hide: [{ method: "netbanking" }, {method: "wallet"}, {method: "paylater"}]
+        }
+      },
       notes: {
         address: "Razorpay Corporate Office"
       },
       theme: {
-        color: "#3399cc"
-      }
+        color: "#2c2d34"
+      },
     };
 
     const paymentObject = new window.Razorpay(options);
