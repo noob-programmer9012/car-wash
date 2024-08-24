@@ -15,6 +15,7 @@ router.get("/getCart", userController.getCart);
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);
 router.post("/checkout", userController.postCheckout);
+router.post("/verify-payment", userController.verifyPayment)
 
 // delete routes
 router.delete("/deletCartItem/:serviceId", userController.deleteCartItem);

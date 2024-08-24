@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
+import crypto from "node:crypto";
 import Razorpay from "razorpay";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
 import User from "../models/user.js";
+import Order from "../models/order.js";
 import { ErrorResponse } from "../util/errorRespone.js";
 
 export const getCategories = async (req, res, next) => {
@@ -211,5 +213,50 @@ export const postCheckout = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return next(new ErrorResponse(error, 500));
+  }
+}
+
+export const verifyPayment = async (req, res, next) => {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id } = req.body;
+
+  // const generated_signature = hmac_sha256(order_id + "|" + razorpay_payment_id, process.env.RAZORPAY_SECRET);
+  const sha = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET);
+  sha.update(`${order_id}|${razorpay_payment_id}`);
+  const digest = sha.digest("hex");
+
+  if (digest === razorpay_signature) {
+      const user = await User.findById(req.user);
+    if (!user)
+      return next(new ErrorResponse("No user found!", 404));
+
+    const items = user.cart.items.map(i => {
+      return {serviceId: i.serviceId};
+    });
+
+    const order = new Order({
+      user,
+      items,
+      paymentDetails: {
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+        paymentSignature: razorpay_signature
+      }
+    })
+ 
+    try {
+      await order.save();
+
+      user.cart.items = [];
+      await user.save();
+
+      return res.status(201).json({
+        success: true,
+        order
+      })
+    } catch (error) {
+      return next(new ErrorResponse(error, 500));
+    }
+  } else {
+    return next(new ErrorResponse("Payment failed", 400));
   }
 }
