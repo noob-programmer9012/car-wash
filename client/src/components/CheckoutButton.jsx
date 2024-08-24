@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 
 import getToken from "../utils/getToken";
+import { useRouteLoaderData } from 'react-router-dom';
 
 function CheckoutButton({ amount }) {
+  const user = useRouteLoaderData("root");
   useEffect(() => {
+    console.log(user);
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
@@ -17,6 +20,7 @@ function CheckoutButton({ amount }) {
   const handlePayment = async () => {
     const url = "http://localhost:5000/checkout";
     const token = await getToken();
+    
 
     const response = await fetch(url, {
       method: 'POST',
@@ -35,15 +39,22 @@ function CheckoutButton({ amount }) {
       name: "Car Wash",
       description: "Test Transaction",
       order_id: order.order.id,
-      handler: function (response) {
-        alert("Payment successful. Payment ID: " + response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
+      handler: async function (response) {
+        const body = { ...response, order_id: order.order.id };
+        const validatePayment = await fetch("http://localhost:5000/verify-payment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+          },
+          body: JSON.stringify(body)
+        })
+        console.log(await validatePayment.json());
       },
       prefill: {
-        name: "Parth Patel",
-        email: "parth.sclub@gmail.com",
-        contact: "7359959012"
+        name: user.fullname,
+        email: user.email,
+        contact: user.mobileNo,
       },
       config: {
         display: {
