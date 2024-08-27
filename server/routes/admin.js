@@ -69,5 +69,6 @@ router.get("/getCategory/:id", adminController.getCategoryById);
 router.get("/getServices", adminController.adminGetServices);
 router.get("/getService/:id", adminController.getServiceById);
 router.get("/getUsers", adminController.getUsers);
+router.get("/getOrders", isAdmin, adminController.getOrders);
 
 export default router;

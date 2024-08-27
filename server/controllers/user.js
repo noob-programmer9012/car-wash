@@ -219,7 +219,6 @@ export const postCheckout = async (req, res, next) => {
 export const verifyPayment = async (req, res, next) => {
   const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id } = req.body;
 
-  // const generated_signature = hmac_sha256(order_id + "|" + razorpay_payment_id, process.env.RAZORPAY_SECRET);
   const sha = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET);
   sha.update(`${order_id}|${razorpay_payment_id}`);
   const digest = sha.digest("hex");

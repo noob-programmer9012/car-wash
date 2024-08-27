@@ -6,6 +6,7 @@ import { existsSync } from "fs";
 
 import Category from "../models/category.js";
 import Service from "../models/service.js";
+import Order from "../models/order.js";
 import titleCase from "../util/titleCase.js";
 import { ErrorResponse } from "../util/errorRespone.js";
 import addFiles from "../util/addFiles.js";
@@ -243,3 +244,23 @@ export const getUsers = async (req, res, next) => {
     next(new ErrorResponse(error, 500));
   }
 };
+
+export const getOrders = async (req, res, next) => {
+  const { pageNumber, nPerPage } = req.query;
+
+  try {
+    const orders = await Order.find()
+      .populate("user")
+      .populate("items.serviceId")
+      .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
+      .limit(nPerPage);
+    return res.status(200).json({
+      success: true,
+      pageNumber,
+      nPerPage,
+      orders,
+    })
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+}
