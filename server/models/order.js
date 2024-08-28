@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const options = ["in-progress", "completed"];
+
 const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,6 +13,12 @@ const orderSchema = new mongoose.Schema({
     orderId: String,
     paymentId: String,
     paymentSignature: String,
+  },
+
+  status: {
+    type: String,
+    enum: options,
+    default: "in-progress"
   },
 
   items: [

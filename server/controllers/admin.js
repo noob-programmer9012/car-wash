@@ -122,11 +122,6 @@ export const postService = async (req, res, next) => {
       return titleCase(f);
     });
     service.plan.facilities = newFacilities;
-    // const newFacilities = [];
-    // service.plan.facilities.forEach((facility) => {
-    //   newFacilities.push(titleCase(facility));
-    // });
-    // service.plan.facilities = newFacilities;
 
     const result = await service.save();
 

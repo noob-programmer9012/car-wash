@@ -19,6 +19,7 @@ import { getCategoryById } from "./loaders/getCategoryById";
 import { editServiceFormLoader } from "./loaders/editServiceFormLoader";
 import { cart } from "./loaders/cart";
 import { resetPasswordLoader } from "./loaders/resetPasswordLoader";
+import { ordersLoader } from "./loaders/ordersLoader";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -44,6 +45,7 @@ import CategoryForm from "./components/CategoryForm";
 import AdminCategoriesData from "./components/AdminCategoriesData";
 import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
+import AdminOrders from "./pages/AdminOrders";
 
 // css
 import "./css/index.css";
@@ -141,7 +143,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/orders",
-        element: <h1>Orders</h1>,
+        element: <AdminOrders />,
+        loader: ordersLoader
       },
     ],
   },
