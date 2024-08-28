@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import { Table, TableBody, TableCell, tableCellClasses, TableHead, TableRow } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import PropTypes from "prop-types";
 import { Fragment } from "react";
 
@@ -26,48 +28,71 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-const CustomTable = ({ rows, columns }) => {
+const CustomTable = ({ rows, columns, edit, del }) => {
   return (
     <Table sx={{ minWidth: 700 }} aria-label="customized table">
-       <TableHead>
-          <TableRow>
-            <StyledTableCell>ID</StyledTableCell>
-            {
-              columns.map(c => (
-                <Fragment key={c}>
-                  <StyledTableCell>{c}</StyledTableCell>
-                </Fragment>
-              ))
-            }
-          </TableRow>
-        </TableHead>
-        <TableBody>
+      <TableHead>
+        <TableRow>
+          <StyledTableCell align="right">ID</StyledTableCell>
           {
-            rows.map((row, index) => {
+            columns.map(c => (
+              <Fragment key={c}>
+                <StyledTableCell align="right">{c}</StyledTableCell>
+              </Fragment>
+            ))
+          }
+          {(edit || del) && <StyledTableCell align="right">Actions</StyledTableCell>}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {
+          rows.map((row, index) => {
             return (
               <StyledTableRow key={row.id}>
-                <StyledTableCell>{ index + 1 }</StyledTableCell>
-                {                  
+                <StyledTableCell align="right">{index + 1}</StyledTableCell>
+                {
                   columns.map((col, index) => {
                     return (
                       <Fragment key={index}>
-                        <StyledTableCell>{row[col]}</StyledTableCell>
+                        <StyledTableCell align="right">{row[col]}</StyledTableCell>
                       </Fragment>
                     )
                   })
                 }
+                <StyledTableCell align="right">
+                  <div className="actions">
+                    {edit &&
+                      <div
+                        className="edit"
+                        onClick={() => alert(row.id)}
+                      >
+                        <EditIcon />
+                      </div>
+                    }
+                    {del &&
+                      <div
+                        className="delete"
+                        onClick={() => handleDelete(row.serviceName, row.id)}
+                      >
+                        <DeleteForeverIcon />
+                      </div>
+                    }
+                  </div>
+                </StyledTableCell>
               </StyledTableRow>
             )
           })
-          }
-        </TableBody>
+        }
+      </TableBody>
     </Table>
   )
 }
 
 CustomTable.propTypes = {
   rows: PropTypes.array.isRequired,
-  columns: PropTypes.array.isRequired
+  columns: PropTypes.array.isRequired,
+  edit: PropTypes.bool,
+  del: PropTypes.bool
 };
 
 export default CustomTable

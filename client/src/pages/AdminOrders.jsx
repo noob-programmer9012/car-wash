@@ -21,7 +21,7 @@ const AdminOrders = () => {
 
   return (
     <>
-      <CustomTable rows={rows} columns={["Customer", "Contact Number", "Order Details", "Payment Status", "Order Status"]}/>
+      <CustomTable rows={rows} columns={["Customer", "Contact Number", "Order Details", "Payment Status", "Order Status"]} edit={true} />
     </>
   )
 }

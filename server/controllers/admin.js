@@ -148,7 +148,7 @@ export const putService = async (req, res, next) => {
 
     const imageUrl = service.imageUrl;
     console.log(imageUrl);
-    
+
     service.serviceName = req.body.serviceName;
     service.category = req.body.category;
     service.plan.price = req.body.plan.price;
@@ -185,7 +185,7 @@ export const putService = async (req, res, next) => {
 
     await service.save();
 
-    
+
     return res.status(201).json({
       success: true,
       service,
@@ -247,7 +247,7 @@ export const getOrders = async (req, res, next) => {
     const orders = await Order.find()
       .populate("user")
       .populate("items.serviceId")
-      .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
+      .skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0)
       .limit(nPerPage);
     return res.status(200).json({
       success: true,
