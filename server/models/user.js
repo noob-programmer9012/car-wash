@@ -81,7 +81,7 @@ const userSchema = new mongoose.Schema({
   // reviews: [mongoose.Schema.Types.ObjectId],
 });
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function(next) {
   this.address.homeNo = titleCase(this.address.homeNo);
   this.address.landmark = titleCase(this.address.landmark);
   this.address.area = titleCase(this.address.area);
@@ -99,7 +99,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
 

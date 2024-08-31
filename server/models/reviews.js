@@ -5,6 +5,10 @@ const reviewSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter userId"],
   },
+  orderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Please enter orderId"]
+  },
   serviceId: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "Please enter serviceId"],

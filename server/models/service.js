@@ -23,14 +23,6 @@ const serviceSchema = new mongoose.Schema({
       match: ["^d+$", "Please enter valid discount value."],
     },
   },
-  validity: {
-    type: String,
-    required: [true, "Please provide validity for plan."],
-    enum: {
-      values: ["year", "month", "one time"],
-      message: "Please select valid plan.",
-    },
-  },
   imageUrl: String,
 });
 

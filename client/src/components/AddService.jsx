@@ -87,16 +87,6 @@ const AddService = () => {
             }
           />
           <div className="field">
-            <select name="validity" id="validity" className="input">
-              <option value="year">Yearly</option>
-              <option value="month">Monthly</option>
-              <option value="one time">One Time</option>
-            </select>
-            <label htmlFor="validity" className="label nontext" id="label">
-              Validity *
-            </label>
-          </div>
-          <div className="field">
             <input type="file" className="input" id="image" name="file"></input>
             <label htmlFor="image" className="label nontext" id="label">
               Image Upload
