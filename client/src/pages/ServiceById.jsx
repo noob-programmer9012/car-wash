@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 import { Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -12,6 +12,7 @@ const ServiceById = () => {
   const service = useLoaderData();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
+  const validator = useRevalidator();
 
   async function addToCart(e) {
     const url = `http://localhost:5000/addToCart/${e.target.id}`;
@@ -26,7 +27,7 @@ const ServiceById = () => {
           },
         }
       );
-
+      validator.revalidate();
       if (data.data.success && data.status === 201) return navigate("/cart");
     } catch (error) {
       // if (

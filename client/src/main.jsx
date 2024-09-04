@@ -46,6 +46,7 @@ import AdminCategoriesData from "./components/AdminCategoriesData";
 import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
 import AdminOrders from "./pages/AdminOrders";
+import Order from "./pages/Order";
 
 // css
 import "./css/index.css";
@@ -77,6 +78,11 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+        loader: cart,
+      },
+      {
+        path: "/order",
+        element: <Order />,
         loader: cart,
       },
     ],
