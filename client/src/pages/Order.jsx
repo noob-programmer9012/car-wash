@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useLoaderData } from "react-router-dom"
 
 import "../css/order.css";
@@ -6,10 +5,6 @@ import { Typography } from "@mui/material";
 
 const Order = () => {
   const data = useLoaderData();
-  useEffect(() => {
-    next.setDate(date.getDate() + 1)
-    console.log(data, next.getDate());
-  }, []);
 
   const date = new Date();
   const next = new Date(date);
@@ -19,6 +14,22 @@ const Order = () => {
 
   const showMiniForm = (e) => {
     const selectors = document.querySelectorAll(".date-selector");
+    const images = document.querySelectorAll("img");
+    const left = document.querySelectorAll(".item-desc>.item-details");
+
+    images.forEach(image => {
+      if (e.target.id === image.id) {
+        image.style.display = "none";
+        left.forEach(item => {
+          if (item.id === e.target.id) item.style.gap = "0";
+          else item.style.gap = "1rem";
+        })
+      }
+      else {
+        image.style.display = "block";
+      }
+    });
+
     selectors.forEach(selector => {
       if (selector.id == e.target.id) {
         selector.classList.remove("hide");
@@ -27,6 +38,20 @@ const Order = () => {
         selector.classList.add("hide");
         selector.classList.remove("show");
       }
+    });
+
+    const dates = document.querySelectorAll(".date-selector.show>.dates>.date");
+    const selected = document.querySelector(".date.select");
+
+    selected && selected.classList.remove("select");
+    dates[0].classList.add("select");
+  };
+
+  const select = (e) => {
+    const dates = document.querySelectorAll(".date-selector.show>.dates>.date");
+    dates.forEach(date => {
+      if (date === e.target) date.classList.add("select");
+      else date.classList.remove("select");
     })
   }
 
@@ -35,9 +60,9 @@ const Order = () => {
       <div className="item-desc">
         {data.map(item => {
           return (
-            <div className="item-details" key={item.serviceId._id}>
+            <div className="item-details" key={item.serviceId._id} id={item.serviceId._id}>
               <div className="left-part">
-                <img src={"http://localhost:5000" + item.serviceId.imageUrl} />
+                <img src={"http://localhost:5000" + item.serviceId.imageUrl} id={item.serviceId._id} />
               </div>
               <div className="right-part">
                 <Typography variant="p">{item.serviceId.serviceName}</Typography>
@@ -45,9 +70,9 @@ const Order = () => {
                 <input type="button" className="btn date" id={item.serviceId._id} value="Select Date" onClick={(e) => showMiniForm(e)} />
                 <div className="date-selector hide" id={item.serviceId._id}>
                   <div className="dates">
-                    <div className="date"><Typography variant="p">{date.getDate()}</Typography></div>
-                    <div className="date">{next.getDate()}</div>
-                    <div className="date">{morrow.getDate()}</div>
+                    <div className="date" onClick={(e) => select(e)}><Typography variant="p">{date.getDate()}</Typography></div>
+                    <div className="date" onClick={(e) => select(e)}>{next.getDate()}</div>
+                    <div className="date" onClick={(e) => select(e)}>{morrow.getDate()}</div>
                   </div>
                   <div className="timeSlots">
                     <div className="slots">
