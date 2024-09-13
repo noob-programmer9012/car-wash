@@ -62,6 +62,12 @@
   width: 100%;
 }
 
+.two-field {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+}
+
 .input {
   background-color: var(--input-background);
   border: none;

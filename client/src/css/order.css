@@ -13,7 +13,7 @@
   gap: 1rem;
 }
 
-.item-desc>.item-details {
+.item-desc > .item-details {
   display: flex;
   gap: 1rem;
   padding: 1rem;
@@ -21,13 +21,13 @@
   background-color: var(--secondary);
 }
 
-.item-details>.left-part>img {
+.item-details > .left-part > img {
   border-radius: 20px;
   width: 150px;
   height: 150px;
 }
 
-.item-details>.right-part {
+.item-details > .right-part {
   max-width: 100%;
   flex: 2;
   display: flex;
@@ -39,7 +39,7 @@
   letter-spacing: 0;
   padding: 0.5rem;
   border-radius: 10px;
-  background-color: #1976D2;
+  background-color: #1976d2;
   font-size: 1.2rem;
   border: none;
   transition: all 0.5s ease;
@@ -64,7 +64,7 @@
   height: 0;
 }
 
-.date-selector.show>.dates {
+.date-selector.show > .dates {
   display: flex;
   justify-content: center;
   padding: 1rem 0;
@@ -79,17 +79,17 @@
   transition: height 1s ease-in-out;
 }
 
-.date-selector.hide>.dates>.date {
+.date-selector.hide > .dates > .date {
   max-width: 150px;
   height: 0;
   font-size: 0;
 }
 
-.date-selector.show>.dates>.date {
+.date-selector.show > .dates > .date {
   max-width: 150px;
   width: 100%;
   height: 50px;
-  border: 1px solid #1976D2;
+  border: 1px solid #1976d2;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -97,20 +97,20 @@
   cursor: pointer;
 }
 
-.date-selector.show>.timeSlots {
+.date-selector.show > .timeSlots {
   width: 100%;
-  height: 100px;
+  height: 100%;
   display: flex;
   /* justify-content: center; */
   /* align-items: center; */
 }
 
-.date-selector.hide>.timeSlots {
+.date-selector.hide > .timeSlots {
   width: 100%;
   height: 0;
 }
 
-.date-selector.show>.timeSlots>.slots {
+.date-selector.show > .timeSlots > .slots {
   width: 100%;
   height: 100%;
   display: grid;
@@ -120,15 +120,20 @@
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.date-selector.show>.timeSlots>.slots>span {
+.date-selector.show > .timeSlots > .slots > span {
   width: 100%;
   height: 100%;
   border: 2px solid black;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
+}
+
+.date-selector.hide > .timeSlots > .slots > span {
+  font-size: 0;
 }
 
 .select {
-  border: 1px solid #FFF !important;
+  border: 1px solid #fff !important;
 }

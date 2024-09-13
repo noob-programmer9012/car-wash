@@ -12,7 +12,7 @@ const UserServices = () => {
 
   return (
     <div className="all-services">
-      {data.services.map((service) => {
+      {data.services !== "No services added yet." ? data.services.map((service) => {
         return (
           <React.Fragment key={service._id}>
             <div
@@ -40,7 +40,7 @@ const UserServices = () => {
             </div>
           </React.Fragment>
         );
-      })}
+      }) : <h1>Services will be added soon</h1>}
     </div>
   );
 };

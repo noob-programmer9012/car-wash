@@ -12,6 +12,8 @@ export const serviceAction = async ({ request }) => {
   formData.append("serviceName", entries.Title);
   formData.append("category", entries.categories);
   formData.append("plan.price", entries.Price);
+  formData.append("timeFrame", entries["Time Frame"]);
+  formData.append("maxOrders", entries["Max Orders"]);
   const arr = entries["facilities"].split(",");
   for (let i = 0; i < arr.length; i++) {
     formData.append("plan.facilities", arr[i]);

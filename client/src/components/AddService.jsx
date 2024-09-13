@@ -86,6 +86,10 @@ const AddService = () => {
               service ? JSON.parse(service).plan.discount.toString() : service
             }
           />
+          <div className="two-field">
+            <InputField inputName="Time Frame" type="text" validator="number" value={ service ? JSON.parse(service).timeFrame : service } />
+            <InputField inputName="Max Orders" type="text" validator="number" value={ service ? JSON.parse(service).maxOrders : service } />
+          </div>
           <div className="field">
             <input type="file" className="input" id="image" name="file"></input>
             <label htmlFor="image" className="label nontext" id="label">

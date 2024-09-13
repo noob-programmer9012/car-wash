@@ -30,7 +30,7 @@ function UserCategories() {
   return (
     <>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {categories.data &&
+        {categories.data !== "No categories added yet!" &&
           categories.data.map((categories) => {
             return (
               <Fragment key={categories._id}>

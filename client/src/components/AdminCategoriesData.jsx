@@ -54,7 +54,7 @@ const AdminCategoriesData = () => {
   const rows = [];
 
   {
-    data &&
+    Number(data.totalCategories) > 0 &&
       JSON.parse(data["data"]).map((category) => {
         rows.push({
           id: category._id,
@@ -64,6 +64,7 @@ const AdminCategoriesData = () => {
         });
       });
   }
+  
   return (
     <>
       <div className="admin-category-data">

@@ -18,7 +18,6 @@ import titleCase from "../utils/titleCase";
 const ServicesComponent = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
-  // console.log(JSON.parse(data));
 
   const handleDelete = async (title, id) => {
     let d = window.confirm(`Do you really want to delete ${title}?`);
@@ -54,7 +53,7 @@ const ServicesComponent = () => {
 
   const rows = [];
 
-  JSON.parse(data).map((service) => {
+  typeof JSON.parse(data) !== "string" && JSON.parse(data).map((service) => {
     rows.push({
       id: service._id,
       serviceName: service.serviceName,
