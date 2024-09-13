@@ -35,33 +35,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST routes
-router.post(
-  "/category",
-  isAdmin,
-  upload.array("file", 2),
-  adminController.postCategory
-);
-router.post(
-  "/service",
-  isAdmin,
-  upload.single("file"),
-  adminController.postService
-);
+router.post("/category", isAdmin, upload.array("file", 2), adminController.postCategory);
+router.post("/service", isAdmin, upload.single("file"), adminController.postService);
 
 // PUT routes
-router.put(
-  "/category/:id",
-  isAdmin,
-  upload.array("file", 2),
-  adminController.putCategory
-);
+router.put("/category/:id", isAdmin, upload.array("file", 2), adminController.putCategory);
 
-router.put(
-  "/service/:id",
-  isAdmin,
-  upload.single("file"),
-  adminController.putService
-);
+router.put("/service/:id", isAdmin, upload.single("file"), adminController.putService);
 
 // GET routes
 router.get("/getCategories", userController.getCategories);
