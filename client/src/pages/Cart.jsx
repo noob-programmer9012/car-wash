@@ -6,7 +6,6 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import "../css/cart.css";
 import { useEffect, useState } from "react";
-// import CheckoutButton from "../components/CheckoutButton";
 
 const Cart = () => {
   const data = useLoaderData();
@@ -61,8 +60,7 @@ const Cart = () => {
         );
       })}
       <p>Sub Total: {total}</p>
-      {/* <CheckoutButton amount={total} /> */}
-      <Link to='/order'>
+      <Link to="/order">
         <input type="button" className="btn" value="Checkout" />
       </Link>
     </div>

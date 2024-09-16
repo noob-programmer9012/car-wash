@@ -26,7 +26,7 @@ import { categoryAction } from "./action/categoryAction.";
 import { serviceAction } from "./action/serviceAction";
 import { editCategoryAction } from "./action/editCategoryAction";
 import { signUp } from "./action/signUp";
-import { editService } from "./action/editService"
+import { editService } from "./action/editService";
 
 // pages
 import Dashboard from "./pages/Dashboard";
@@ -84,6 +84,14 @@ const router = createBrowserRouter([
         path: "/order",
         element: <Order />,
         loader: cart,
+      },
+      {
+        path: "/orders",
+        element: <h1>Orders</h1>,
+      },
+      {
+        path: "/profile",
+        element: <h1>Profile</h1>,
       },
     ],
   },
@@ -150,7 +158,7 @@ const router = createBrowserRouter([
       {
         path: "/admin/orders",
         element: <AdminOrders />,
-        loader: ordersLoader
+        loader: ordersLoader,
       },
     ],
   },
@@ -179,5 +187,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <RouterProvider router={router} />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

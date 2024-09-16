@@ -45,6 +45,22 @@ const userSchema = new mongoose.Schema({
       trim: true,
     },
   },
+  secondaryAddress: [
+    {
+      buildingDetails: {
+        type: String,
+        required: [true, "Please enter building name and number"],
+      },
+      landmark: {
+        type: String,
+        required: [true, "Please enter landmark"],
+      },
+      area: {
+        type: String,
+        required: [true, "Please enter your area name."],
+      },
+    },
+  ],
   pincode: {
     type: String,
     required: [true, "Please enter your pin code."],
@@ -81,7 +97,7 @@ const userSchema = new mongoose.Schema({
   // reviews: [mongoose.Schema.Types.ObjectId],
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   this.address.homeNo = titleCase(this.address.homeNo);
   this.address.landmark = titleCase(this.address.landmark);
   this.address.area = titleCase(this.address.area);
@@ -99,7 +115,7 @@ userSchema.pre("save", async function(next) {
   next();
 });
 
-userSchema.methods.comparePassword = async function(password) {
+userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 

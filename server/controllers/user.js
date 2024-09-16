@@ -46,15 +46,12 @@ export const getServices = async (req, res, next) => {
 
 export const getServiceById = async (req, res, next) => {
   const id = req.params.id;
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return next(new ErrorResponse("Not a valid path", 404));
+  if (!mongoose.Types.ObjectId.isValid(id)) return next(new ErrorResponse("Not a valid path", 404));
 
   try {
     const data = await Service.findById(id);
     if (!data)
-      return res
-        .status(404)
-        .json({ success: false, message: "No service available for this id." });
+      return res.status(404).json({ success: false, message: "No service available for this id." });
     return res.status(200).json({ success: true, data });
   } catch (error) {
     return next(new ErrorResponse(error, 500));
@@ -81,10 +78,7 @@ export const getUser = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user)
-      return res
-        .statas(404)
-        .json({ success: false, message: "User doen not exist" });
+    if (!user) return res.statas(404).json({ success: false, message: "User doen not exist" });
     return res.status(200).json({ success: true, user });
   } catch (error) {
     return next(new ErrorResponse(error, 500));
@@ -113,32 +107,22 @@ export const postAddToCart = async (req, res, next) => {
   const serviceId = req.params.serviceId;
   const userId = req.user;
 
-  if (
-    !mongoose.Types.ObjectId.isValid(serviceId) ||
-    !mongoose.Types.ObjectId.isValid(userId)
-  )
+  if (!mongoose.Types.ObjectId.isValid(serviceId) || !mongoose.Types.ObjectId.isValid(userId))
     return next(new ErrorResponse("Not valid serviceId or UserId", 401));
 
   try {
     const user = await User.findById(userId);
-    if (!user)
-      return next(new ErrorResponse("No user available with this id", 404));
+    if (!user) return next(new ErrorResponse("No user available with this id", 404));
 
     try {
       const service = await Service.findById(serviceId);
-      if (!service)
-        return next(
-          new ErrorResponse("No service available with this id", 404)
-        );
+      if (!service) return next(new ErrorResponse("No service available with this id", 404));
 
       const available = user.cart.items.filter((item) => {
-        return (
-          item.serviceId == new mongoose.Types.ObjectId(serviceId).toString()
-        );
+        return item.serviceId == new mongoose.Types.ObjectId(serviceId).toString();
       });
 
-      if (available.length > 0)
-        return next(new ErrorResponse("Already in the cart", 401));
+      if (available.length > 0) return next(new ErrorResponse("Already in the cart", 401));
 
       user.cart.items.push({ serviceId });
       await user.save();
@@ -158,10 +142,7 @@ export const deleteCartItem = async (req, res, next) => {
   const serviceId = req.params.serviceId;
   const userId = req.user;
 
-  if (
-    !mongoose.Types.ObjectId.isValid(serviceId) ||
-    !mongoose.Types.ObjectId.isValid(userId)
-  )
+  if (!mongoose.Types.ObjectId.isValid(serviceId) || !mongoose.Types.ObjectId.isValid(userId))
     return res.status(401).json({
       success: false,
       message: "Not a valid id",
@@ -170,9 +151,7 @@ export const deleteCartItem = async (req, res, next) => {
   try {
     const user = await User.findById(userId);
     if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "No user found with this id." });
+      return res.status(404).json({ success: false, message: "No user found with this id." });
     const cartItems = user.cart.items;
     const updatedCart = cartItems.filter((item) => {
       return item.serviceId.toString() !== serviceId;
@@ -189,10 +168,9 @@ export const deleteCartItem = async (req, res, next) => {
 };
 
 export const postCheckout = async (req, res, next) => {
-
   const razorpay = new Razorpay({
     key_id: "rzp_test_kBDtfQdGy3qNno",
-    key_secret: "OogErPxPtZyGgBnNwGy6XW7q"
+    key_secret: "OogErPxPtZyGgBnNwGy6XW7q",
   });
 
   try {
@@ -200,37 +178,46 @@ export const postCheckout = async (req, res, next) => {
       amount: req.body.total * 100, // amount in paisa
       currency: "INR",
       receipt: "receipt#1",
-      payment_capture: 1
+      payment_capture: 1,
     };
 
     const order = await razorpay.orders.create(options);
     console.log(order);
     return res.status(201).json({
       success: true,
-      order
-    })
-
+      order,
+    });
   } catch (error) {
     console.log(error);
     return next(new ErrorResponse(error, 500));
   }
-}
+};
 
 export const verifyPayment = async (req, res, next) => {
-  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id } = req.body;
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature, order_id, selectedSlot } =
+    req.body;
 
-  const sha = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET);
+  const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
   sha.update(`${order_id}|${razorpay_payment_id}`);
   const digest = sha.digest("hex");
 
   if (digest === razorpay_signature) {
-      const user = await User.findById(req.user);
-    if (!user)
-      return next(new ErrorResponse("No user found!", 404));
+    const user = await User.findById(req.user);
+    if (!user) return next(new ErrorResponse("No user found!", 404));
 
-    const items = user.cart.items.map(i => {
-      return {serviceId: i.serviceId};
+    const items = user.cart.items.map((i) => {
+      return { serviceId: i.serviceId };
     });
+
+    const slotsIds = Object.keys(selectedSlot);
+
+    for (let i = 0; i < items.length; i++) {
+      for (let j = 0; j < slotsIds.length; j++) {
+        if (items[i].serviceId._id.toString() === slotsIds[j]) {
+          items[i].slot = selectedSlot[slotsIds[j]][items[i].serviceId._id];
+        }
+      }
+    }
 
     const order = new Order({
       user,
@@ -238,10 +225,10 @@ export const verifyPayment = async (req, res, next) => {
       paymentDetails: {
         orderId: razorpay_order_id,
         paymentId: razorpay_payment_id,
-        paymentSignature: razorpay_signature
-      }
-    })
- 
+        paymentSignature: razorpay_signature,
+      },
+    });
+
     try {
       await order.save();
 
@@ -250,12 +237,12 @@ export const verifyPayment = async (req, res, next) => {
 
       return res.status(201).json({
         success: true,
-        order
-      })
+        order,
+      });
     } catch (error) {
       return next(new ErrorResponse(error, 500));
     }
   } else {
     return next(new ErrorResponse("Payment failed", 400));
   }
-}
+};

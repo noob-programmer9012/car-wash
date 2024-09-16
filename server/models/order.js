@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: [true, "Please enter user id."]
+    required: [true, "Please enter user id."],
   },
 
   paymentDetails: {
@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: options,
-    default: "in-progress"
+    default: "in-progress",
   },
 
   items: [
@@ -26,10 +26,18 @@ const orderSchema = new mongoose.Schema({
       serviceId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Service",
-        required: [true, "Please enter service id."]
-      }
-    } 
-  ],  
+        required: [true, "Please enter service id."],
+      },
+      slot: {
+        type: String,
+        required: [true, "Please enter time slot."],
+      },
+      // address: {
+      //   type: String,
+      //   required: [true, "Please enter address."],
+      // },
+    },
+  ],
 });
 
 export default new mongoose.model("order", orderSchema);

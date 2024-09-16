@@ -24,10 +24,10 @@ export default function BottomUserNavbar() {
           </NavLink>
         </div>
         <div className="nav">
-          <NavLink to="/bookings">
+          <NavLink to="/orders">
             <div className="navlink">
               <HistoryIcon className="bottom-icons" />
-              <Typography variant="p">Bookings</Typography>
+              <Typography variant="p">Orders</Typography>
             </div>
           </NavLink>
         </div>

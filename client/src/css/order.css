@@ -13,7 +13,7 @@
   gap: 1rem;
 }
 
-.item-desc > .item-details {
+.item-desc>.item-details {
   display: flex;
   gap: 1rem;
   padding: 1rem;
@@ -21,13 +21,13 @@
   background-color: var(--secondary);
 }
 
-.item-details > .left-part > img {
+.item-details>.left-part>img {
   border-radius: 20px;
   width: 150px;
   height: 150px;
 }
 
-.item-details > .right-part {
+.item-details>.right-part {
   max-width: 100%;
   flex: 2;
   display: flex;
@@ -64,7 +64,7 @@
   height: 0;
 }
 
-.date-selector.show > .dates {
+.date-selector.show>.dates {
   display: flex;
   justify-content: center;
   padding: 1rem 0;
@@ -79,13 +79,13 @@
   transition: height 1s ease-in-out;
 }
 
-.date-selector.hide > .dates > .date {
+.date-selector.hide>.dates>.date {
   max-width: 150px;
   height: 0;
   font-size: 0;
 }
 
-.date-selector.show > .dates > .date {
+.date-selector.show>.dates>.date {
   max-width: 150px;
   width: 100%;
   height: 50px;
@@ -97,7 +97,7 @@
   cursor: pointer;
 }
 
-.date-selector.show > .timeSlots {
+.date-selector.show>.timeSlots {
   width: 100%;
   height: 100%;
   display: flex;
@@ -105,12 +105,12 @@
   /* align-items: center; */
 }
 
-.date-selector.hide > .timeSlots {
+.date-selector.hide>.timeSlots {
   width: 100%;
   height: 0;
 }
 
-.date-selector.show > .timeSlots > .slots {
+.date-selector.show>.timeSlots>.slots {
   width: 100%;
   height: 100%;
   display: grid;
@@ -118,20 +118,26 @@
   row-gap: 1rem;
   column-gap: 1rem;
   grid-template-columns: 1fr 1fr 1fr;
+  cursor: pointer;
 }
 
-.date-selector.show > .timeSlots > .slots > span {
+.date-selector>.timeSlots>.slots>span {
+  transition: height 0.9s ease-in-out;
+}
+
+.date-selector.show>.timeSlots>.slots>span {
   width: 100%;
   height: 100%;
-  border: 2px solid black;
+  border: 2px solid #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1rem;
 }
 
-.date-selector.hide > .timeSlots > .slots > span {
-  font-size: 0;
+.date-selector.hide>.timeSlots>.slots>span {
+  height: 0;
+  font-size: 0 !important;
 }
 
 .select {

@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 import getToken from "../utils/getToken";
-import { useRouteLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from "react-router-dom";
 
-function CheckoutButton({ amount }) {
+function CheckoutButton({ amount, selectedSlot }) {
   const user = useRouteLoaderData("root");
   useEffect(() => {
-    console.log(user);
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     document.body.appendChild(script);
 
@@ -20,35 +20,34 @@ function CheckoutButton({ amount }) {
   const handlePayment = async () => {
     const url = "http://localhost:5000/checkout";
     const token = await getToken();
-    
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        "Authorization": token
+        "Content-Type": "application/json",
+        Authorization: token,
       },
-      body: JSON.stringify({ total: amount })
+      body: JSON.stringify({ total: amount }),
     });
     const order = await response.json();
 
     const options = {
-      key: 'rzp_test_kBDtfQdGy3qNno',
+      key: "rzp_test_kBDtfQdGy3qNno",
       amount: order.order.amount,
       currency: "INR",
       name: "Car Wash",
       description: "Test Transaction",
       order_id: order.order.id,
       handler: async function (response) {
-        const body = { ...response, order_id: order.order.id };
+        const body = { ...response, order_id: order.order.id, selectedSlot };
         const validatePayment = await fetch("http://localhost:5000/verify-payment", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": token
+            Authorization: token,
           },
-          body: JSON.stringify(body)
-        })
+          body: JSON.stringify(body),
+        });
         console.log(await validatePayment.json());
       },
       prefill: {
@@ -58,14 +57,14 @@ function CheckoutButton({ amount }) {
       },
       config: {
         display: {
-          hide: [{ method: "netbanking" }, {method: "wallet"}, {method: "paylater"}]
-        }
+          hide: [{ method: "netbanking" }, { method: "wallet" }, { method: "paylater" }],
+        },
       },
       notes: {
-        address: "Razorpay Corporate Office"
+        address: "Razorpay Corporate Office",
       },
       theme: {
-        color: "#2c2d34"
+        color: "#2c2d34",
       },
     };
 
@@ -73,7 +72,16 @@ function CheckoutButton({ amount }) {
     paymentObject.open();
   };
 
-  return <button onClick={handlePayment} className='btn'>Pay Now</button>;
+  return (
+    <button onClick={handlePayment} className="btn">
+      Pay Now
+    </button>
+  );
 }
+
+CheckoutButton.propTypes = {
+  amount: PropTypes.number.isRequired,
+  selectedSlot: PropTypes.array.isRequired,
+};
 
 export default CheckoutButton;

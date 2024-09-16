@@ -3,11 +3,15 @@ import { Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 
 import getTimeSlots from "../utils/getTimeSlots";
+import CheckoutButton from "../components/CheckoutButton";
 import "../css/order.css";
 
 const Order = () => {
   const data = useLoaderData();
   const [frames, setFrames] = useState([]);
+  const [selectedDate, setSelectedDate] = useState();
+  const [total, setTotal] = useState();
+  const [selectedSlot, setSelectedSlot] = useState({});
 
   const date = new Date();
   const next = new Date(date);
@@ -16,8 +20,13 @@ const Order = () => {
   morrow.setDate(next.getDate() + 1);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    let sum = 0;
+    data.map((item) => {
+      sum += Number(item.serviceId.plan.price);
+    });
+    setTotal(sum);
+    console.log(total);
+  }, [data, total]);
 
   const showMiniForm = (e) => {
     const selectors = document.querySelectorAll(".date-selector");
@@ -59,9 +68,24 @@ const Order = () => {
       if (date === e.target) date.classList.add("select");
       else date.classList.remove("select");
     });
-    const slots = getTimeSlots(Number(e.target.id), 8, 20);
+    // if date is today then start time is date.getTIme() elese 8
+    let start = 8;
+    setSelectedDate(e.target.innerText);
+    if (e.target.childNodes[0].textContent === String(date.getDate())) start = date.getHours() + 1;
+    const slots = getTimeSlots(Number(e.target.id), start, 20);
     setFrames(slots);
-    // console.log(slots);
+  };
+
+  const selectSlot = (e) => {
+    const slots = document.querySelectorAll(".date-selector.show>.timeSlots>.slots>span");
+    slots.forEach((slot) => {
+      slot.style.border = "2px solid #fff";
+    });
+    e.target.style.border = "2px solid #1976d2";
+    setSelectedSlot({
+      ...selectedSlot,
+      [e.target.id]: { [e.target.id]: `${selectedDate}, ${e.target.innerText}` },
+    });
   };
 
   return (
@@ -89,7 +113,10 @@ const Order = () => {
                 <div className="date-selector hide" id={item.serviceId._id}>
                   <div className="dates">
                     <div className="date" onClick={(e) => select(e)} id={item.serviceId.timeFrame}>
-                      <Typography variant="p">{date.getDate()}</Typography>
+                      <Typography variant="p">
+                        {/* {date.toLocaleDateString(undefined, { day: "numeric", month: "long" })} */}
+                        {date.getDate()}
+                      </Typography>
                     </div>
                     <div className="date" onClick={(e) => select(e)} id={item.serviceId.timeFrame}>
                       {next.getDate()}
@@ -103,7 +130,7 @@ const Order = () => {
                       {frames.map((f) => {
                         return (
                           <Fragment key={f}>
-                            <span id={item.serviceId._id}>
+                            <span id={item.serviceId._id} onClick={(e) => selectSlot(e)}>
                               <Typography variant="p">{f}</Typography>
                             </span>
                           </Fragment>
@@ -117,6 +144,7 @@ const Order = () => {
           );
         })}
       </div>
+      <CheckoutButton amount={total} selectedSlot={selectedSlot} />
     </div>
   );
 };
