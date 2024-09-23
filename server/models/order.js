@@ -32,10 +32,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter time slot."],
       },
-      // address: {
-      //   type: String,
-      //   required: [true, "Please enter address."],
-      // },
+      address: {
+        type: String,
+        required: [true, "Please enter address."],
+      },
     },
   ],
 });

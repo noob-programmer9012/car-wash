@@ -11,11 +11,11 @@ router.get("/getAllServices", userController.getAllServices);
 router.get("/service/:id", userController.getServiceById);
 router.get("/getCart", userController.getCart);
 
-
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);
 router.post("/checkout", userController.postCheckout);
-router.post("/verify-payment", userController.verifyPayment)
+router.post("/verify-payment", userController.verifyPayment);
+router.post("/addAddress", userController.addAddress);
 
 // delete routes
 router.delete("/deletCartItem/:serviceId", userController.deleteCartItem);

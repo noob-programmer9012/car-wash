@@ -87,8 +87,18 @@ const AddService = () => {
             }
           />
           <div className="two-field">
-            <InputField inputName="Time Frame" type="text" validator="number" value={ service ? JSON.parse(service).timeFrame : service } />
-            <InputField inputName="Max Orders" type="text" validator="number" value={ service ? JSON.parse(service).maxOrders : service } />
+            <InputField
+              inputName="Time Frame"
+              type="text"
+              validator="number"
+              value={service ? JSON.parse(service).timeFrame : service}
+            />
+            <InputField
+              inputName="Max Orders"
+              type="text"
+              validator="number"
+              value={service ? JSON.parse(service).maxOrders : service}
+            />
           </div>
           <div className="field">
             <input type="file" className="input" id="image" name="file"></input>

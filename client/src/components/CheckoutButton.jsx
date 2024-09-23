@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import getToken from "../utils/getToken";
 import { useRouteLoaderData } from "react-router-dom";
 
-function CheckoutButton({ amount, selectedSlot }) {
+function CheckoutButton({ amount, selectedSlot, selectedAddress, setError }) {
   const user = useRouteLoaderData("root");
   useEffect(() => {
     const script = document.createElement("script");
@@ -21,15 +21,24 @@ function CheckoutButton({ amount, selectedSlot }) {
     const url = "http://localhost:5000/checkout";
     const token = await getToken();
 
+    const selectedSlotLen = Object.keys(selectedSlot).length;
+    const selectedAddressLen = Object.keys(selectedAddress).length;
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({ total: amount }),
+      body: JSON.stringify({
+        total: amount,
+        slotLength: selectedSlotLen,
+        selectedAddressLen,
+      }),
     });
+
     const order = await response.json();
+    if (!order.success) setError(order.message);
 
     const options = {
       key: "rzp_test_kBDtfQdGy3qNno",
@@ -39,15 +48,23 @@ function CheckoutButton({ amount, selectedSlot }) {
       description: "Test Transaction",
       order_id: order.order.id,
       handler: async function (response) {
-        const body = { ...response, order_id: order.order.id, selectedSlot };
-        const validatePayment = await fetch("http://localhost:5000/verify-payment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
+        const body = {
+          ...response,
+          order_id: order.order.id,
+          selectedSlot,
+          selectedAddress,
+        };
+        const validatePayment = await fetch(
+          "http://localhost:5000/verify-payment",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify(body),
           },
-          body: JSON.stringify(body),
-        });
+        );
         console.log(await validatePayment.json());
       },
       prefill: {
@@ -57,7 +74,11 @@ function CheckoutButton({ amount, selectedSlot }) {
       },
       config: {
         display: {
-          hide: [{ method: "netbanking" }, { method: "wallet" }, { method: "paylater" }],
+          hide: [
+            { method: "netbanking" },
+            { method: "wallet" },
+            { method: "paylater" },
+          ],
         },
       },
       notes: {
@@ -81,7 +102,9 @@ function CheckoutButton({ amount, selectedSlot }) {
 
 CheckoutButton.propTypes = {
   amount: PropTypes.number.isRequired,
-  selectedSlot: PropTypes.array.isRequired,
+  selectedSlot: PropTypes.object.isRequired,
+  selectedAddress: PropTypes.object.isRequired,
+  setError: PropTypes.func.isRequired,
 };
 
 export default CheckoutButton;
