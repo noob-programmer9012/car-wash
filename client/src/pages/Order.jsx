@@ -83,13 +83,14 @@ const Order = () => {
   }, [error]);
 
   useEffect(() => {
-    console.log(selectedAddress);
-  }, [selectedAddress]);
+    console.log(selectedSlot);
+  }, [selectedSlot]);
 
   const showMiniForm = (e) => {
     const selectors = document.querySelectorAll(".date-selector");
     const images = document.querySelectorAll("img");
     const left = document.querySelectorAll(".item-desc>.item-details");
+    // const timeSlots = document.querySelector(".date-selector.show>.timeSlots");
 
     images.forEach((image) => {
       if (e.target.id === image.id) {
@@ -122,13 +123,17 @@ const Order = () => {
 
   const select = (e) => {
     const dates = document.querySelectorAll(".date-selector.show>.dates>.date");
+
     dates.forEach((date) => {
       if (date === e.target) date.classList.add("select");
       else date.classList.remove("select");
     });
     // if date is today then start time is date.getTIme() elese 8
     let start = 8;
-    setSelectedDate(e.target.innerText);
+    const dataAttr = e.target.getAttribute("data");
+    const givenDate = new Date(dataAttr).toLocaleDateString();
+
+    setSelectedDate(givenDate);
     if (e.target.childNodes[0].textContent === String(date.getDate()))
       start = date.getHours() + 1;
     const slots = getTimeSlots(Number(e.target.id), start, 20);
@@ -139,10 +144,11 @@ const Order = () => {
     const slots = document.querySelectorAll(
       ".date-selector.show>.timeSlots>.slots>span",
     );
+
     slots.forEach((slot) => {
-      slot.style.border = "2px solid #fff";
+      slot.style.border = "2px solid #1976d2";
     });
-    e.target.style.border = "2px solid #1976d2";
+    e.target.style.border = "2px solid #fff";
     setSelectedSlot({
       ...selectedSlot,
       [e.target.id]: {
@@ -203,6 +209,7 @@ const Order = () => {
                   <div className="dates">
                     <div
                       className="date"
+                      data={date}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
                     >
@@ -213,6 +220,7 @@ const Order = () => {
                     </div>
                     <div
                       className="date"
+                      data={next}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
                     >
@@ -220,6 +228,7 @@ const Order = () => {
                     </div>
                     <div
                       className="date"
+                      data={morrow}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
                     >

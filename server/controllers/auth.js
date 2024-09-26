@@ -22,32 +22,32 @@ export const postLogin = async (req, res, next) => {
     const match = await isAdmin.comparePassword(password);
     if (!match) {
       return next(
-        new ErrorResponse("Please enter correct email and password", 401)
+        new ErrorResponse("Please enter correct email and password", 401),
       );
     }
     const token = jwt.sign(
       { data: { userId: isAdmin._id, email: isAdmin.email, isAdmin: true } },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRY }
+      { expiresIn: process.env.JWT_EXPIRY },
     );
     return res.status(200).json({ success: true, token, isAdmin: true });
   } else {
     const isUser = await User.findOne({ email }).select("+password");
     if (!isUser) {
       return next(
-        new ErrorResponse("Please enter correct email and password!", 404)
+        new ErrorResponse("Please enter correct email and password!", 404),
       );
     }
     const match = await isUser.comparePassword(password);
     if (!match) {
       return next(
-        new ErrorResponse("Please enter correct email and password!", 401)
+        new ErrorResponse("Please enter correct email and password!", 401),
       );
     }
     const token = jwt.sign(
       { data: { userId: isUser._id, email: isUser.email, isUser: true } },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRY }
+      { expiresIn: process.env.JWT_EXPIRY },
     );
     return res.status(200).json({ success: true, token, isUser: true });
   }
