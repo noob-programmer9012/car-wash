@@ -147,7 +147,6 @@ export const putService = async (req, res, next) => {
       return next(new ErrorResponse("No service found with this id", 404));
 
     const imageUrl = service.imageUrl;
-    console.log(imageUrl);
 
     service.serviceName = req.body.serviceName;
     service.category = req.body.category;

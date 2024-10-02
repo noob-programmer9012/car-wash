@@ -28,6 +28,9 @@ const orderSchema = new mongoose.Schema({
         ref: "Service",
         required: [true, "Please enter service id."],
       },
+      serviceName: {
+        type: String,
+      },
       slot: {
         type: String,
         required: [true, "Please enter time slot."],

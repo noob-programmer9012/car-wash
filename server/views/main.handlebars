@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Example App</title>
+    <style>
+      table, th, td {
+        border:1px solid black;
+        border-collapse: collapse;
+      }
+      th {
+        background-color: #424a63;
+        color: #ffffff;
+      }
+      th, td {
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello, {{name}}</h1>
+    {{#each items}}
+      <table>
+        <tr>
+          <th>Service Name</th>
+          <th>Slot</th>
+          <th>Address</th>
+        </tr>
+        {{#each this.items}}
+          <tr>
+            <td>{{serviceName}}</td>
+            <td>{{slot}}</td>
+            <td>{{address}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/each}}
+
+  </body>
+</html>

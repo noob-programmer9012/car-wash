@@ -7,6 +7,8 @@ import Service from "../models/service.js";
 import User from "../models/user.js";
 import Order from "../models/order.js";
 import { ErrorResponse } from "../util/errorRespone.js";
+// import { createPDF } from "../util/createPDF.js";
+import sendEmail from "../util/sendEmail.js";
 
 export const getCategories = async (req, res, next) => {
   try {
@@ -113,7 +115,6 @@ export const getCart = async (req, res, next) => {
   try {
     const user = await User.findById(userId).populate("cart.items.serviceId");
     if (!user) return next(new ErrorResponse("No user found", 404));
-    // console.log(user.cart.items);
     return res.status(200).json({
       success: true,
       cart: user.cart.items,
@@ -226,13 +227,11 @@ export const postCheckout = async (req, res, next) => {
     };
 
     const order = await razorpay.orders.create(options);
-    console.log(order);
     return res.status(201).json({
       success: true,
       order,
     });
   } catch (error) {
-    console.log(error);
     return next(new ErrorResponse(error, 500));
   }
 };
@@ -251,10 +250,10 @@ export const verifyPayment = async (req, res, next) => {
   sha.update(`${order_id}|${razorpay_payment_id}`);
   const digest = sha.digest("hex");
 
-  if (digest === razorpay_signature) {
-    const user = await User.findById(req.user);
-    if (!user) return next(new ErrorResponse("No user found!", 404));
+  const user = await User.findById(req.user);
+  if (!user) return next(new ErrorResponse("No user found!", 404));
 
+  if (digest === razorpay_signature) {
     const items = user.cart.items.map((i) => {
       return { serviceId: i.serviceId };
     });
@@ -265,6 +264,8 @@ export const verifyPayment = async (req, res, next) => {
     for (let i = 0; i < items.length; i++) {
       for (let j = 0; j < slotsIds.length; j++) {
         if (items[i].serviceId._id.toString() === slotsIds[j]) {
+          const service = await Service.findById(items[i].serviceId._id);
+          items[i].serviceName = service.serviceName;
           items[i].slot = selectedSlot[slotsIds[j]][items[i].serviceId._id];
         }
       }
@@ -289,13 +290,28 @@ export const verifyPayment = async (req, res, next) => {
     try {
       await order.save();
 
+      const items = order;
+      const options = {
+        from: "parth.sclub@gmail.com",
+        to: user.email,
+        subject: `Your Carwash order #${razorpay_order_id} of ${user.cart.items.length} items.`,
+        template: "main",
+        context: {
+          name: order.user.fullname,
+          items: Array.isArray(items) ? items : [items],
+        },
+      };
+      await sendEmail(options);
+
       user.cart.items = [];
+
       await user.save();
 
       return res.status(201).json({
         success: true,
         order,
       });
+      // return;
     } catch (error) {
       return next(new ErrorResponse(error, 500));
     }

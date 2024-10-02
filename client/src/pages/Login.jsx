@@ -83,8 +83,6 @@ export default function Login() {
           password: password,
         });
 
-        // console.log(data.data);
-
         const token = data.data.token;
         const user = data.data.isAdmin ? "admin" : "user";
 
@@ -92,7 +90,7 @@ export default function Login() {
           authActions.setUser({
             token,
             user,
-          })
+          }),
         );
 
         await persistor.flush();
