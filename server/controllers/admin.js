@@ -246,7 +246,8 @@ export const getOrders = async (req, res, next) => {
       .populate("user")
       .populate("items.serviceId")
       .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
-      .limit(nPerPage);
+      .limit(nPerPage)
+      .sort({ _id: "desc" });
     return res.status(200).json({
       success: true,
       pageNumber,

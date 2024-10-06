@@ -10,6 +10,7 @@ router.get("/getServices/:id", userController.getServices);
 router.get("/getAllServices", userController.getAllServices);
 router.get("/service/:id", userController.getServiceById);
 router.get("/getCart", userController.getCart);
+router.get("/getOrders", userController.getOrders);
 
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);

@@ -3,6 +3,7 @@ import { authActions, store } from "../store/auth";
 
 export const redirectToLogin = (error) => {
   if (
+    error === "jwt expired" ||
     error.response.data.message === "jwt expired" ||
     error.response.data.message === "jwt malformed"
   ) {

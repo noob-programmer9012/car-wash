@@ -1,5 +1,6 @@
 .admin-wrapper {
   min-height: 100% !important;
+  max-height: 100svh;
   width: 100%;
   display: flex;
 }
@@ -43,17 +44,17 @@
   transition: all ease-in-out 0.5s !important;
 }
 
-.sub-link:hover>.material-symbols-outlined {
+.sub-link:hover > .material-symbols-outlined {
   font-size: 2rem !important;
   color: #f5a905 !important;
 }
 
-.sub-link:hover>.material-symbols-outlined~a {
+.sub-link:hover > .material-symbols-outlined ~ a {
   font-size: 2rem !important;
   color: #f5a905 !important;
 }
 
-.sub-link>a {
+.sub-link > a {
   text-decoration: none;
   color: var(--text);
   font-size: 1.2rem;
@@ -91,7 +92,7 @@
   align-items: center;
 }
 
-.category-data>button {
+.category-data > button {
   width: 50%;
 }
 

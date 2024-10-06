@@ -124,6 +124,32 @@ export const getCart = async (req, res, next) => {
   }
 };
 
+export const getOrders = async (req, res, next) => {
+  const { pageNumber, nPerPage } = req.query;
+  const userId = req.user;
+
+  if (!userId) return next(new ErrorResponse("No user found", 404));
+  if (!mongoose.Types.ObjectId.isValid(userId))
+    return next(new ErrorResponse("Not valid userId.", 401));
+
+  try {
+    const orders = await Order.find({
+      user: userId,
+    })
+      .populate("items.serviceId")
+      .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+      .limit(nPerPage)
+      .sort({ _id: "desc" });
+
+    return res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    return next(new ErrorResponse(error, 500));
+  }
+};
+
 export const postAddToCart = async (req, res, next) => {
   const serviceId = req.params.serviceId;
   const userId = req.user;
@@ -311,7 +337,6 @@ export const verifyPayment = async (req, res, next) => {
         success: true,
         order,
       });
-      // return;
     } catch (error) {
       return next(new ErrorResponse(error, 500));
     }

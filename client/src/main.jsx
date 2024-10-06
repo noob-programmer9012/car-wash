@@ -20,6 +20,7 @@ import { editServiceFormLoader } from "./loaders/editServiceFormLoader";
 import { cart } from "./loaders/cart";
 import { resetPasswordLoader } from "./loaders/resetPasswordLoader";
 import { ordersLoader } from "./loaders/ordersLoader";
+import { getUserOrders } from "./loaders/getUserOrders";
 
 // actions
 import { categoryAction } from "./action/categoryAction.";
@@ -27,6 +28,7 @@ import { serviceAction } from "./action/serviceAction";
 import { editCategoryAction } from "./action/editCategoryAction";
 import { signUp } from "./action/signUp";
 import { editService } from "./action/editService";
+import { resetPassword } from "./action/resetPassword";
 
 // pages
 import Dashboard from "./pages/Dashboard";
@@ -47,11 +49,11 @@ import Signup from "./pages/Signup";
 import ResetPassword from "./pages/ResetPassword";
 import AdminOrders from "./pages/AdminOrders";
 import Order from "./pages/Order";
+import UserOrders from "./pages/UserOrders";
 
 // css
 import "./css/index.css";
 import "./css/login.css";
-import { resetPassword } from "./action/resetPassword";
 
 const router = createBrowserRouter([
   {
@@ -87,7 +89,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/orders",
-        element: <h1>Orders</h1>,
+        element: <UserOrders />,
+        loader: getUserOrders,
       },
       {
         path: "/profile",
