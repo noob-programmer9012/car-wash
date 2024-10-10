@@ -39,7 +39,7 @@ const UserOrders = () => {
                           </div>
                           <div className="download">
                             <input
-                              className="invoice"
+                              className="btn blue"
                               type="button"
                               value="Download Invoice"
                             />

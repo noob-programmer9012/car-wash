@@ -10,8 +10,8 @@ import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
 import getTimeSlots from "../utils/getTimeSlots";
 import CheckoutButton from "../components/CheckoutButton";
 import AddressSection from "../components/AddressSection";
-import "../css/order.css";
 import getToken from "../utils/getToken";
+import "../css/order.css";
 
 const Order = () => {
   const data = useLoaderData();
@@ -30,6 +30,7 @@ const Order = () => {
   const [selectedDate, setSelectedDate] = useState();
   const [total, setTotal] = useState(0);
   const [selectedSlot, setSelectedSlot] = useState({});
+  const [currentItem, setCurrentItem] = useState();
   const [selectedAddress, setSelectedAddress] = useState(() => {
     return items.reduce((acc, id) => {
       acc[id] = primaryAddress;
@@ -37,12 +38,34 @@ const Order = () => {
     }, {});
   });
   const [error, setError] = useState(null);
+  const [availibility, setAvailibility] = useState([]);
+  const [showExtra, setShowExtra] = useState(false);
 
   const date = new Date();
   const next = new Date(date);
   next.setDate(date.getDate() + 1);
   const morrow = new Date(next);
   morrow.setDate(next.getDate() + 1);
+  const extra = new Date(morrow);
+  extra.setDate(morrow.getDate() + 1);
+
+  useEffect(() => {
+    const dates = document.querySelectorAll(".date-selector.show>.dates>.date");
+    const selected = document.querySelector(".date.select");
+
+    selected && selected.classList.remove("select");
+    if (showExtra) {
+      dates.forEach((d) => {
+        if (d.innerText == date.getDate()) {
+          d.remove();
+        }
+        if (d.innerText == next.getDate()) {
+          d.classList.add("select");
+          d.click();
+        }
+      });
+    }
+  }, [showExtra]);
 
   const addAddress = async () => {
     const token = await getToken();
@@ -82,15 +105,31 @@ const Order = () => {
     }
   }, [error]);
 
+  //check if the slot is available in slots
   useEffect(() => {
-    console.log(selectedSlot);
-  }, [selectedSlot]);
+    frames.forEach(async (frame) => {
+      const slot = `${selectedDate}, ${frame}`;
+      const token = await getToken();
+      // check if slot is avaiable for selected slot(Order.find({ slot: slot, itemId: itemId }).countDocuments();
+      const url = `http://localhost:5000/slotAvailable?slot=${slot}&serviceId=${currentItem}`;
+      const available = await fetch(url, {
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      });
+      const jsonAvailble = await available.json();
+      setAvailibility((availibility) => [
+        ...availibility,
+        jsonAvailble.available === 1 ? 1 : 0,
+      ]);
+    });
+  }, [frames, currentItem]);
 
   const showMiniForm = (e) => {
     const selectors = document.querySelectorAll(".date-selector");
     const images = document.querySelectorAll("img");
     const left = document.querySelectorAll(".item-desc>.item-details");
-    // const timeSlots = document.querySelector(".date-selector.show>.timeSlots");
 
     images.forEach((image) => {
       if (e.target.id === image.id) {
@@ -119,10 +158,18 @@ const Order = () => {
 
     selected && selected.classList.remove("select");
     dates[0].classList.add("select");
+    dates[0].click();
+
+    // const timeSlots = document.querySelectorAll(
+    //   ".date-selector.show>.timeSlots>.slots>span",
+    // );
+    // timeSlots[0].click();
   };
 
   const select = (e) => {
+    setAvailibility([]);
     const dates = document.querySelectorAll(".date-selector.show>.dates>.date");
+    setCurrentItem(e.target.getAttribute("item"));
 
     dates.forEach((date) => {
       if (date === e.target) date.classList.add("select");
@@ -137,6 +184,7 @@ const Order = () => {
     if (e.target.childNodes[0].textContent === String(date.getDate()))
       start = date.getHours() + 1;
     const slots = getTimeSlots(Number(e.target.id), start, 20);
+    if (slots <= 0) setShowExtra(true);
     setFrames(slots);
   };
 
@@ -200,7 +248,7 @@ const Order = () => {
                 </div>
                 <input
                   type="button"
-                  className="btn date"
+                  className="btn blue"
                   id={item.serviceId._id}
                   value="Select Date"
                   onClick={(e) => showMiniForm(e)}
@@ -212,6 +260,7 @@ const Order = () => {
                       data={date}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
+                      item={item.serviceId._id}
                     >
                       <Typography variant="p">
                         {/* {date.toLocaleDateString(undefined, { day: "numeric", month: "long" })} */}
@@ -223,6 +272,7 @@ const Order = () => {
                       data={next}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
+                      item={item.serviceId._id}
                     >
                       {next.getDate()}
                     </div>
@@ -231,27 +281,44 @@ const Order = () => {
                       data={morrow}
                       onClick={(e) => select(e)}
                       id={item.serviceId.timeFrame}
+                      item={item.serviceId._id}
                     >
                       {morrow.getDate()}
+                    </div>
+
+                    <div
+                      className="date"
+                      data={extra}
+                      onClick={(e) => select(e)}
+                      id={item.serviceId.timeFrame}
+                      item={item.serviceId._id}
+                    >
+                      {extra.getDate()}
                     </div>
                   </div>
                   <div className="timeSlots">
                     <div className="slots">
-                      {frames.map((f) => {
+                      {frames.map((f, index) => {
                         return (
                           <Fragment key={f}>
-                            <span
-                              id={item.serviceId._id}
-                              onClick={(e) => selectSlot(e)}
-                            >
-                              <Typography
-                                variant="p"
-                                onClick={(e) => selectSlot(e)}
+                            {availibility[index] === 1 ? (
+                              <span
                                 id={item.serviceId._id}
+                                onClick={(e) => selectSlot(e)}
                               >
-                                {f}
-                              </Typography>
-                            </span>
+                                <Typography
+                                  variant="p"
+                                  onClick={(e) => selectSlot(e)}
+                                  id={item.serviceId._id}
+                                >
+                                  {f}
+                                </Typography>
+                              </span>
+                            ) : (
+                              <span className="disabled">
+                                <Typography variant="p">{f}</Typography>
+                              </span>
+                            )}
                           </Fragment>
                         );
                       })}

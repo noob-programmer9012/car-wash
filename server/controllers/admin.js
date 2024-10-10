@@ -137,6 +137,7 @@ export const postService = async (req, res, next) => {
 
 export const putService = async (req, res, next) => {
   const id = req.params.id;
+  console.log(req.body);
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return next(new ErrorResponse("Not a valid service id", 500));
@@ -154,6 +155,8 @@ export const putService = async (req, res, next) => {
     service.plan.facilities = req.body.plan.facilities;
     service.plan.discount = req.body.plan.discount;
     service.validity = req.body.validity;
+    service.maxOrders = req.body.maxOrders;
+    service.timeFrame = req.body.timeFrame;
 
     if (req.file) {
       if (

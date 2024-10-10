@@ -150,6 +150,24 @@ export const getOrders = async (req, res, next) => {
   }
 };
 
+export const slotAvailable = async (req, res, next) => {
+  const { slot, serviceId } = req.query;
+
+  const isAvailable = await Order.find({
+    "items.serviceId": serviceId,
+    "items.slot": slot,
+  }).countDocuments();
+
+  const service = await Service.findById(serviceId);
+  const maxOrders = service.maxOrders;
+
+  const available = Number(isAvailable) >= Number(maxOrders) ? 0 : 1;
+  return res.json({
+    success: true,
+    available,
+  });
+};
+
 export const postAddToCart = async (req, res, next) => {
   const serviceId = req.params.serviceId;
   const userId = req.user;
