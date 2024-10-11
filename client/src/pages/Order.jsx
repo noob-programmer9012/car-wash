@@ -190,13 +190,15 @@ const Order = () => {
 
   const selectSlot = (e) => {
     const slots = document.querySelectorAll(
-      ".date-selector.show>.timeSlots>.slots>span",
+      ".date-selector.show>.timeSlots>.slots>.selection",
     );
 
     slots.forEach((slot) => {
       slot.style.border = "2px solid #1976d2";
     });
-    e.target.style.border = "2px solid #fff";
+    if (e.target.className === "selection")
+      e.target.style.border = "2px solid #fff";
+    else e.target.parentElement.style.border = "2px solid #fff";
     setSelectedSlot({
       ...selectedSlot,
       [e.target.id]: {
@@ -305,6 +307,7 @@ const Order = () => {
                               <span
                                 id={item.serviceId._id}
                                 onClick={(e) => selectSlot(e)}
+                                className="selection"
                               >
                                 <Typography
                                   variant="p"

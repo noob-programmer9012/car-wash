@@ -126,7 +126,7 @@
   transition: height 0.9s ease-in-out;
 }
 
-.date-selector.show > .timeSlots > .slots > span {
+.date-selector.show > .timeSlots > .slots > .selection {
   width: 100%;
   height: 100%;
   border: 2px solid #1976d2;
@@ -136,7 +136,7 @@
   font-size: 1rem;
 }
 
-.date-selector.hide > .timeSlots > .slots > span {
+.date-selector.hide > .timeSlots > .slots > .selection {
   height: 100%;
   border: none !important;
   font-size: 0 !important;
@@ -172,4 +172,14 @@
 .disabled {
   border: 2px solid red !important;
   cursor: not-allowed;
+}
+
+@media only screen and (max-width: 600px) {
+  .item-details > .left-part > img {
+    display: none;
+  }
+
+  .date-selector.show > .timeSlots > .slots > .selection > span {
+    padding: 1rem;
+  }
 }
