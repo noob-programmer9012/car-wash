@@ -2,10 +2,17 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import getToken from "../utils/getToken";
-import { useRouteLoaderData } from "react-router-dom";
+import {
+  useNavigate,
+  useRevalidator,
+  useRouteLoaderData,
+} from "react-router-dom";
 
 function CheckoutButton({ amount, selectedSlot, selectedAddress, setError }) {
   const user = useRouteLoaderData("root");
+  const navigate = useNavigate();
+  let revalidator = useRevalidator();
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -66,6 +73,8 @@ function CheckoutButton({ amount, selectedSlot, selectedAddress, setError }) {
           },
         );
         console.log(await validatePayment.json());
+        revalidator.revalidate();
+        navigate("/orders");
       },
       prefill: {
         name: user.fullname,

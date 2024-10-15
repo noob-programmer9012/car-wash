@@ -6,6 +6,7 @@ import {
 import { Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
+// import BlockIcon from "@mui/icons-material/Block";
 
 import getTimeSlots from "../utils/getTimeSlots";
 import CheckoutButton from "../components/CheckoutButton";
@@ -288,15 +289,17 @@ const Order = () => {
                       {morrow.getDate()}
                     </div>
 
-                    <div
-                      className="date"
-                      data={extra}
-                      onClick={(e) => select(e)}
-                      id={item.serviceId.timeFrame}
-                      item={item.serviceId._id}
-                    >
-                      {extra.getDate()}
-                    </div>
+                    {showExtra && (
+                      <div
+                        className="date"
+                        data={extra}
+                        onClick={(e) => select(e)}
+                        id={item.serviceId.timeFrame}
+                        item={item.serviceId._id}
+                      >
+                        {extra.getDate()}
+                      </div>
+                    )}
                   </div>
                   <div className="timeSlots">
                     <div className="slots">
@@ -318,9 +321,11 @@ const Order = () => {
                                 </Typography>
                               </span>
                             ) : (
-                              <span className="disabled">
-                                <Typography variant="p">{f}</Typography>
-                              </span>
+                              <div className="selection disabled">
+                                <span>
+                                  <Typography variant="p">{f}</Typography>
+                                </span>
+                              </div>
                             )}
                           </Fragment>
                         );

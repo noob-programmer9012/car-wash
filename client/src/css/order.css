@@ -169,7 +169,7 @@
   padding: 1rem;
 }
 
-.disabled {
+.selection.disabled {
   border: 2px solid red !important;
   cursor: not-allowed;
 }
