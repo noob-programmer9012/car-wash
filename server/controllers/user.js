@@ -165,6 +165,7 @@ export const slotAvailable = async (req, res, next) => {
   return res.json({
     success: true,
     available,
+    slot,
   });
 };
 
@@ -276,6 +277,7 @@ export const postCheckout = async (req, res, next) => {
       order,
     });
   } catch (error) {
+    console.log(error);
     return next(new ErrorResponse(error, 500));
   }
 };

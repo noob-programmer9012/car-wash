@@ -1,3 +1,4 @@
+//fix setAvailibility
 import {
   useLoaderData,
   useRouteLoaderData,
@@ -158,6 +159,16 @@ const Order = () => {
     const selected = document.querySelector(".date.select");
 
     selected && selected.classList.remove("select");
+
+    if (showExtra) {
+      dates.forEach((d) => {
+        if (d.innerText == date.getDate()) {
+          d.remove();
+          d.click();
+        }
+      });
+    }
+
     dates[0].classList.add("select");
     dates[0].click();
 
@@ -182,11 +193,22 @@ const Order = () => {
     const givenDate = new Date(dataAttr).toLocaleDateString();
 
     setSelectedDate(givenDate);
-    if (e.target.childNodes[0].textContent === String(date.getDate()))
-      start = date.getHours() + 1;
-    const slots = getTimeSlots(Number(e.target.id), start, 20);
-    if (slots <= 0) setShowExtra(true);
-    setFrames(slots);
+    if (e.target.childNodes[0].textContent === String(date.getDate())) {
+      // change start timing based on slot size
+      // get total slots for day substract current time from all slots
+      // count time from starting time and divide by slot time(e.g 60 min, 120 min)
+      // start = date.getHours() + 1;
+      start = 8;
+      const current = new Date().getHours();
+      const diff = current - start;
+      const arrayStart = Math.ceil((diff * 60) / e.target.id);
+      const slots = getTimeSlots(Number(e.target.id), start, 20);
+      setFrames(slots.slice(arrayStart + 1));
+      if (slots.slice(arrayStart).length <= 0) setShowExtra(true);
+    } else {
+      const slots = getTimeSlots(Number(e.target.id), start, 20);
+      setFrames(slots);
+    }
   };
 
   const selectSlot = (e) => {

@@ -4,7 +4,9 @@
     <title>Example App</title>
     <style>
       table, th, td { border:1px solid black; border-collapse: collapse; } th {
-      background-color: #424a63; color: #ffffff; } th, td { padding: 1rem; }
+      background-color: #424a63; color: #ffffff; } th, td { padding: 1rem; } a {
+      text-decoration: none; } .btn { padding: 1 rem; border: none; margin-top:
+      1rem }
     </style>
   </head>
   <body>
@@ -25,5 +27,10 @@
         {{/each}}
       </table>
     {{/each}}
+    <a href="http://localhost:5000/orders"><input
+        type="button"
+        class="btn"
+        value="Order Details"
+      /></a>
   </body>
 </html>
