@@ -19,15 +19,13 @@ const UserOrders = () => {
             return (
               <React.Fragment key={order._id}>
                 <div className="order">
+                  <Typography variant="p">Order ID: {order._id}</Typography>
                   {order.items.map((item) => {
                     return (
                       <React.Fragment key={item.serviceName}>
                         <div className="items">
                           <div className="item">
                             <Typography variant="h5">Order Details</Typography>
-                            <Typography variant="p">
-                              Order ID: {order._id}
-                            </Typography>
 
                             <ul>
                               <li>
@@ -37,17 +35,17 @@ const UserOrders = () => {
                               </li>
                             </ul>
                           </div>
-                          <div className="download">
-                            <input
-                              className="btn blue"
-                              type="button"
-                              value="Download Invoice"
-                            />
-                          </div>
                         </div>
                       </React.Fragment>
                     );
                   })}
+                  <div className="download">
+                    <input
+                      className="btn blue"
+                      type="button"
+                      value="Download Invoice"
+                    />
+                  </div>
                 </div>
               </React.Fragment>
             );

@@ -75,6 +75,11 @@
   transition: height 1s ease-in-out;
 }
 
+.date.hide {
+  height: 0 !important;
+  display: none !important;
+}
+
 .timeSlots {
   transition: height 1s ease-in-out;
 }

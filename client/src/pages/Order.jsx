@@ -1,13 +1,13 @@
-//fix setAvailibility
+// fix add new address with form
+
 import {
   useLoaderData,
   useRouteLoaderData,
   useRevalidator,
 } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddHomeWorkIcon from "@mui/icons-material/AddHomeWork";
-// import BlockIcon from "@mui/icons-material/Block";
 
 import getTimeSlots from "../utils/getTimeSlots";
 import CheckoutButton from "../components/CheckoutButton";
@@ -85,7 +85,6 @@ const Order = () => {
       },
     });
     validator.revalidate();
-    console.log(await data.json());
   };
 
   useEffect(() => {
@@ -107,23 +106,29 @@ const Order = () => {
     }
   }, [error]);
 
+  const CheckAvailibility = async (slot, serviceId) => {
+    const token = await getToken();
+    const url = `http://localhost:5000/slotAvailable?slot=${slot}&serviceId=${serviceId}`;
+    const available = await fetch(url, {
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+    });
+    const jsonAvailble = await available.json();
+    return jsonAvailble;
+  };
+
   //check if the slot is available in slots
   useEffect(() => {
     frames.forEach(async (frame) => {
       const slot = `${selectedDate}, ${frame}`;
-      const token = await getToken();
-      // check if slot is avaiable for selected slot(Order.find({ slot: slot, itemId: itemId }).countDocuments();
-      const url = `http://localhost:5000/slotAvailable?slot=${slot}&serviceId=${currentItem}`;
-      const available = await fetch(url, {
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json",
-        },
-      });
-      const jsonAvailble = await available.json();
+      const jsonAvailble = await CheckAvailibility(slot, currentItem);
       setAvailibility((availibility) => [
         ...availibility,
-        jsonAvailble.available === 1 ? 1 : 0,
+        {
+          [jsonAvailble.available === 1 ? 1 : 0]: frame,
+        },
       ]);
     });
   }, [frames, currentItem]);
@@ -203,7 +208,7 @@ const Order = () => {
       const diff = current - start;
       const arrayStart = Math.ceil((diff * 60) / e.target.id);
       const slots = getTimeSlots(Number(e.target.id), start, 20);
-      setFrames(slots.slice(arrayStart + 1));
+      setFrames(slots.slice(arrayStart));
       if (slots.slice(arrayStart).length <= 0) setShowExtra(true);
     } else {
       const slots = getTimeSlots(Number(e.target.id), start, 20);
@@ -211,23 +216,30 @@ const Order = () => {
     }
   };
 
-  const selectSlot = (e) => {
+  const selectSlot = async (e) => {
     const slots = document.querySelectorAll(
       ".date-selector.show>.timeSlots>.slots>.selection",
     );
 
-    slots.forEach((slot) => {
-      slot.style.border = "2px solid #1976d2";
-    });
-    if (e.target.className === "selection")
-      e.target.style.border = "2px solid #fff";
-    else e.target.parentElement.style.border = "2px solid #fff";
-    setSelectedSlot({
-      ...selectedSlot,
-      [e.target.id]: {
-        [e.target.id]: `${selectedDate}, ${e.target.innerText}`,
-      },
-    });
+    const slot = `${selectedDate}, ${e.target.innerText}`;
+    const available = await CheckAvailibility(slot, e.target.id);
+
+    if (available.available === 0) {
+      e.target.classList.add("disabled");
+    } else {
+      slots.forEach((slot) => {
+        slot.style.border = "2px solid #1976d2";
+      });
+      if (e.target.className === "selection")
+        e.target.style.border = "2px solid #fff";
+      else e.target.parentElement.style.border = "2px solid #fff";
+      setSelectedSlot({
+        ...selectedSlot,
+        [e.target.id]: {
+          [e.target.id]: `${selectedDate}, ${e.target.innerText}`,
+        },
+      });
+    }
   };
 
   return (
@@ -310,46 +322,40 @@ const Order = () => {
                     >
                       {morrow.getDate()}
                     </div>
-
-                    {showExtra && (
-                      <div
-                        className="date"
-                        data={extra}
-                        onClick={(e) => select(e)}
-                        id={item.serviceId.timeFrame}
-                        item={item.serviceId._id}
-                      >
-                        {extra.getDate()}
-                      </div>
-                    )}
+                    <div
+                      className={showExtra ? "date" : "date hide"}
+                      data={extra}
+                      onClick={(e) => select(e)}
+                      id={item.serviceId.timeFrame}
+                      item={item.serviceId._id}
+                    >
+                      {extra.getDate()}
+                    </div>
                   </div>
                   <div className="timeSlots">
                     <div className="slots">
-                      {frames.map((f, index) => {
-                        return (
-                          <Fragment key={f}>
-                            {availibility[index] === 1 ? (
-                              <span
-                                id={item.serviceId._id}
-                                onClick={(e) => selectSlot(e)}
-                                className="selection"
-                              >
-                                <Typography
-                                  variant="p"
-                                  onClick={(e) => selectSlot(e)}
-                                  id={item.serviceId._id}
-                                >
-                                  {f}
-                                </Typography>
-                              </span>
-                            ) : (
-                              <div className="selection disabled">
-                                <span>
-                                  <Typography variant="p">{f}</Typography>
-                                </span>
-                              </div>
-                            )}
-                          </Fragment>
+                      {availibility.map((frame, index) => {
+                        return frame[1] ? (
+                          <span
+                            id={item.serviceId._id}
+                            onClick={(e) => selectSlot(e)}
+                            className="selection"
+                            key={index}
+                          >
+                            <Typography
+                              variant="p"
+                              onClick={(e) => selectSlot(e)}
+                              id={item.serviceId._id}
+                            >
+                              {frame[1]}
+                            </Typography>
+                          </span>
+                        ) : (
+                          <div className="selection disabled" key={index}>
+                            <span>
+                              <Typography variant="p">{frame[0]}</Typography>
+                            </span>
+                          </div>
                         );
                       })}
                     </div>
