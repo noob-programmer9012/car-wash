@@ -19,13 +19,9 @@
   border-radius: 20px;
   padding: 1rem;
   max-width: 100%;
-}
-
-.userOrders > .orders > .order > .items {
   display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .userOrders > .orders > .order > .items > .item > ul > li {

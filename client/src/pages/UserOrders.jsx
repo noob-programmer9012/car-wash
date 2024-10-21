@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLoaderData } from "react-router-dom";
 import { Typography } from "@mui/material";
 
@@ -6,10 +6,6 @@ import "../css/userOrders.css";
 
 const UserOrders = () => {
   const orders = useLoaderData();
-
-  useEffect(() => {
-    console.log(orders);
-  }, [orders]);
 
   return (
     <div className="userOrders">
@@ -20,17 +16,17 @@ const UserOrders = () => {
               <React.Fragment key={order._id}>
                 <div className="order">
                   <Typography variant="p">Order ID: {order._id}</Typography>
+                  <Typography variant="h5">Order Details</Typography>
                   {order.items.map((item) => {
                     return (
                       <React.Fragment key={item.serviceName}>
                         <div className="items">
                           <div className="item">
-                            <Typography variant="h5">Order Details</Typography>
-
                             <ul>
                               <li>
                                 <Typography variant="h6">
-                                  {item.serviceName}
+                                  {item.serviceName} -- &#8377;
+                                  {item.serviceId.plan.price}
                                 </Typography>
                               </li>
                             </ul>
