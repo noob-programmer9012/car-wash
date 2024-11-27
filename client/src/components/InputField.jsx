@@ -38,7 +38,7 @@ function InputField({ inputName, type, required, validator, value, accept }) {
     if (e.target.value === "") {
       label.style.top = "17px";
       label.style.left = "20px";
-      if (required) label.style.color = "#884925";
+      if (required) label.style.color = "#ff2525";
       label.style.fontSize = "1rem";
     }
 

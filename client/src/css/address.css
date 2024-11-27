@@ -1,0 +1,33 @@
+.addAddressform {
+  display: flex;
+  width: 500px;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.addAddressform > .close {
+  /* align-self: flex-end; */
+  display: flex;
+  justify-content: space-between;
+}
+
+.close > .closeIcon {
+  cursor: pointer;
+}
+
+.address-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.address-modal > .extra {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.address-modal > .city {
+  flex-direction: column;
+  gap: 1.5rem;
+}

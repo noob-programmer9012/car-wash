@@ -23,7 +23,7 @@ import { ordersLoader } from "./loaders/ordersLoader";
 import { getUserOrders } from "./loaders/getUserOrders";
 
 // actions
-import { categoryAction } from "./action/categoryAction.";
+import { categoryAction } from "./action/categoryAction";
 import { serviceAction } from "./action/serviceAction";
 import { editCategoryAction } from "./action/editCategoryAction";
 import { signUp } from "./action/signUp";
@@ -54,6 +54,7 @@ import UserOrders from "./pages/UserOrders";
 // css
 import "./css/index.css";
 import "./css/login.css";
+import { addAddress } from "./action/addAdress";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,7 @@ const router = createBrowserRouter([
         path: "/order",
         element: <Order />,
         loader: cart,
+        action: addAddress,
       },
       {
         path: "/orders",

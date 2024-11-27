@@ -13,6 +13,8 @@ import getTimeSlots from "../utils/getTimeSlots";
 import CheckoutButton from "../components/CheckoutButton";
 import AddressSection from "../components/AddressSection";
 import getToken from "../utils/getToken";
+import Modal from "../components/Modal";
+import AddAddress from "../components/AddAddress";
 import "../css/order.css";
 
 const Order = () => {
@@ -33,6 +35,8 @@ const Order = () => {
   const [total, setTotal] = useState(0);
   const [selectedSlot, setSelectedSlot] = useState({});
   const [currentItem, setCurrentItem] = useState();
+  const [open, setOpen] = useState(false);
+
   const [selectedAddress, setSelectedAddress] = useState(() => {
     return items.reduce((acc, id) => {
       acc[id] = primaryAddress;
@@ -279,7 +283,7 @@ const Order = () => {
                       primaryAddress={primaryAddress}
                     />
                   </div>
-                  <div onClick={addAddress}>
+                  <div onClick={() => setOpen(true)}>
                     <AddHomeWorkIcon className="icons-material" />
                   </div>
                 </div>
@@ -371,6 +375,11 @@ const Order = () => {
         selectedSlot={selectedSlot}
         setError={setError}
         selectedAddress={selectedAddress}
+      />
+      <Modal
+        open={open}
+        setOpen={setOpen}
+        children={<AddAddress setOpen={setOpen} />}
       />
     </div>
   );
