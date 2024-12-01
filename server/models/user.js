@@ -59,6 +59,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter your area name."],
       },
+      pincode: {
+        type: String,
+        required: [true, "Please enter your pin code."],
+        match: [/^(\s*|\d+)$/, "Please enter valid pin code."],
+        minlength: 6,
+        maxlength: 6,
+      },
     },
   ],
   pincode: {

@@ -31,3 +31,47 @@
   flex-direction: column;
   gap: 1.5rem;
 }
+
+.eb {
+  align-self: center;
+  background-color: var(--error);
+  width: 100%;
+  transition: all ease-in 0.4s;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  transition: all ease-out 0.2;
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.err {
+  padding: 0em 1em;
+  color: var(--error-text);
+  letter-spacing: 1px;
+  flex: auto;
+  transition: all ease 1s;
+  opacity: 0;
+  visibility: hidden;
+  /* animation: 10s ease-in-out 1 alternate fadeIn; */
+}
+
+.eb.show {
+  opacity: 1;
+  visibility: visible;
+  width: 100%;
+  padding: 2em 0;
+}
+.err.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media only screen and (max-width: 600px) {
+  .addAddressform {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}

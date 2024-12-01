@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
-
 import axios from "axios";
+
 import getToken from "../utils/getToken";
 
 export async function categoryAction({ request }) {

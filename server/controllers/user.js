@@ -96,6 +96,11 @@ export const getUser = async (req, res, next) => {
 export const addAddress = async (req, res, next) => {
   const userId = req.user;
 
+  const { buildingDetails, landmark, area, pincode } = req.body;
+  if (!buildingDetails || !landmark || !area || !pincode) {
+    return next(new ErrorResponse("All fields are neccessary.", 400));
+  }
+
   try {
     const user = await User.findById(userId);
     if (!user) return next(new ErrorResponse("User does not exist!", 404));
@@ -277,7 +282,6 @@ export const postCheckout = async (req, res, next) => {
       order,
     });
   } catch (error) {
-    console.log(error);
     return next(new ErrorResponse(error, 500));
   }
 };

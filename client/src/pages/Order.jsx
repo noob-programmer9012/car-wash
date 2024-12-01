@@ -22,7 +22,7 @@ const Order = () => {
   const validator = useRevalidator();
   const user = useRouteLoaderData("root");
   const items = user.cart.items.map((i) => i.serviceId);
-  const primaryAddress =
+  let primaryAddress =
     user.address.homeNo +
     ", " +
     user.address.landmark +
@@ -36,6 +36,19 @@ const Order = () => {
   const [selectedSlot, setSelectedSlot] = useState({});
   const [currentItem, setCurrentItem] = useState();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    primaryAddress =
+      user.secondaryAddress.length > 0
+        ? user.secondaryAddress[user.secondaryAddress.length - 1]
+            .buildingDetails +
+          ", " +
+          user.secondaryAddress[user.secondaryAddress.length - 1].landmark +
+          ", " +
+          user.secondaryAddress[user.secondaryAddress.length - 1].area
+        : primaryAddress;
+    console.log(primaryAddress);
+  }, [user]);
 
   const [selectedAddress, setSelectedAddress] = useState(() => {
     return items.reduce((acc, id) => {
@@ -72,24 +85,6 @@ const Order = () => {
       });
     }
   }, [showExtra]);
-
-  const addAddress = async () => {
-    const token = await getToken();
-    const url = "http://localhost:5000/addAddress";
-    const data = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        buildingDetails: "old",
-        landmark: "indarpuri",
-        area: "vastral",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
-    validator.revalidate();
-  };
 
   useEffect(() => {
     let sum = 0;
