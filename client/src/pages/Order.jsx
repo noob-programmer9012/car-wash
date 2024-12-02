@@ -37,25 +37,13 @@ const Order = () => {
   const [currentItem, setCurrentItem] = useState();
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    primaryAddress =
-      user.secondaryAddress.length > 0
-        ? user.secondaryAddress[user.secondaryAddress.length - 1]
-            .buildingDetails +
-          ", " +
-          user.secondaryAddress[user.secondaryAddress.length - 1].landmark +
-          ", " +
-          user.secondaryAddress[user.secondaryAddress.length - 1].area
-        : primaryAddress;
-    console.log(primaryAddress);
-  }, [user]);
-
   const [selectedAddress, setSelectedAddress] = useState(() => {
     return items.reduce((acc, id) => {
       acc[id] = primaryAddress;
       return acc;
     }, {});
   });
+
   const [error, setError] = useState(null);
   const [availibility, setAvailibility] = useState([]);
   const [showExtra, setShowExtra] = useState(false);
@@ -374,7 +362,7 @@ const Order = () => {
       <Modal
         open={open}
         setOpen={setOpen}
-        children={<AddAddress setOpen={setOpen} />}
+        children={<AddAddress setOpen={setOpen} open={open} />}
       />
     </div>
   );

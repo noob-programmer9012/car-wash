@@ -7,7 +7,7 @@ import { addAddress } from "../action/addAdress";
 import "../css/address.css";
 import { useEffect, useState } from "react";
 
-const AddAddress = ({ setOpen }) => {
+const AddAddress = ({ open, setOpen }) => {
   // const data = useFormAction("order");
   const data = useActionData();
   const [show, setShow] = useState(false);
@@ -19,6 +19,7 @@ const AddAddress = ({ setOpen }) => {
   };
 
   useEffect(() => {
+    !open && setOpen(true);
     const inputs = document.querySelectorAll("input[type=string]");
     inputs.forEach((input) => {
       input.addEventListener("keydown", () => {
@@ -29,11 +30,10 @@ const AddAddress = ({ setOpen }) => {
     if (data && !data.user) {
       setError(data.message);
       setShow(true);
+    } else {
+      open && setOpen((prev) => !prev);
+      // setSelectedAddress(newAddress)
     }
-
-    // if (data && data.user) {
-    //   setOpen(false);
-    // }
   }, [data]);
 
   useEffect(() => {
@@ -52,12 +52,12 @@ const AddAddress = ({ setOpen }) => {
   return (
     <div className="addAddressform">
       <div className="close">
-        <h3>Add Address</h3>
+        <h3> Add Address</h3>
         <CloseIcon className="closeIcon" onClick={() => setOpen(false)} />
       </div>
       <div className="eb">
-        <span className="material-symbols-outlined error-icon">error</span>
-        <p className="err">{error}</p>
+        <span className="material-symbols-outlined error-icon"> error</span>
+        <p className="err"> {error}</p>
         <span className="material-symbols-outlined close" onClick={handleClose}>
           close
         </span>
@@ -94,7 +94,8 @@ const AddAddress = ({ setOpen }) => {
 };
 
 AddAddress.propTypes = {
-  setClose: PropTypes.func,
+  open: PropTypes.bool,
+  setOpen: PropTypes.func,
 };
 
 export default AddAddress;
