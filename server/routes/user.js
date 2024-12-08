@@ -12,6 +12,7 @@ router.get("/service/:id", userController.getServiceById);
 router.get("/getCart", userController.getCart);
 router.get("/getOrders", userController.getOrders);
 router.get("/slotAvailable", userController.slotAvailable);
+router.get("/getInvoice/:orderId", userController.getInvoice);
 
 // post routes
 router.post("/addToCart/:serviceId", userController.postAddToCart);

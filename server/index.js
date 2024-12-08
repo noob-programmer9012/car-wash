@@ -45,7 +45,7 @@ app.use(errorHandler);
 async function main() {
   try {
     await mongoose.connect(process.env.MONGO_CONN_STRING);
-    app.listen(port, () => {
+    app.listen(port, async () => {
       console.log("Successfully connected to Mongodb Server!");
       console.log(`Server is running on http://localhost:${port}`);
     });

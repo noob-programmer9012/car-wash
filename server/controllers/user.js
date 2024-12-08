@@ -7,7 +7,7 @@ import Service from "../models/service.js";
 import User from "../models/user.js";
 import Order from "../models/order.js";
 import { ErrorResponse } from "../util/errorRespone.js";
-// import { createPDF } from "../util/createPDF.js";
+import { createPDF } from "../util/createPDF.js";
 import sendEmail from "../util/sendEmail.js";
 
 export const getCategories = async (req, res, next) => {
@@ -155,7 +155,16 @@ export const getOrders = async (req, res, next) => {
   }
 };
 
-export const slotAvailable = async (req, res, next) => {
+export const getInvoice = async (req, res, next) => {
+  const { orderId } = req.params;
+  if (!new mongoose.isValidObjectId(orderId))
+    return next(new ErrorResponse("Invalid Order Id", 404));
+  const order = await Order.findById(orderId).populate("items.serviceId");
+  // order.items.map((i) => console.log(i.serviceId));
+  return createPDF(order, res);
+};
+
+export const slotAvailable = async (req, res) => {
   const { slot, serviceId } = req.query;
 
   const isAvailable = await Order.find({
@@ -198,7 +207,8 @@ export const postAddToCart = async (req, res, next) => {
 
       const available = user.cart.items.filter((item) => {
         return (
-          item.serviceId == new mongoose.Types.ObjectId(serviceId).toString()
+          item.serviceId ==
+          new mongoose.Types.ObjectId(`${serviceId}`).toString()
         );
       });
 
