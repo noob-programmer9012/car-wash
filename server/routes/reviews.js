@@ -8,5 +8,6 @@ router.get("/getReviewsByService/:id", reviewsController.getReviewsByService);
 router.get("/getReviewsByUser", reviewsController.getReviewsByUser);
 
 router.post("/postReview/:id", reviewsController.postReviews);
+router.put("/editReview/:id", (req, res) => { });
 
 export default router;
